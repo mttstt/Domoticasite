@@ -1,8 +1,12 @@
 
 ![alt tag](https://d14xs1qewsqjcd.cloudfront.net/assets/logo.svg)
+![alt tag](http://www.meteorkitchen.com/images/cupcakes.svg)
 ![alt tag](https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg) 
 ![alt tag](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-) 
 ![alt tag](https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr)
+
+
+
 # Domoticasite
 Web Application for home automation, the main function are:
 
