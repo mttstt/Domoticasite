@@ -1,0 +1,9 @@
+         {
+             "oauth": {
+                 "google": {
+                     "clientId": "xxx",
+                     "secret": "xxx"
+                 }
+
+             }
+         }
