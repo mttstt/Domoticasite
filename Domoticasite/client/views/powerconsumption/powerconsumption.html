@@ -1,0 +1,33 @@
+<template name="Powerconsumption">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<h2 id="page_title" class="pull-left">
+					Power Consumption
+				</h2>
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		<div class="page-container container" id="content">
+			<div class="row" id="title_row">
+				<div class="col-md-12">
+					<div id="page_menu" class="pull-right">
+					</div>
+				</div>
+			</div>
+
+
+			<div class="input-group date" id="datepicker" style="width: 25%">
+				<input type="text" class="form-control" />
+				<span class="input-group-addon">
+				<span class="fa fa-calendar"></span></span>
+			</div>
+
+
+			<div id="mygraph" style="min-width: 400px; height: 400px; margin: 0 auto">
+				{{powergraph}}
+			</div>
+		</div>
+	</div>
+</template>

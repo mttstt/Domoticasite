@@ -1,0 +1,113 @@
+<template name="CaldaiaModifica">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> CaldaiaModificaModificaForm}}
+	</div>
+</template>
+
+<template name="CaldaiaModificaModificaForm">
+	<div id="caldaia-modifica-modifica-form" class="">
+		<h2 id="component-title">
+			Modifica funzionamento caldaia
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-statoriscaldamento">
+				<div class="input-div">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" value="{{caldaia_dettaglio.statoriscaldamento}}" name="statoriscaldamento" data-type="bool" autofocus="autofocus" {{itemIsChecked caldaia_dettaglio.statoriscaldamento true}}>
+							Stato Riscaldamento
+						</label>
+					</div>
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-statotermostato">
+				<div class="input-div">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" value="{{caldaia_dettaglio.statotermostato}}" name="statotermostato" data-type="bool" {{itemIsChecked caldaia_dettaglio.statotermostato true}}>
+							Stato del Termostato
+						</label>
+					</div>
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-sensoretermostato">
+				<label for="sensoretermostato">
+					Sensore utilizzato dal termostato
+				</label>
+				<div class="input-div">
+					<select class="form-control " name="sensoretermostato" data-type="string">
+						{{#each sensori_temp_lista}}
+						<option value="{{location}}" {{optionIsSelected ../caldaia_dettaglio.sensoretermostato location}}>							{{location}}</option>
+						{{/each}}
+					</select>
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-timescheduler">
+				<label for="timescheduler">
+					Intervallo letture
+				</label>
+				<div class="input-div">
+					<input type="text" name="timescheduler" value="{{caldaia_dettaglio.timescheduler}}" class="form-control " data-type="integer">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-isteresi">
+				<label for="isteresi">
+					Isteresi
+				</label>
+				<div class="input-div">
+					<input type="text" name="isteresi" value="{{caldaia_dettaglio.isteresi}}" class="form-control " data-type="float">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Save
+					</button>
+					<a href="#" id="form-cancel-button" class="btn btn-default">
+						Cancel
+					</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+

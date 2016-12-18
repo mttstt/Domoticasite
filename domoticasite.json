@@ -1,0 +1,1378 @@
+{
+	"application": {
+		"title": "Domotica",
+		"meta_description": "Domotica",
+		"meta_title": "Domotica",
+		"theme": "bootswatch-flatly",
+		"animate": true,
+		"footer_text": "Domotica - Copyright (c) 2016 mttstt, MIT License",
+		"roles": [
+			"admin",
+			"user"
+		],
+		"default_role": "user",
+		"use_collection2": true,
+		"collections": [
+			{
+				"name": "caldaia",
+				"type": "collection",
+				"fields": [
+					{
+						"name": "statoriscaldamento",
+						"title": "Stato Riscaldamento",
+						"type": "bool",
+						"default": "false",
+						"searchable": false,
+						"sortable": false,
+						"input": "checkbox"
+					},
+					{
+						"name": "statotermostato",
+						"title": "Stato del Termostato",
+						"type": "bool",
+						"default": "false",
+						"searchable": false,
+						"sortable": false,
+						"input": "checkbox"
+					},
+					{
+						"name": "statocaldaia",
+						"title": "Stato della Caldaia",
+						"type": "bool",
+						"default": "false",
+						"searchable": false,
+						"sortable": false,
+						"input": "checkbox",
+						"show_in_dataview": false,
+						"show_in_insert_form": false,
+						"show_in_update_form": false
+					},
+					{
+						"name": "sensoretermostato",
+						"title": "Sensore utilizzato dal termostato",
+						"type": "string",
+						"searchable": false,
+						"sortable": false,
+						"input": "select",
+						"lookup_query_name": "sensori_temp_lista",
+						"lookup_key": "location",
+						"lookup_field": "location"
+					},
+					{
+						"name": "timescheduler",
+						"title": "Intervallo letture",
+						"type": "integer",
+						"default": "60",
+						"searchable": false,
+						"sortable": false
+					},
+					{
+						"name": "isteresi",
+						"title": "Isteresi",
+						"type": "float",
+						"default": "0.5",
+						"searchable": false,
+						"sortable": false
+					}
+				],
+				"owner_field": "ownerId",
+				"roles_allowed_to_read": [
+					"admin",
+					"user"
+				],
+				"roles_allowed_to_update": [
+					"admin",
+					"user"
+				]
+			},
+			{
+				"name": "sensori",
+				"type": "collection",
+				"fields": [
+					{
+						"name": "ip",
+						"title": "IP",
+						"type": "string",
+						"required": true,
+						"searchable": false,
+						"sortable": false,
+						"show_in_dataview": false
+					},
+					{
+						"name": "location",
+						"title": "Location",
+						"type": "string",
+						"searchable": false
+					},
+					{
+						"name": "note",
+						"title": "Note",
+						"type": "string",
+						"searchable": false
+					},
+					{
+						"name": "tipo",
+						"title": "Tipo",
+						"type": "string",
+						"searchable": false
+					},
+					{
+						"name": "temp",
+						"title": "Temperature",
+						"type": "float",
+						"searchable": false,
+						"show_in_insert_form": false,
+						"show_in_update_form": false
+					},
+					{
+						"name": "hum",
+						"title": "Humidity",
+						"type": "float",
+						"searchable": false,
+						"show_in_insert_form": false,
+						"show_in_update_form": false
+					},
+					{
+						"name": "active",
+						"title": "Attivo?",
+						"type": "bool",
+						"searchable": false,
+						"sortable": false,
+						"input": "checkbox",
+						"show_in_insert_form": false,
+						"show_in_update_form": false
+					},
+					{
+						"name": "timescheduler",
+						"title": "Schedulazione lettura dati  (secondi)",
+						"type": "integer",
+						"searchable": false,
+						"sortable": false
+					},
+					{
+						"name": "on",
+						"title": "Acceso?",
+						"type": "bool",
+						"searchable": false,
+						"sortable": false,
+						"input": "checkbox"
+					}
+				],
+				"roles_allowed_to_insert": [
+					"admin",
+					"user"
+				],
+				"roles_allowed_to_update": [
+					"admin",
+					"user"
+				],
+				"roles_allowed_to_delete": [
+					"admin"
+				]
+			},
+			{
+				"name": "cronotermostato",
+				"type": "collection",
+				"fields": [
+					{
+						"name": "day",
+						"type": "string",
+						"searchable": false
+					},
+					{
+						"name": "h001",
+						"title": "00-01",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h012",
+						"title": "01-02",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h023",
+						"title": "02-03",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h034",
+						"title": "03-04",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h045",
+						"title": "04-05",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h056",
+						"title": "05-06",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h067",
+						"title": "06-07",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h078",
+						"title": "07-08",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h089",
+						"title": "08-09",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h0910",
+						"title": "09-10",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1011",
+						"title": "10-11",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1112",
+						"title": "11-12",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1213",
+						"title": "12-13",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1314",
+						"title": "13-14",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1415",
+						"title": "14-15",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1516",
+						"title": "15-16",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1617",
+						"title": "16-17",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1718",
+						"title": "17-18",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1819",
+						"title": "18-19",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h1920",
+						"title": "19-20",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h2021",
+						"title": "20-21",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h2122",
+						"title": "21-22",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h2223",
+						"title": "22-23",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "h2324",
+						"title": "23-24",
+						"type": "integer",
+						"searchable": false,
+						"input": "select",
+						"lookup_query_name": "rangetemp_lista",
+						"lookup_key": "grado",
+						"lookup_field": "grado"
+					},
+					{
+						"name": "dayofweek",
+						"title": "dayofweek",
+						"type": "integer",
+						"required": true,
+						"searchable": false,
+						"input": "select",
+						"input_items": [
+							{
+								"value": "1",
+								"title": "1"
+							},
+							{
+								"value": "2",
+								"title": "2"
+							},
+							{
+								"value": "3",
+								"title": "3"
+							},
+							{
+								"value": "4",
+								"title": "4"
+							},
+							{
+								"value": "5",
+								"title": "5"
+							},
+							{
+								"value": "6",
+								"title": "6"
+							},
+							{
+								"value": "7",
+								"title": "7"
+							}
+						],
+						"show_in_dataview": false,
+						"show_in_insert_form": false,
+						"show_in_read_only_form": false
+					}
+				],
+				"owner_field": "ownerId",
+				"roles_allowed_to_read": [
+					"admin",
+					"user"
+				],
+				"roles_allowed_to_insert": [
+					"admin",
+					"user"
+				],
+				"roles_allowed_to_update": [
+					"admin",
+					"user"
+				]
+			},
+			{
+				"name": "rangetemp",
+				"type": "collection",
+				"fields": [
+					{
+						"name": "grado",
+						"title": "grado",
+						"type": "integer",
+						"searchable": false,
+						"sortable": false,
+						"input": "select"
+					}
+				]
+			},
+			{
+				"name": "watt",
+				"type": "collection",
+				"fields": [
+					{
+						"name": "day",
+						"title": "day",
+						"type": "string"
+					},
+					{
+						"name": "pulsearr",
+						"title": "pulsearr",
+						"type": "array",
+						"input": "crud",
+						"array_item_type": "object"
+					},
+					{
+						"name": "solararr",
+						"title": "solararr",
+						"type": "array",
+						"input": "crud",
+						"array_item_type": "object"
+					}
+				]
+			}
+		],
+		"queries": [
+			{
+				"name": "admin_users",
+				"collection": "users",
+				"filter": "{}",
+				"options": "{}"
+			},
+			{
+				"name": "admin_user",
+				"collection": "users",
+				"find_one": true,
+				"filter": "{ \"_id\": \":userId\" }",
+				"options": "{}"
+			},
+			{
+				"name": "users_null",
+				"collection": "users",
+				"find_one": true,
+				"filter": "{ \"_id\": null }",
+				"options": "{}"
+			},
+			{
+				"name": "current_user_data",
+				"collection": "users",
+				"find_one": true,
+				"filter": "{ \"_id\": \"Meteor.userId()\" }",
+				"options": "{}"
+			},
+			{
+				"name": "sensori_lista",
+				"collection": "sensori",
+				"filter": "{}",
+				"options": "{}"
+			},
+			{
+				"name": "sensore_dettaglio",
+				"collection": "sensori",
+				"find_one": true,
+				"filter": "{\"_id\": \":sensoreId\" }",
+				"options": "{}"
+			},
+			{
+				"name": "sensori_vuoto",
+				"collection": "sensori",
+				"find_one": true,
+				"filter": "{\"ip\": null }",
+				"options": "{}"
+			},
+			{
+				"name": "caldaia_dettaglio",
+				"collection": "caldaia",
+				"find_one": true,
+				"filter": "{\"_id\": \":caldaiaId\"}",
+				"options": "{}"
+			},
+			{
+				"name": "caldaia_lista",
+				"collection": "caldaia",
+				"filter": "{}",
+				"options": "{}"
+			},
+			{
+				"name": "cronotermostato_lista",
+				"collection": "cronotermostato",
+				"filter": "{}",
+				"options": "{\n\t\"sort\": {\n\t\t\"dayofweek\": 1\n\t}\n}"
+			},
+			{
+				"name": "cronotermostato_dettaglio",
+				"collection": "cronotermostato",
+				"find_one": true,
+				"filter": "{\"_id\": \":cronotermostatoId\" }",
+				"options": "{}"
+			},
+			{
+				"name": "sensori_temp_lista",
+				"collection": "sensori",
+				"filter": "{\n\t\"tipo\": \"DHT22\"\n}",
+				"options": "{}"
+			},
+			{
+				"name": "rangetemp_lista",
+				"collection": "rangetemp",
+				"filter": "{}",
+				"options": "{}"
+			},
+			{
+				"name": "watt_list",
+				"collection": "watt",
+				"filter": "{}",
+				"options": "{}"
+			}
+		],
+		"public_zone": {
+			"type": "zone",
+			"components": [
+				{
+					"name": "left_menu",
+					"type": "menu",
+					"dest_selector": "#menu",
+					"class": "nav navbar-nav",
+					"items": [
+						{
+							"title": "Home",
+							"route": "home_public"
+						},
+						{
+							"title": "Sensori",
+							"route": "sensors"
+						},
+						{
+							"title": "Webcam",
+							"route": "webcam"
+						},
+						{
+							"title": "Airplanes",
+							"route": "airplanes"
+						},
+						{
+							"title": "Power Consumption",
+							"route": "powerconsumption"
+						},
+						{
+							"title": "Solar Power",
+							"route": "solarpower"
+						}
+					],
+					"object_type": "menu"
+				},
+				{
+					"name": "right_menu",
+					"type": "menu",
+					"dest_selector": "#menu",
+					"class": "nav navbar-nav navbar-right",
+					"items": [
+						{
+							"title": "Register",
+							"route": "register"
+						},
+						{
+							"title": "Login",
+							"route": "login"
+						}
+					],
+					"object_type": "menu"
+				}
+			],
+			"pages": [
+				{
+					"name": "home_public",
+					"type": "page",
+					"components": [
+						{
+							"name": "home_jumbotron",
+							"type": "jumbotron",
+							"title": "Domoticasite",
+							"text": "Web Application for home automation, the main function are:<br />- Programmable thermostat<br />- Display environmental temperature and humidity in real-time<br />- Comparison between energy power generated by photovoltaic system and power consumed in the home.<br /><br /> It is a IOT (Internet of things) solution, implemented on Raspberry 2, with the use of Wi-Fi sensor. The Web application is implemented with Meteor-Kitchen.<br />",
+							"button_title": "Continue &raquo;",
+							"button_route": "sensors",
+							"object_type": "jumbotron"
+						}
+					]
+				},
+				{
+					"name": "login",
+					"type": "page",
+					"template": "login"
+				},
+				{
+					"name": "register",
+					"type": "page",
+					"template": "register"
+				},
+				{
+					"name": "verify_email",
+					"type": "page",
+					"template": "verify_email",
+					"route_params": [
+						"verifyEmailToken"
+					]
+				},
+				{
+					"name": "forgot_password",
+					"type": "page",
+					"template": "forgot_password"
+				},
+				{
+					"name": "reset_password",
+					"type": "page",
+					"template": "reset_password",
+					"route_params": [
+						"resetPasswordToken"
+					]
+				},
+				{
+					"name": "sensors",
+					"type": "page",
+					"components": [
+						{
+							"name": "tempe2",
+							"type": "custom_component",
+							"query_name": "sensori_lista",
+							"html": "<h3>Temperatura ed Umidita'</h3>\n<div class=\"myContainer\"></div>\n\n<template name=\"Tempe3\">\n\t<div id=\"{{div}}T\" class=\"dynamicDiv\"></div>\n\t<div id=\"{{div}}U\" class=\"dynamicDiv\"></div>\n</template>",
+							"js": "/* Copiare il seguente testo in client/views/sensors/\n\n<template name=\"Tempe2\">\n\n\t<div class=\"page-container container\" id=\"content\">\n\t\t<div class=\"row\" id=\"title_row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<div id=\"page_menu\" class=\"pull-right\">\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<h3>Temperatura ed Umidita'</h3>\n\n\t<div class=\"myContainer\"></div>\n\n</div>\n</template>\n\n<template name=\"Tempe3\">\n\t<div id=\"{{div}}T\" class=\"dynamicDiv\"></div>\n\t<div id=\"{{div}}U\" class=\"dynamicDiv\"></div>\n</template>\n\n*/\n\nTemplate.Sensors.onRendered(function () {\n\n\t\tvar e = Sensori.find({ tipo: 'DHT22' }, { sort: { active: -1 }});\n\t\te.forEach( function(s) {\n\t\t\t\tBlaze.renderWithData(Template.Tempe3,{div: s.location},$('.myContainer')[0]);\n\t\t\t  new Highcharts.Chart(Highcharts.merge(gaugeOptions, optionsT, {chart: { renderTo: s.location+'T' }}));\n\t\t\t\tnew Highcharts.Chart(Highcharts.merge(gaugeOptions, optionsU, {chart: { renderTo: s.location+'U' }}));\n\t\t} );\n\n\t\tthis.autorun(function () {\n\t\t\t\te.forEach( function(s) {\n\t\t\t\t\t\t  if (s.active == true  ) {\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'T').highcharts().chartBackground.attr({fill: '#d3dae2'} );\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().chartBackground.attr({fill: '#d3dae2'} );\n\t\t\t\t\t\t\t\t\t  $('#'+s.location+'T').highcharts().yAxis[0].setTitle({ text: 'Temperatura '+s.location+\" (C)\" });\n\t\t\t\t\t\t\t\t\t  $('#'+s.location+'U').highcharts().yAxis[0].setTitle({ text: 'Umidita\\' '+s.location+\" (%)\" });\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'T').highcharts().series[0].points[0].update(s.temp*1);\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().series[0].points[0].update(s.hum*1);\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'T').highcharts().series[0].name = s.timestamp;\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().series[0].name = s.timestamp;\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'T').highcharts().series[0].update({dataLabels: {enabled: true } });\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().series[0].update({dataLabels: {enabled: true } });\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'T').highcharts().chartBackground.attr({fill: 'white'} );\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().chartBackground.attr({fill: 'white'} );\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'T').highcharts().series[0].update({dataLabels: {enabled: false } });\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().series[0].update({dataLabels: {enabled: false } });\n\t\t\t\t\t\t\t\t\t    $('#'+s.location+'T').highcharts().yAxis[0].setTitle({ text: s.location });\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().yAxis[0].setTitle({ text: s.location });\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'T').highcharts().series[0].name = 'Sensor not working';\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().series[0].name = 'Sensor not working';\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'T').highcharts().series[0].points[0].update(0);\n\t\t\t\t\t\t\t\t\t\t$('#'+s.location+'U').highcharts().series[0].points[0].update(0);\n\t\t\t\t\t\t\t}\t\t\t\t\t\t\t\t\t\t\n\t\t      });\n\t\t\t});\n});\n\n\nvar gaugeOptions = {\n        chart: {\n        type: 'solidgauge',\n\t\t\t\tbackgroundColor: '#d3dae2'\n        },\n        title: null,\n        pane: {\n            center: ['50%', '85%'],\n            size: '140%',\n            startAngle: -90,\n            endAngle: 90,\n            background: {\n                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',\n                innerRadius: '60%',\n                outerRadius: '100%',\n                shape: 'arc'\n            }\n        },\n        tooltip: {\n            enabled: true\n        },\n\t\t\t\tcredits: {\n\t    \t\tenabled: false\n\t},\n        // the value axis\n        yAxis: {\n            stops: [\n                [0.4, '#DF5353'], // red\n                [0.5, '#55BF3B'], // green\n                [0.7, '#DF5353']  // red\n            ],\n            lineWidth: 0,\n            minorTickInterval: null,\n            tickPixelInterval: 40,\n            tickWidth: 1,\n            title: {\n                y: -70\n            },\n            labels: {\n                y: 16\n            }\n        },\n        plotOptions: {\n            solidgauge: {\n                dataLabels: {\n                    y: 5,\n                    borderWidth: 0,\n                    useHTML: true\n                }\n            }\n        }\n    };\n\n\nvar optionsT = {\n        yAxis: {\n            min: 0,\n            max: 40,\n            title: {\n                text: 'Temperatura'\n            }\n        },\n        series: [{\n            name: 'Temperatura',\n            data: [0],\n\t\t\t\t\t\tdataLabels: {\n                format: '<div style=\"text-align:center\"><span style=\"font-size:18px;color:' +\n                         ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '\">{y:.1f}</span> ' +\n                         '<span style=\"font-size:18px;color:silver\">C</span></div>'\n\t\t\t\t}\n        }]\n};\nvar optionsU = {\n        yAxis: {\n            min: 0,\n            max: 100,\n            title: {\n                text: 'Umidita\\''\n            }\n        },\n        series: [{\n            name: 'Umidita\\'',\n            data: [0],\n            dataLabels: {\n                format: '<div style=\"text-align:center\"><span style=\"font-size:18px;color:' +\n                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '\">{y:.1f}</span> ' +\n                       '<span style=\"font-size:18px;color:silver\">%</span></div>'\n            }\n        }]\n};\n",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "webcam",
+					"type": "page",
+					"title": "Webcam",
+					"components": [
+						{
+							"name": "webcam_iframe",
+							"type": "custom_component",
+							"html": "<img src=\"http://matteosetti.noip.me/webcam/CGIProxy.fcgi?cmd=snapPicture2&usr=admin&pwd=admin\" height=\"850\" width=\"100%\"></img>",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "airplanes",
+					"type": "page",
+					"title": "Airplanes",
+					"components": [
+						{
+							"name": "airplanes_comp",
+							"type": "custom_component",
+							"html": "<iframe src=\"http://matteosetti.noip.me/dump1090/gmap.html\" height=\"700\" width=\"100%\"></iframe>",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "powerconsumption",
+					"type": "page",
+					"components": [
+						{
+							"name": "watt",
+							"type": "custom_component",
+							"query_name": "watt_list",
+							"html": "<div class=\"page-container container\" id=\"content\">\n\t  <div class=\"row\" id=\"title_row\">\n\t\t\t<div class=\"col-md-12\">\n\t     \t\t<div id=\"page_menu\" class=\"pull-right\"></div>\n\t\t\t</div>\n\t  </div>\n\t  <div class=\"input-group date\" id=\"datepicker\" style=\"width: 25%\">\n      \t<input type=\"text\" class=\"form-control\" />\n      \t<span class=\"input-group-addon\">\n\t  \t<span class=\"fa fa-calendar\"></span></span>\n      </div>\n\t<div id=\"mygraph\" style=\"min-width: 400px; height: 400px; margin: 0 auto\">{{powergraph}}</div>\n</div>\n\n",
+							"js": "Template.Powerconsumption.rendered = function() {\n\tMeteor.defer(function() {\n\t\tglobalOnRendered();\n\t\t$(\"input[autofocus]\").focus();\n\t});\n};\n\n\nTemplate.Powerconsumption.events({\n\t\"changeDate #datepicker\": function(event, template) {\n        var date = moment(event.date).format(\"YYYYMMDD\");\n\t\tconsole.log('event: ', date);\n\t    new Highcharts.Chart(Options);\n\t\t$('#mygraph').highcharts().chartBackground.attr({fill: '#d3dae2'} );\n\t\t$('#mygraph').highcharts().setTitle({ text: 'Giorno '+  moment(event.date).format(\"DD/MM/YYYY\") });\n\t\t$('#mygraph').highcharts().series[1].setData(solar(date));\n\t\t$('#mygraph').highcharts().series[0].setData(pulse(date));\n\t\t$('#mygraph').highcharts().series[0].update({dataLabels: {enabled: true } });\n  }\n});\n\n\nfunction pulse (date) {\n\t\t\tvar b = []; var x0 = 0; var y0 = 0; var e = Watt.findOne({day: date});\n\t\t\tif (e && e.pulsearr)  {\n\t\t\t\t\t\te.pulsearr.forEach(function(s) {\n\t\t\t\t\t\t\t\t\tvar x1 = s.x; var y1 = s.y; var deltat = x1-x0;\n\t\t\t\t\t\t\t\t\tif (deltat != 0) {\n\t\t\t\t\t\t\t\t\t\t\t var KwFull = Math.round(((y1 - y0)*3600/deltat),3);\n\t\t\t\t\t\t\t\t\t\t\t console.log('pulse',{x: x1*1000, y: KwFull });\n\t\t\t\t\t\t\t\t\t\t\t b.push({x: x1*1000, y: KwFull });\n\t\t\t\t\t\t\t\t\t\t\t x0 = x1; y0 = y1;\n\t\t\t\t\t\t\t\t\t}\n\t    \t\t\t});\n\t\t\t}\n\t\t\treturn b;\n};\n\n\nfunction solar (date) {\n\t\t\tvar b = []; var x0 = 0; var y0 = 0; var e = Watt.findOne({day: date});\n\t\t\tif (e && e.solararr)  {\n\t\t\t\t\t\te.solararr.forEach(function(s) {\n\t\t\t\t\t\t\t\t\t\tvar x1 = s.x; var y1 = s.y; var deltat = x1-x0;\n\t\t\t\t\t\t\t\t\t\tif (deltat != 0) {\n\t\t\t\t\t\t\t\t\t\t\t\t  var KwFull = Math.round(((y1 - y0)*3600/deltat*1000),3);\n\t\t\t\t\t\t\t\t\t\t\t\t\tconsole.log('solar:',{x: x1*1000, y: KwFull });\n\t\t\t\t\t\t\t\t\t\t\t\t\tb.push({x: x1*1000, y: KwFull });\n\t\t\t\t\t\t\t\t\t\t\t\t\tx0 = x1; y0 = y1;\n\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t    });\n\t\t\t}\n\t\t\treturn b;\n};\n\n\nTemplate.Powerconsumption.onRendered(function () {\n\t\t$('#datepicker').datepicker({\n\t\t\ttodayHighlight: true,\n\t\t\tformat: 'dd/mm/yyyy',\n\t\t\tstartDate: '29/11/2016',\n\t\t\tendDate: new Date(),\n\t\t\tautoclose: true\n\t\t});\n        var today = moment().format(\"YYYYMMDD\");\n\t\t$('#datepicker').datepicker('setDate', today);\n\t\t$('#datepicker').datepicker('update');\t    \n\t    new Highcharts.Chart(Options);\n\t    this.autorun(function () {\n\t\t\t$('#mygraph').highcharts().chartBackground.attr({fill: '#d3dae2'} );\n\t\t\t$('#mygraph').highcharts().setTitle({ text: 'Giorno '+ moment().format(\"DD/MM/YYYY\") });\n\t\t\t$('#mygraph').highcharts().series[1].setData(solar(today));\n\t\t\t$('#mygraph').highcharts().series[0].setData(pulse(today));\n\t\t\t$('#mygraph').highcharts().series[0].update({dataLabels: {enabled: true } });\n\t\t});\n\n});\n\nvar Options = {\n             chart: {\n\t\t\t             renderTo: 'mygraph',\n\t\t\t\t\t\t \t\t   type: 'area',\n\t\t\t\t\t\t\t\t   animation: Highcharts.svg,\n\t\t\t\t\t\t\t\t   backgroundColor: '#d3dae2',\n\t\t\t\t\t\t \t\t   zoomType: 'x'\n              },\n              title: { text: 'Consumi Energia Elettrica', x: -20 },\n\t\t    \t\t\tcredits: { enabled: false },\n              subtitle: { text: 'Source: matteosetti.noip.me', x: -20 },\n              xAxis: {\n                        title: { text: 'Ora' },\n                        type: 'datetime',\n\t\t\t\t\t\t\t\t\t\t\t\tlabels: { /*dateTimeLabelFormats: { hour: \"%H:%M\"}*/ }\n              },\n              yAxis: {\n                        title: { text: 'Potenza (Watth)' },\n\t\t\t\t\t\t\t\t\t\t\t\tgridLineColor: '#ababa4',\n\t\t\t\t\t\t\t\t\t\t\t\tlabels: { formatter: function() { return this.value + ' Watt'; } },\n                        plotLines: [{\n                                value: 0,\n                                width: 1,\n                                color: '#e7f410'\n                            }]\n              },\n\t\t    \t\t\ttooltip: {\n                      valueSuffix: ' Watt',\n\t\t\t\t\t\t\t\t\t\t\tvalueDecimals: 2\n                    },\n                    legend: {\n                        layout: 'vertical',\n                        align: 'right',\n                        verticalAlign: 'middle',\n                        borderWidth: 0\n                    },\n                    series: [{\n\t\t\t\t\t\tcolor: '#4CEE0B',\n\t\t\t\t\t\tplotOptions: {\n\t\t                area: {\n                \t\t    fillColor: {\n                        \t\tlinearGradient: {\n                            \t\t\tx1: 0,\n                            \t\t\ty1: 0,\n                            \t\t\tx2: 0,\n                            \t\t\ty2: 1\n                        \t\t},\n                        \t\tstops: [\n                            \t\t\t[0, Highcharts.getOptions().colors[2]],\n                            \t\t\t[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]\n                        \t\t\t]\n                    \t\t    },\n                    \t\tmarker: {\n                        \t\tradius: 2\n                    \t\t},\n                    \t\tlineWidth: 4,\n                    \t\tstates: {\n                        \t\thover: {\n                            \t\t\tlineWidth: 1\n                        \t\t\t}\n                    \t\t\t},\n                    \t\t\tthreshold: null\n                \t\t}\n            \t\t}\n\t\t      },\n\t\t\t{\n                        color: '#ee190e',\n\t\t\tplotOptions: {\n                \t\tarea: {\n                    \t\t\tfillColor: {\n                        \t\tlinearGradient: {\n                            x1: 0,\n                            y1: 0,\n                            x2: 0,\n                            y2: 1\n                        },\n                        stops: [\n                            [0, Highcharts.getOptions().colors[6]],\n                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]\n                        ]\n                    },\n                    marker: {\n                        radius: 2\n                    },\n                    lineWidth: 4,\n                    states: {\n                        hover: {\n                            lineWidth: 1\n                        }\n                    },\n                    threshold: null\n                }\n            },\n\t\t\t}]\n};\n",
+							"object_type": "custom_component"
+						}
+					]
+				},
+				{
+					"name": "solarpower",
+					"type": "page",
+					"components": [
+						{
+							"name": "solarpower",
+							"type": "custom_component",
+							"html": "<iframe src=\"http://matteosetti.noip.me/123solar/\" height=\"700\" width=\"100%\"></iframe>",
+							"object_type": "custom_component"
+						}
+					]
+				}
+			]
+		},
+		"private_zone": {
+			"type": "zone",
+			"components": [
+				{
+					"name": "left_menu",
+					"type": "menu",
+					"dest_selector": "#menu",
+					"class": "nav navbar-nav",
+					"items": [
+						{
+							"title": "Home",
+							"route": "home_private",
+							"icon_class": "fa fa-home"
+						},
+						{
+							"title": "Sensori",
+							"route": "sensori"
+						},
+						{
+							"title": "Caldaia",
+							"route": "caldaia"
+						},
+						{
+							"title": "CronoTermostato",
+							"route": "cronotermostato"
+						}
+					],
+					"object_type": "menu"
+				},
+				{
+					"name": "right_menu",
+					"type": "menu",
+					"dest_selector": "#menu",
+					"class": "nav navbar-nav navbar-right",
+					"items": [
+						{
+							"title": "Admin",
+							"route": "admin",
+							"icon_class": "fa fa-wrench"
+						},
+						{
+							"title": "{{userEmail}}",
+							"icon_class": "fa fa-cog",
+							"items": [
+								{
+									"title": "Settings",
+									"route": "user_settings"
+								},
+								{
+									"title": "Logout",
+									"route": "logout"
+								}
+							]
+						}
+					],
+					"object_type": "menu"
+				}
+			],
+			"pages": [
+				{
+					"name": "home_private",
+					"type": "page",
+					"title": "Welcome {{userFullName}}!"
+				},
+				{
+					"name": "admin",
+					"type": "page",
+					"components": [
+						{
+							"name": "side_menu",
+							"type": "menu",
+							"class": "nav nav-stacked nav-pills",
+							"items": [
+								{
+									"title": "Users",
+									"route": "admin.users"
+								}
+							],
+							"object_type": "menu"
+						}
+					],
+					"roles": [
+						"admin"
+					],
+					"pages": [
+						{
+							"name": "users",
+							"type": "page",
+							"components": [
+								{
+									"name": "view",
+									"type": "data_view",
+									"title": "Users",
+									"query_name": "admin_users",
+									"text_if_empty": "No users yet",
+									"insert_route": "admin.users.insert",
+									"details_route": "admin.users.details",
+									"edit_route": "admin.users.edit",
+									"details_route_params": [
+										{
+											"name": "userId",
+											"value": "this._id"
+										}
+									],
+									"edit_route_params": [
+										{
+											"name": "userId",
+											"value": "this._id"
+										}
+									],
+									"fields": [
+										{
+											"name": "profile.name",
+											"title": "Name",
+											"type": "string"
+										},
+										{
+											"name": "profile.email",
+											"title": "E-mail",
+											"type": "string"
+										},
+										{
+											"name": "roles",
+											"title": "Role",
+											"type": "string"
+										}
+									],
+									"object_type": "data_view"
+								}
+							],
+							"pages": [
+								{
+									"name": "details",
+									"type": "page",
+									"components": [
+										{
+											"name": "details_form",
+											"type": "form",
+											"title": "User details",
+											"query_name": "admin_user",
+											"mode": "read_only",
+											"close_route": "admin.users",
+											"back_route": "admin.users",
+											"fields": [
+												{
+													"name": "profile.name",
+													"title": "Name",
+													"type": "string"
+												},
+												{
+													"name": "profile.email",
+													"title": "E-mail",
+													"type": "email"
+												},
+												{
+													"name": "roles",
+													"title": "Role",
+													"type": "string"
+												}
+											],
+											"object_type": "form"
+										}
+									],
+									"route_params": [
+										"userId"
+									]
+								},
+								{
+									"name": "insert",
+									"type": "page",
+									"components": [
+										{
+											"name": "insert_form",
+											"type": "form",
+											"title": "Add new user",
+											"query_name": "users_null",
+											"mode": "insert",
+											"submit_route": "admin.users",
+											"cancel_route": "admin.users",
+											"fields": [
+												{
+													"name": "profile.name",
+													"title": "Name",
+													"type": "string",
+													"required": true
+												},
+												{
+													"name": "profile.email",
+													"title": "E-mail",
+													"type": "email",
+													"required": true
+												},
+												{
+													"name": "password",
+													"title": "Password",
+													"type": "string",
+													"required": true,
+													"input": "password"
+												}
+											],
+											"object_type": "form"
+										}
+									]
+								},
+								{
+									"name": "edit",
+									"type": "page",
+									"components": [
+										{
+											"name": "edit_form",
+											"type": "form",
+											"title": "Edit user",
+											"query_name": "admin_user",
+											"mode": "update",
+											"submit_route": "admin.users",
+											"cancel_route": "admin.users",
+											"fields": [
+												{
+													"name": "profile.name",
+													"title": "Name",
+													"type": "string",
+													"required": true
+												},
+												{
+													"name": "profile.email",
+													"title": "E-mail",
+													"type": "email",
+													"required": true
+												},
+												{
+													"name": "roles",
+													"title": "Role",
+													"type": "array",
+													"input": "radio",
+													"input_items": [
+														{
+															"value": "user",
+															"title": "User"
+														},
+														{
+															"value": "admin",
+															"title": "Admin"
+														},
+														{
+															"value": "blocked",
+															"title": "Blocked"
+														}
+													]
+												}
+											],
+											"object_type": "form"
+										}
+									],
+									"route_params": [
+										"userId"
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "user_settings",
+					"type": "page",
+					"components": [
+						{
+							"name": "side_menu",
+							"type": "menu",
+							"class": "nav nav-stacked nav-pills",
+							"items": [
+								{
+									"title": "Profile",
+									"route": "user_settings.profile"
+								},
+								{
+									"title": "Change password",
+									"route": "user_settings.change_pass"
+								}
+							],
+							"object_type": "menu"
+						}
+					],
+					"roles": [
+						"user",
+						"admin"
+					],
+					"pages": [
+						{
+							"name": "profile",
+							"type": "page",
+							"components": [
+								{
+									"name": "edit_form",
+									"type": "form",
+									"title": "Edit your profile",
+									"query_name": "current_user_data",
+									"mode": "update",
+									"submit_route": "user_settings.profile",
+									"fields": [
+										{
+											"name": "profile.name",
+											"title": "Name",
+											"type": "string",
+											"required": true
+										},
+										{
+											"name": "profile.email",
+											"title": "E-mail",
+											"type": "email",
+											"required": true
+										},
+										{
+											"name": "profile.facebook",
+											"title": "Facebook URL",
+											"type": "string"
+										},
+										{
+											"name": "profile.google",
+											"title": "Google+ URL",
+											"type": "string"
+										},
+										{
+											"name": "profile.twitter",
+											"title": "Twitter ID",
+											"type": "string"
+										},
+										{
+											"name": "profile.website",
+											"title": "Website URL",
+											"type": "string"
+										}
+									],
+									"object_type": "form"
+								}
+							]
+						},
+						{
+							"name": "change_pass",
+							"type": "page",
+							"template": "change_pass"
+						}
+					]
+				},
+				{
+					"name": "logout",
+					"type": "page",
+					"template": "logout"
+				},
+				{
+					"name": "sensori",
+					"type": "page",
+					"components": [
+						{
+							"name": "view",
+							"type": "data_view",
+							"title": "Configurazione sensori",
+							"query_name": "sensori_lista",
+							"text_if_empty": "Nessun sensore",
+							"insert_route": "sensori.inserisci",
+							"details_route": "sensori.dettagli",
+							"edit_route": "sensori.modifica",
+							"details_route_params": [
+								{
+									"name": "sensoreId",
+									"value": "this._id"
+								}
+							],
+							"edit_route_params": [
+								{
+									"name": "sensoreId",
+									"value": "this._id"
+								}
+							],
+							"object_type": "data_view"
+						}
+					],
+					"pages": [
+						{
+							"name": "inserisci",
+							"type": "page",
+							"components": [
+								{
+									"name": "inserisci_form",
+									"type": "form",
+									"title": "Nuovo sensore",
+									"query_name": "sensori_vuoto",
+									"mode": "insert",
+									"submit_route": "sensori",
+									"cancel_route": "sensori",
+									"object_type": "form"
+								}
+							]
+						},
+						{
+							"name": "dettagli",
+							"type": "page",
+							"components": [
+								{
+									"name": "dettagli_form",
+									"type": "form",
+									"title": "Dettagli",
+									"query_name": "sensore_dettaglio",
+									"mode": "read_only",
+									"close_route": "sensori",
+									"back_route": "sensori",
+									"object_type": "form"
+								}
+							],
+							"route_params": [
+								"sensoreId"
+							]
+						},
+						{
+							"name": "modifica",
+							"type": "page",
+							"components": [
+								{
+									"name": "modifica_form",
+									"type": "form",
+									"title": "Modifica sensore",
+									"query_name": "sensore_dettaglio",
+									"mode": "update",
+									"submit_route": "sensori",
+									"cancel_route": "sensori",
+									"object_type": "form"
+								}
+							],
+							"route_params": [
+								"sensoreId"
+							]
+						}
+					]
+				},
+				{
+					"name": "caldaia",
+					"type": "page",
+					"query_name": "caldaia_lista",
+					"components": [
+						{
+							"name": "view",
+							"type": "data_view",
+							"title": "Configurazione caldaia",
+							"query_name": "caldaia_lista",
+							"text_if_empty": "Errore! non rilevato niente",
+							"details_route": "caldaia.dettagli",
+							"edit_route": "caldaia.modifica",
+							"details_route_params": [
+								{
+									"name": "caldaiaId",
+									"value": "this._id"
+								}
+							],
+							"edit_route_params": [
+								{
+									"name": "caldaiaId",
+									"value": "this._id"
+								}
+							],
+							"object_type": "data_view"
+						}
+					],
+					"pages": [
+						{
+							"name": "dettagli",
+							"type": "page",
+							"components": [
+								{
+									"name": "dettagli_form",
+									"type": "form",
+									"title": "Dettagli caldaia",
+									"query_name": "caldaia_dettaglio",
+									"mode": "read_only",
+									"close_route": "caldaia",
+									"back_route": "caldaia",
+									"object_type": "form"
+								}
+							],
+							"route_params": [
+								"caldaiaId"
+							]
+						},
+						{
+							"name": "modifica",
+							"type": "page",
+							"components": [
+								{
+									"name": "modifica_form",
+									"type": "form",
+									"title": "Modifica funzionamento caldaia",
+									"query_name": "caldaia_dettaglio",
+									"mode": "update",
+									"submit_route": "caldaia",
+									"cancel_route": "caldaia",
+									"object_type": "form"
+								}
+							],
+							"route_params": [
+								"caldaiaId"
+							]
+						}
+					]
+				},
+				{
+					"name": "cronotermostato",
+					"type": "page",
+					"components": [
+						{
+							"name": "view",
+							"type": "data_view",
+							"title": "Programmazione settimanale",
+							"query_name": "cronotermostato_lista",
+							"text_if_empty": "Non trovata la programmazione settimanale",
+							"edit_route": "cronotermostato.modifica",
+							"edit_route_params": [
+								{
+									"name": "cronotermostatoId",
+									"value": "this._id"
+								}
+							],
+							"object_type": "data_view"
+						},
+						{
+							"name": "Mybutton",
+							"type": "custom_component",
+							"query_name": "caldaia_lista",
+							"html": "<template name=\"Mybutton\">\n\t<div id=\"container\" align=\"center\">\n  \t\t<div style=\"width:33%; float:left\">\n\t\t\t<div class=\"switch demo4\" align=\"center\"> <input type=\"checkbox\" id=\"riscaldamento\" checked={{riscaldamento}}> <label><i class='icon-off'></i></label><div style=\"font-style:italic\">Riscaldamento</div></div>\n\t\t</div>\n        <div style=\"width:33%; float:left\">\n\t\t\t{{#if flame}}\n\t\t\t\t<img src=\"images/flame.gif\" alt=\"Fiamma\" border=\"5\" style=\"width:152px;height:114px\">\n\t\t\t{{else}}\n\t\t\t\t<img border=\"5\" style=\"width:152px;height:114px\">\n\t\t\t{{/if}}\t\t\n\t\t</div>\n\t\t<div style=\"width:33%; float:left\">\n\t\t\t<div class=\"switch demo4\" align=\"center\"> <input type=\"checkbox\" id=\"termostato\" checked={{termostato}}> <label><i class='icon-off'></i></label><div style=\"font-style:italic\">Termostato</div> </div>\n\t\t</div>\n\t</div>\t\n</template>",
+							"js": "Template.Mybutton.helpers({\n    \"flame\": function() {\n\t\tconsole.log('caldaia:',Caldaia.findOne().statocaldaia);\n\t\treturn Caldaia.findOne().statocaldaia;\n\t},\n\t\"riscaldamento\": function() {\n\t\treturn Caldaia.findOne().statoriscaldamento;\n\t},\n\t\"termostato\": function() {\n\t\treturn Caldaia.findOne().statotermostato;\n\t}\n});\n\n\nTemplate.Mybutton.events({\n\t\t'change input#riscaldamento': function(event) {\n\t\t\t   event.preventDefault();\n\t\t\t\t var id = Caldaia.findOne()._id\n\t\t\t\t Caldaia.update({_id: id}, {$set:{ statoriscaldamento: event.target.checked }});\n\t\t},\n\n\t\t'change input#termostato': function(event) {\n\t\t\t   event.preventDefault();\n\t\t\t\t var id = Caldaia.findOne()._id\n\t\t\t\t Caldaia.update({_id: id}, {$set:{ statotermostato: event.target.checked }});\t\t\t\t \n\t\t}\n});\n\n",
+							"object_type": "custom_component"
+						}
+					],
+					"pages": [
+						{
+							"name": "modifica",
+							"type": "page",
+							"components": [
+								{
+									"name": "modifica_form",
+									"type": "form",
+									"title": "Programmazione giornaliera",
+									"query_name": "cronotermostato_dettaglio",
+									"mode": "update",
+									"submit_route": "cronotermostato",
+									"cancel_route": "cronotermostato",
+									"object_type": "form"
+								}
+							],
+							"route_params": [
+								"cronotermostatoId"
+							]
+						}
+					]
+				}
+			]
+		},
+		"login_with_google": true,
+		"server_startup_code": "if (Sensori.find().count() === 0) {\n\tvar VariantSensoriSchema = {};\n\tSensori.attachSchema(VariantSensoriSchema, {ip: {optional: false}, location: {optional: true}, note: {optional: true}, tipo: {optional: true}, temp: {optional: true}, hum: {optional: true}, active:{optional: true} });\n  Rangetemp.insert({grado: '15'});Rangetemp.insert({grado: '16'});Rangetemp.insert({grado: '17'});Rangetemp.insert({grado: '18'});Rangetemp.insert({grado: '19'});Rangetemp.insert({grado: '20'});Rangetemp.insert({grado: '21'});Rangetemp.insert({grado: '22'});Rangetemp.insert({grado: '23'});Rangetemp.insert({grado: '24'});Rangetemp.insert({grado: '25'});\n  Caldaia.insert({ statocaldaia: false, statoriscaldamento: false, statotermostato: false, sensoretermostato: 'Cameretta', isteresi: '0.5', timescheduler: '60' });\n\tSensori.insert({ ip: '127.0.0.1', location: 'Garage', note: '-', tipo: 'DHT22 (on PIN 22)', active: false, timescheduler: 10, on: true});\n\tSensori.insert({ ip: '192.168.1.111', location: 'Contatore', note: 'Consumi Enel', tipo: 'pulse', active:false, timescheduler: 20, on: true});\n\tSensori.insert({ ip: '192.168.1.112', location: 'Sala', note: '-', tipo: 'DHT22',active: false, timescheduler: 10, on: true });\n\tSensori.insert({ ip: '192.168.1.113', location: 'Cameretta', note: '-', tipo: 'DHT22', active: false, timescheduler: 10, on: true});\n\tSensori.insert({ ip: '192.168.1.114', location: 'Ingresso', note: '-', tipo: 'DHT22', active: false, timescheduler: 10, on: true});\n\tCronotermostato.insert({ day: 'Lunedì',    dayofweek: '1', h001: '18', h012: '18', h023: '18', h034: '18', h045: '18', h056: '18', h067: '18', h078: '18', h089: '18', h0910: '18', h1011: '18', h1112: '18', h1213: '18', h1314: '18', h1415: '18', h1516: '18', h1617: '18', h1718: '18', h1819: '18', h1920: '18', h2021: '18', h2122:'18', h2223:'18', h2324:'18' });\n\tCronotermostato.insert({ day: 'Martedì',   dayofweek: '2', h001: '18', h012: '18', h023: '18', h034: '18', h045: '18', h056: '18', h067: '18', h078: '18', h089: '18', h0910: '18', h1011: '18', h1112: '18', h1213: '18', h1314: '18', h1415: '18', h1516: '18', h1617: '18', h1718: '18', h1819: '18', h1920: '18', h2021: '18', h2122:'18', h2223:'18', h2324:'18' });\n\tCronotermostato.insert({ day: 'Mercoledì', dayofweek: '3', h001: '18', h012: '18', h023: '18', h034: '18', h045: '18', h056: '18', h067: '18', h078: '18', h089: '18', h0910: '18', h1011: '18', h1112: '18', h1213: '18', h1314: '18', h1415: '18', h1516: '18', h1617: '18', h1718: '18', h1819: '18', h1920: '18', h2021: '18', h2122:'18', h2223:'18', h2324:'18' });\n\tCronotermostato.insert({ day: 'Giovedì',   dayofweek: '4', h001: '18', h012: '18', h023: '18', h034: '18', h045: '18', h056: '18', h067: '18', h078: '18', h089: '18', h0910: '18', h1011: '18', h1112: '18', h1213: '18', h1314: '18', h1415: '18', h1516: '18', h1617: '18', h1718: '18', h1819: '18', h1920: '18', h2021: '18', h2122:'18', h2223:'18', h2324:'18' });\n\tCronotermostato.insert({ day: 'Venerdì',   dayofweek: '5', h001: '18', h012: '18', h023: '18', h034: '18', h045: '18', h056: '18', h067: '18', h078: '18', h089: '18', h0910: '18', h1011: '18', h1112: '18', h1213: '18', h1314: '18', h1415: '18', h1516: '18', h1617: '18', h1718: '18', h1819: '18', h1920: '18', h2021: '18', h2122:'18', h2223:'18', h2324:'18' });\n\tCronotermostato.insert({ day: 'Sabato',    dayofweek: '6', h001: '18', h012: '18', h023: '18', h034: '18', h045: '18', h056: '18', h067: '18', h078: '18', h089: '18', h0910: '18', h1011: '18', h1112: '18', h1213: '18', h1314: '18', h1415: '18', h1516: '18', h1617: '18', h1718: '18', h1819: '18', h1920: '18', h2021: '18', h2122:'18', h2223:'18', h2324:'18' });\n\tCronotermostato.insert({ day: 'Domenica',  dayofweek: '7', h001: '18', h012: '18', h023: '18', h034: '18', h045: '18', h056: '18', h067: '18', h078: '18', h089: '18', h0910: '18', h1011: '18', h1112: '18', h1213: '18', h1314: '18', h1415: '18', h1516: '18', h1617: '18', h1718: '18', h1819: '18', h1920: '18', h2021: '18', h2122:'18', h2223:'18', h2324:'18' });\n}\n\n// =============================================================================\n// SETUP dht-sensor on Raspberry, exit if failed\n// =============================================================================\n/*\nvar GpioPin = 22\nif (GpioPin !== '') {\n    var sensorType = 22; // 11 for DHT11, 22 for DHT22 and AM2302\n    if (!sensorLib.initialize(sensorType, GpioPin)) {\n        console.log('Failed to initialize sensor');\n        process.exit(1);\n    }\n    console.log('Pin GPIO del sensore sul Raspberry: ' + GpioPin);\n} else {\n    console.log('DHT Sensor non configured on Raspberry');\n}\n*/\n\n/*\nvar gpio = require('pi-gpio');\nfunction switchOnOff(onoff) {\n    gpio.open(7, \"output\", function(err) {\n        if (err) { console.log('function switchOnOff : Errore apertura porta GPIO :' + err); }\n        gpio.write(7, onoff, function(err) {\n            if (err) { console.log('function switchOnOff : Errore scrittura sulla porta segnale al GPIO :' + err); }\n            gpio.close(7);\n\t\t\t\t\t\tCaldaia.update({}, {$set:{ statocaldaia: onoff}});\n\t\t\t\t\t\tconsole.log('function switchOnOff : ', onoff );\n        });\n\t\t});\n};\n*/\n\nfunction cron_read_sensor (ip) {\n\t\tvar sensor = Sensori.findOne({ ip: ip } );\n\t\tHTTP.get(\"http://\"+ip+\"/json\", {}, function( error, response ) {\n\t\t\tif ( error ) { console.log('Error:',ip, error); Sensori.update({ip: ip}, {$set:{ active: false}}); }\n\t\t\telse { if (response.data !== null) {\n\t\t\t\t\t\t\t\t\tif (sensor.tipo == 'DHT22') {\n\t\t\t\t\t\t\t\t\t\t\tconsole.log(ip,\" (\" , response.data.Sensors[0].TaskName,\") - T:\",response.data.Sensors[0].Temperature ,\"- U:\", response.data.Sensors[0].Humidity);\n\t\t\t\t\t\t\t\t\t\t\tSensori.update({ip: ip}, {$set:{ hum: response.data.Sensors[0].Humidity, active: true, temp: response.data.Sensors[0].Temperature, location: response.data.Sensors[0].TaskName}});\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\tif (sensor.tipo =='pulse')\t{\n\t\t\t\t\t\t\t\t\t\t  console.log(ip,\" (\" , response.data.Sensors[0].TaskName,\") - Count:\", response.data.Sensors[0].Total);\n\t\t\t\t\t\t\t\t\t\t  Sensori.update({ip: ip}, {$set:{ active: true, location: response.data.Sensors[0].TaskName, note: 'counter:'+response.data.Sensors[0].Total}});\n\t\t\t\t\t\t\t\t\t\t  //Logpulse.insert({counter: response.data.Sensors[0].Total});\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t } else {console.log(ip,\" - No data !\"); Sensori.update({ip:ip}, {$set:{active: false}}); }\n\t\t\t}\n\t\t});\n}\n\n\nfunction cron_cronotermostato () {\n\t\t\t\tvar today = moment().format('E');\n\t\t\t\tvar hournow = moment().format('HH');\n\t\t\t  var temphour = Cronotermostato.find({ dayofweek: parseInt(today)}).map(function(o){return [o.h001,o.h012,o.h023,o.h034,o.h045,o.h056,o.h067,o.h078,o.h089,o.h0910,o.h1011,o.h1112,o.h1213,o.h1314,o.h1415,o.h1516,o.h1617,o.h1718,o.h1819,o.h1920,o.h2021,o.h2122,o.h2223,o.h2324];})[0][parseInt(hournow)];\n\t\t\t\tvar sensoretermostato = Caldaia.findOne({}).sensoretermostato;\n\t\t\t\tvar isteresi = Caldaia.findOne({}).isteresi;\n\t\t\t\tvar temprilevata = Sensori.findOne({ location: sensoretermostato }).temp;\n\t\t\t  console.log('today:',today,' - hournow:',hournow,' - temphour:',temphour,' - sensoretermostato:', sensoretermostato, ' - isteresi:',isteresi,' - temprilevata:', temprilevata);\n\t\t\t\tif ((temphour - isteresi) >= temprilevata) {\n\t\t\t\t\t\t\t\tCaldaia.update({}, {$set:{ statocaldaia: true}});\n\t\t\t\t\t\t\t//  switchOnOff(true);\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tCaldaia.update({}, {$set:{ statocaldaia: false}});\n\t\t\t\t\t\t\t//  switchOnOff(false);\n\t\t\t\t\t}\n\t}\n\n\n\nvar termostato =\tCaldaia.find({},{fields: {_id: true, statotermostato: true, timescheduler: true}}).observeChanges({\n\t\t changed: function (id, s) {\n\t\t\t\t\t\tif (s.statotermostato == true) {\n\t\t\t\t\t\t\t//stop\n\t\t\t\t\t\t\tif (SyncedCron.nextScheduledAtDate('cronotermostato')) { SyncedCron.remove('cronotermostato')};\n\t\t\t\t\t\t\t//start\n\t\t\t\t\t\t\tSyncedCron.add({\tname: 'cronotermostato',\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tschedule: function(parser) {return parser.recur().every(Caldaia.findOne().timescheduler).second()},\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tjob: cron_cronotermostato});\n\t\t\t\t\t\t\tCaldaia.update({}, {$set:{ statoriscaldamento: true }});\n\t\t\t\t\t\t} else {if (SyncedCron.nextScheduledAtDate('cronotermostato')) { SyncedCron.remove('cronotermostato')};}\n\t\t },\n\t\t added: function (id, s) {\n\t\t\t\t  if (s.cronotermostato == true ) {\t// switchOnOff(true);\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCaldaia.update({}, {$set:{ statoriscaldamento: true }}); }\n\t\t }\n});\n\n\n\tvar riscaldamento = Caldaia.find({},{fields: {statoriscaldamento: true}}).observeChanges({\n\t   changed: function (id, s) {\n\t\t\t \t// workaround: per qulache motivo non funziona s.on s.ip\n\t\t\t\t \t\tif (s.statoriscaldamento == true) {\n\t\t\t\t\t\t\t//switchOnOff(true);\n\t\t\t\t\t\t\tCaldaia.update({}, {$set:{ statocaldaia: true }});\n\t\t\t\t\t\t} else { Caldaia.update({}, {$set:{ statocaldaia: false, statotermostato: false }});\t}\n\t   },\n\t\t added: function (id, s) {\n\t\t\t \t if (s.statoriscaldamento == true ) {\t// switchOnOff(true);\n\t\t\t\t\t \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCaldaia.update({}, {$set:{ statocaldaia: true }}); }\n\t   }\n\t });\n\n\nvar on = Sensori.find({},{fields: {ip: true, on: true, timescheduler: true}}).observeChanges({\n   changed: function (id, s) {\n\t\t      var ip = Sensori.findOne({_id: id}).ip;\n\t\t\t \t\tif (Sensori.findOne({_id: id}).on == true) {\n\t\t\t\t\t\t // shutdown\n\t\t\t\t\t\t if (SyncedCron.nextScheduledAtDate(ip +'_read sensors')) { SyncedCron.remove(ip +'_read sensors')};\n\t\t\t\t\t\t //activatesensor\n\t\t\t\t\t\t SyncedCron.add({\n\t\t\t \t\t\t\t\t\tname: ip+'_read sensors',\n\t\t\t \t\t\t\t\t\tschedule: function(parser) {return parser.recur().every(Sensori.findOne({ ip: ip }).timescheduler).second()},\n\t\t\t \t\t\t\t\t\tjob: function() {cron_read_sensor(ip); return ip+'_read sensors';}\n\t\t\t \t\t\t });\n\t\t\t\t\t} else {if (SyncedCron.nextScheduledAtDate(ip +'_read sensors')) { SyncedCron.remove(ip +'_read sensors')};};\n   },\n\t added: function (id, s) {\n\t\t   var ip = Sensori.findOne({_id: id}).ip;\n\t\t \t if (Sensori.findOne({_id: id}).on == true) {\tconsole.log(\"Added sensor:\", s.ip, s.on, s.timescheduler);\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSyncedCron.add({\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tname: ip+'_read sensors',\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tschedule: function(parser) {return parser.recur().every(Sensori.findOne({ ip: ip }).timescheduler).second()},\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tjob: function() {cron_read_sensor(ip); return ip+'_read sensors';}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t});\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t }\n   }\n });\n\n\nfunction cron_watt () {\n\tvar csvpath = \"/var/www/123solar/data/invt1/csv/\"\n\tvar csvpath = \"C:\\\\Users\\\\Sonia\\\\Documents\\\\GitHub\\\\Domoticasite\\\\\"\n\tvar fs = require(\"fs\");\n\tvar today = moment().format(\"YYYYMMDD\");\n\tvar x1 = Math.floor((moment().unix()));\n\tvar csvfs = csvpath+today+\".csv\"\n\t//var x1 = Math.floor((moment().unix()/300))*300;\n\tvar ip = Sensori.findOne({tipo: 'pulse'}).ip;\n\tHTTP.get(\"http://\"+ip+\"/json\", {}, function( error, response ) {\n\t\tif ( error ) { console.log('Error:',ip, error)}\n\t\telse { if (response.data !== null)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tvar y1 = response.data.Sensors[0].Total;\n\t\t\t\t\t\t\tconsole.log('pulsearr update:',x1)\n\t\t\t\t\t\t\tWatt.update({day: today}, {$push: { pulsearr: {x: x1, y: y1}}},{upsert: true, multi: false});\n  \t\t\t   }\n\t\t}\n });\n\n if (fs.existsSync(csvfs)) { var matrix = (fs.readFileSync(csvfs).toString().split(\"\\n\").map(function(row){return { x: moment(today +\" \"+ row.split(\",\")[0],\"YYYYMMDD HH:mm\").unix(), y: Number(row.split(\",\")[27])};})).slice(1,-1)\n\t\t\t \t\t\t\t\t\t\t \t\t\t\t if (_.isEqual(matrix, Watt.findOne({day: today}).solararr) != true) {\n\t\t\t\t\t\t\t\t\t\t \t\t     console.log('solararr updated');\n\t\t\t\t\t\t\t\t\t\t \t\t     Watt.update({day: today}, { $set: {solararr: matrix}},{upsert: true, multi: false});\n\t\t\t \t       \t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\t}\n else { console.log('File not found!')}\n};\n\n\nvar watt = SyncedCron.add({\n  \t\tname: 'watt',\n\t\t\tschedule: function(parser) {return parser.recur().every(5).minute()},\n\t\t\t//schedule: function(parser) {return parser.recur().every(10).second()},\n\t\t\tjob: cron_watt\n});\n\n\nSyncedCron.start();\n",
+		"stylesheet": ".dynamicDiv {\n      width:250px;\n      height:175px;\n      float: left;\n      border:solid 1px #c0c0c0;\n      background-color:#e1e1e1;\n      font-size:11px;\n      font-family:verdana;\n      color:#000;\n      padding:5px;\n }\n\n\n.myContainer {\n    margin: auto;\n    width: 550px;\n}\n\n\n/* css per bottone tondo termostato */\n/*@import url('normalize.css');\n@import url('demo.css');\n*/\n/* GLOBALS */\n\n*,\n*:after,\n*:before {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n  padding: 0;\n  margin: 0;\n}\n\n.switch {\n  margin: 50px auto;\n  position: relative;\n}\n\n.switch label {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  display: block;\n}\n\n.switch input {\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  opacity: 0;\n  z-index: 100;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  cursor: pointer;\n}\n\n/* DEMO 4 */\n\n.switch.demo4 {\n  width: 150px;\n  height: 150px;\n}\n\n.switch.demo4 label {\n  border-radius: 50%;\n  background: #b2ac9e;\n  background: -moz-linear-gradient(#f7f2f6, #b2ac9e);\n  background: -ms-linear-gradient(#f7f2f6, #b2ac9e);\n  background: -o-linear-gradient(#f7f2f6, #b2ac9e);\n  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f7f2f6), to(#b2ac9e));\n  background: -webkit-linear-gradient(#f7f2f6, #b2ac9e);\n  background: linear-gradient(#f7f2f6, #b2ac9e);\n  position: relative;\n  color: #ff3333;\n\n  font-size: 70px;\n  text-align: center;\n  line-height: 150px;\n\n  -webkit-transition: all 0.3s ease-out;\n  -moz-transition: all 0.3s ease-out;\n  -ms-transition: all 0.3s ease-out;\n  -o-transition: all 0.3s ease-out;\n  transition: all 0.3s ease-out;\n\n  text-shadow: 0 2px 1px rgba(0,0,0,0.25);\n\n  box-shadow:\n    inset 0 2px 3px rgba(255,255,255,0.13),\n    0 5px 8px rgba(0,0,0,0.3),\n    0 10px 10px 4px rgba(0,0,0,0.3);\n  z-index: -1;\n}\n\n.switch.demo4 label:after {\n  content: \"\";\n  position: absolute;\n  left: -20px;\n  right: -20px;\n  top: -20px;\n  bottom: -20px;\n  z-index: -2;\n  border-radius: inherit;\n  box-shadow:\n    inset 0 1px 0 rgba(255,255,255,0.1),\n    0 1px 2px rgba(0,0,0,0.3),\n    0 0 10px rgba(0,0,0,0.15);\n\n}\n\n.switch.demo4 label:before {\n  content: \"\";\n  position: absolute;\n  left: -10px;\n  right: -10px;\n  top: -10px;\n  bottom: -10px;\n  z-index: -1;\n  border-radius: inherit;\n  box-shadow: inset 0 10px 10px rgba(0,0,0,0.13);\n  -webkit-filter:blur(1px);\n  -moz-filter:blur(1px);\n  -ms-filter:blur(1px);\n  -o-filter:blur(1px);\n  filter: blur(1px);\n}\n\n.switch.demo4 input:checked ~ label {\n  box-shadow:\n    inset 0 2px 3px rgba(255,255,255,0.13),\n    0 5px 8px rgba(0,0,0,0.35),\n    0 3px 10px 4px rgba(0,0,0,0.2);\n  color: #9abb82;\n}\n\n.switch.demo4 .icon-off:after {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 70%;\n  height: 70%;\n  left: 50%;\n  top: 50%;\n  z-index: -1;\n  margin: -35% 0 0 -35%;\n  border-radius: 50%;\n  background: #d2cbc3;\n  background: -moz-linear-gradient(#cbc7bc, #d2cbc3);\n  background: -ms-linear-gradient(#cbc7bc, #d2cbc3);\n  background: -o-linear-gradient(#cbc7bc, #d2cbc3);\n  background: -webkit-gradient(linear, 0 0, 0 100%, from(#cbc7bc), to(#d2cbc3));\n  background: -webkit-linear-gradient(#cbc7bc, #d2cbc3);\n  background: linear-gradient(#cbc7bc, #d2cbc3);\n  box-shadow:\n    0 -2px 5px rgba(255,255,255,0.05),\n    0 2px 5px rgba(255,255,255,0.1);\n}\n",
+		"copy_files": [
+			{
+				"source": "files\\favicon.ico",
+				"dest": "PUBLIC_IMAGES_DIR/favicon.ico"
+			},
+			{
+				"source": "files\\font-awesome.css",
+				"dest": "CLIENT_STYLES_DIR/font-awesome.css"
+			},
+			{
+				"source": "files\\fontawesome-webfont.woff",
+				"dest": "PUBLIC_FONTS_DIR/fontawesome-webfont.woff"
+			},
+			{
+				"source": "files\\fontawesome-webfont.ttf",
+				"dest": "PUBLIC_FONTS_DIR/fontawesome-webfont.ttf"
+			},
+			{
+				"source": "files\\flame.gif",
+				"dest": "PUBLIC_IMAGES_DIR/flame.gif"
+			},
+			{
+				"source_content": "<template name=\"Sensors\">\n\n\t<div class=\"page-container container\" id=\"content\">\n\t\t<div class=\"row\" id=\"title_row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<div id=\"page_menu\" class=\"pull-right\">\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<h3>Temperatura ed Umidita'</h3>\n\n\t<div class=\"myContainer\"></div>\n\n</div>\n</template>\n\n<template name=\"Tempe3\">\n\t<div id=\"{{div}}T\" class=\"dynamicDiv\"></div>\n\t<div id=\"{{div}}U\" class=\"dynamicDiv\"></div>\n</template>\n",
+				"dest": "CLIENT_VIEWS_DIR/sensors/sensors.html"
+			},
+			{
+				"source_content": "<template name=\"SensoriDettagli\">\n\t<div class=\"page-container container\" id=\"content\">\n\t\t<div class=\"row\" id=\"title_row\">\n\t\t\t<div class=\"col-md-12\">\n\t\t\t\t<h2 id=\"page_title\" class=\"pull-left\">\n\t\t\t\t\tSensore {{sensore_dettaglio.ip}}\n\t\t\t\t</h2>\n\t\t\t\t<div id=\"page_menu\" class=\"pull-right\">\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t\t<iframe src=\"http://{{sensore_dettaglio.ip}}\" height=\"1150\" width=\"100%\"></iframe>\n\t</div>\n</template>\n\n<template name=\"SensoriDettagliDettagliForm\">\n</template>\n",
+				"dest": "CLIENT_VIEWS_DIR/sensori/dettagli/dettagli.html"
+			},
+			{
+				"source_content": "TEST",
+				"dest": "CLIENT_VIEWS_DIR/prova.txt"
+			}
+		],
+		"packages": {
+			"meteor": [
+				"percolate:synced-cron",
+				"maazalik:highcharts-gauge"
+			]
+		}
+	}
+}

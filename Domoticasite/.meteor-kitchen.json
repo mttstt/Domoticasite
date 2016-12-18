@@ -1,0 +1,739 @@
+{
+	"output_files": [
+		{
+			"path": "client/views/router.js",
+			"checksum": "5be8aaa83c59c52c2d40f012d1a0763717f54de9"
+		},
+		{
+			"path": "server/controllers/router.js",
+			"checksum": "5c9160668468917ceeea62f4c1905318583f0e16"
+		},
+		{
+			"path": "both/collections/caldaia.js",
+			"checksum": "c392c076c1f964d28855f82eaa9948b299624f89"
+		},
+		{
+			"path": "server/methods/caldaia.js",
+			"checksum": "b0f3b32cb7558b87c3b85c6d70ea5262e319a0e9"
+		},
+		{
+			"path": "server/collections/caldaia.js",
+			"checksum": "8e25a7c064df66f9e2ddcb605ce930d5b94cb483"
+		},
+		{
+			"path": "server/publish/caldaia.js",
+			"checksum": "c9b55560836fd771a472725f76a79cbf3cad24ec"
+		},
+		{
+			"path": "both/collections/sensori.js",
+			"checksum": "60ce16f44321d617bc6a9c6eab6d00855f1b222f"
+		},
+		{
+			"path": "server/methods/sensori.js",
+			"checksum": "b3ee51bbbfac2e136e2fb67eeeca28b79b0fdd69"
+		},
+		{
+			"path": "server/collections/sensori.js",
+			"checksum": "d7288b5d3d3cc567bc493ad4aeb1d2aeac9f78bf"
+		},
+		{
+			"path": "server/publish/sensori.js",
+			"checksum": "76b141d29a5b7a343b859e03055ceffe8e0e323b"
+		},
+		{
+			"path": "both/collections/cronotermostato.js",
+			"checksum": "03348353dafd1eacb679a9466a47f28aaa04a9f7"
+		},
+		{
+			"path": "server/methods/cronotermostato.js",
+			"checksum": "99a3d2fd81de6d2659f1515a08bf2d78601d3b35"
+		},
+		{
+			"path": "server/collections/cronotermostato.js",
+			"checksum": "f96c34526bf03745aad7acea1b3f3835132fd714"
+		},
+		{
+			"path": "server/publish/cronotermostato.js",
+			"checksum": "346897d7efacab775160c9bcd6fb03049870aba0"
+		},
+		{
+			"path": "both/collections/logpulse.js",
+			"checksum": "5f295151dc069883f8a3ee632260605fa6692b81"
+		},
+		{
+			"path": "server/methods/logpulse.js",
+			"checksum": "0c1c51bd852c3765818adeedcab96afea8b29770"
+		},
+		{
+			"path": "server/collections/logpulse.js",
+			"checksum": "b663d35763452059c172a0c98028977a077734e2"
+		},
+		{
+			"path": "server/publish/logpulse.js",
+			"checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+		},
+		{
+			"path": "both/collections/rangetemp.js",
+			"checksum": "3f939e3050188dd85ee38bb7d9757cf5bd296c62"
+		},
+		{
+			"path": "server/methods/rangetemp.js",
+			"checksum": "1632101bb3bf67d0f991a1917338b2fcc226393f"
+		},
+		{
+			"path": "server/collections/rangetemp.js",
+			"checksum": "080d687e900e7ce171f4d1330c9688e94a57882f"
+		},
+		{
+			"path": "server/publish/rangetemp.js",
+			"checksum": "fa4cd258d2137d0177a446c456a79287fb3df52e"
+		},
+		{
+			"path": "both/collections/watt.js",
+			"checksum": "4ffa04065ebc87bda5d702e8fbd226d1e5e6e95e"
+		},
+		{
+			"path": "server/methods/watt.js",
+			"checksum": "564d047abae6ec5568d16a4d005597fbd313276c"
+		},
+		{
+			"path": "server/collections/watt.js",
+			"checksum": "63eaec46574861d8f213ab28e129e96484da3c2e"
+		},
+		{
+			"path": "server/publish/watt.js",
+			"checksum": "f3a84f76d7d5fd5d4e3ebbbf4abb77e6fb4e0f5f"
+		},
+		{
+			"path": "client/client.js",
+			"checksum": "5fa3b6c9d489a88b902b3fa18dbae87d0fa97f6e"
+		},
+		{
+			"path": "server/server.js",
+			"checksum": "393983fb1919d9dd603185b88552235923f5f265"
+		},
+		{
+			"path": "client/views/not_found/not_found.html",
+			"checksum": "65ac412707739994e1779818064b7c58a5b34250"
+		},
+		{
+			"path": "client/views/not_found/not_found.js",
+			"checksum": "cc4a1aad49cb5eafe81551a0c87d89fbcbe7fe7e"
+		},
+		{
+			"path": "client/views/loading/loading.html",
+			"checksum": "7751e3b66086088638baec0a963a936977871119"
+		},
+		{
+			"path": "client/views/loading/loading.js",
+			"checksum": "5ca266ed4dab580f9174897c32ab217be0e200b9"
+		},
+		{
+			"path": "client/styles/styles/theme/bootswatch.import.less",
+			"checksum": "6614406f4683861b7e944ef4b51733f4ed161fa5"
+		},
+		{
+			"path": "client/styles/styles/theme/theme.import.less",
+			"checksum": "f1ebe87e8c315253ca2501f42d8957deb5a94fe3"
+		},
+		{
+			"path": "client/styles/styles/theme/themefix.import.less",
+			"checksum": "9625483dfbacc61a8b4f8c0dae90ff976bf1921d"
+		},
+		{
+			"path": "client/styles/styles/theme/variables.import.less",
+			"checksum": "fd74e393bfe8663311bb6bce5641014f074a546b"
+		},
+		{
+			"path": "client/styles/styles/styles.less",
+			"checksum": "1bdaac300c494013ebc94bba0d82c9693f981d83"
+		},
+		{
+			"path": "client/views/layout/layout.html",
+			"checksum": "2e37bd8f5138683b97bdf60682ded1c0ac8e9d8b"
+		},
+		{
+			"path": "client/views/layout/layout.js",
+			"checksum": "acae9dfb9c6a8ffea28774a124cda99c0467663f"
+		},
+		{
+			"path": "client/views/home_public/home_public.html",
+			"checksum": "49307baca1e1913d46d66935adab66ec76569345"
+		},
+		{
+			"path": "client/views/home_public/home_public.js",
+			"checksum": "530344c6e0ac48293e041aadabddb04b582ed43f"
+		},
+		{
+			"path": "client/views/home_public/home_public_controller.js",
+			"checksum": "cd9e75a56062e534ce091f41322fba911ed3e10b"
+		},
+		{
+			"path": "client/views/login/login.html",
+			"checksum": "ff56dd80523be3723816cf47fd4a0c1d74639e8a"
+		},
+		{
+			"path": "client/views/login/login.js",
+			"checksum": "eab40f1408e01673785a60b84caa9153f8e831ab"
+		},
+		{
+			"path": "client/views/login/login_controller.js",
+			"checksum": "a096da0ffd60daf11520d6a9801bcf26557bf277"
+		},
+		{
+			"path": "client/views/register/register.html",
+			"checksum": "6f6a9f30c8dbeaf9c31335ab089db1bbe4aefacb"
+		},
+		{
+			"path": "client/views/register/register.js",
+			"checksum": "7fae1f52af2ea01dfd3752b80265caeed61793a3"
+		},
+		{
+			"path": "client/views/register/register_controller.js",
+			"checksum": "9dd3d62a5021ab1c06c97cf86e662b2b7c6e0949"
+		},
+		{
+			"path": "client/views/verify_email/verify_email.html",
+			"checksum": "db1771ff15f3af2c72830abeb2896158045d4f72"
+		},
+		{
+			"path": "client/views/verify_email/verify_email.js",
+			"checksum": "c0bbd0282cefce9038601d127c6855a63fd960c5"
+		},
+		{
+			"path": "client/views/verify_email/verify_email_controller.js",
+			"checksum": "50a843aec0d4f4b42d705df0889f4ef223d5f04a"
+		},
+		{
+			"path": "client/views/forgot_password/forgot_password.html",
+			"checksum": "d28a61ac325a7ee0fbdf8f805a11ffd9f488f219"
+		},
+		{
+			"path": "client/views/forgot_password/forgot_password.js",
+			"checksum": "6536653e76c1dd9cb6310fb9e13bc9df5856eabc"
+		},
+		{
+			"path": "client/views/forgot_password/forgot_password_controller.js",
+			"checksum": "ecf3aed0124b3c9df05697dc120f054aa6f14b0d"
+		},
+		{
+			"path": "client/views/reset_password/reset_password.html",
+			"checksum": "59b305ffe597317a5f904dd3321aa6ef0d82ba33"
+		},
+		{
+			"path": "client/views/reset_password/reset_password.js",
+			"checksum": "602f7d183dcdefb43c199fec0ff0fb9490cb3380"
+		},
+		{
+			"path": "client/views/reset_password/reset_password_controller.js",
+			"checksum": "d30feac22994ef6b8f9b712b5ccc6b78c520e880"
+		},
+		{
+			"path": "client/views/sensors/sensors.html",
+			"checksum": "7808442f96c99d5c18199217bbcb1c2534424d8f"
+		},
+		{
+			"path": "client/views/sensors/sensors.js",
+			"checksum": "f0de8baa67cc53d9b8763e123a3a4422e7afa7a7"
+		},
+		{
+			"path": "client/views/sensors/sensors_controller.js",
+			"checksum": "18d72741855269a0f837c38fa8739a16628a666a"
+		},
+		{
+			"path": "client/views/webcam/webcam.html",
+			"checksum": "0cdf11d40c48bd52c188ca24143a303d81603fb8"
+		},
+		{
+			"path": "client/views/webcam/webcam.js",
+			"checksum": "ff2794af84f5424f23eb2be296c435eca622f839"
+		},
+		{
+			"path": "client/views/webcam/webcam_controller.js",
+			"checksum": "115ff2fdf686420781a2aed583a3a046af113a1d"
+		},
+		{
+			"path": "client/views/airplanes/airplanes.html",
+			"checksum": "0c46bf17e740d250f9c500afd045b4e16bf82b02"
+		},
+		{
+			"path": "client/views/airplanes/airplanes.js",
+			"checksum": "6ab4606eadd5afc6004ee6cc56c7a854ac9687cf"
+		},
+		{
+			"path": "client/views/airplanes/airplanes_controller.js",
+			"checksum": "b699fb577b1dc1ee1a81f5a3b3c5b8e5e28dee95"
+		},
+		{
+			"path": "client/views/powerconsumption/powerconsumption.html",
+			"checksum": "01b655346d533d8a142f662d367d83d1846ebe1f"
+		},
+		{
+			"path": "client/views/powerconsumption/powerconsumption.js",
+			"checksum": "6c16ee0179dc5642217eb4961bace2bfc12658ac"
+		},
+		{
+			"path": "client/views/powerconsumption/powerconsumption_controller.js",
+			"checksum": "61befca9be4fde92d6091da52e4a87b5fdd3b091"
+		},
+		{
+			"path": "client/views/solarpower/solarpower.html",
+			"checksum": "2ca05741b762eaaecc748ef29e3cd7f618b20243"
+		},
+		{
+			"path": "client/views/solarpower/solarpower.js",
+			"checksum": "dcd9328e42f7879e4b78a8112fc79cea4399143f"
+		},
+		{
+			"path": "client/views/solarpower/solarpower_controller.js",
+			"checksum": "0f84498565967dfb17d5e4261cda389722908b33"
+		},
+		{
+			"path": "client/views/home_private/home_private.html",
+			"checksum": "4ea1782993f13fef75922e81d887dead722d9aa4"
+		},
+		{
+			"path": "client/views/home_private/home_private.js",
+			"checksum": "a8dd584efbbd6d077ede8227716012cda6f633f1"
+		},
+		{
+			"path": "client/views/home_private/home_private_controller.js",
+			"checksum": "3129d8be8836ca16a4e2ffbb295aa282d1dbe9f6"
+		},
+		{
+			"path": "client/views/admin/admin.html",
+			"checksum": "fefc082980ec91f9b15c0d7172e2237d0ff757ef"
+		},
+		{
+			"path": "client/views/admin/admin.js",
+			"checksum": "48048c2addc77942d6148bfe81f1f00ef20f171d"
+		},
+		{
+			"path": "client/views/admin/admin_controller.js",
+			"checksum": "338ad85e8b6f00f05119902fb067845bd2609256"
+		},
+		{
+			"path": "client/views/admin/users/users.html",
+			"checksum": "9844b52593b796b1e85ae338c06a04b44bcae6e1"
+		},
+		{
+			"path": "client/views/admin/users/users.js",
+			"checksum": "0ba09c5b441d111c597a9256dd2fd4904558db26"
+		},
+		{
+			"path": "client/views/admin/users/users_controller.js",
+			"checksum": "b5a94ae7d1716006f88e354717649ddd39d9854b"
+		},
+		{
+			"path": "client/views/admin/users/details/details.html",
+			"checksum": "6a711bd81801a52fd22c842a3e45bb2dab77f8f5"
+		},
+		{
+			"path": "client/views/admin/users/details/details.js",
+			"checksum": "93d237e9a29f7e1f8bddab3153c87fa7e13a60ca"
+		},
+		{
+			"path": "client/views/admin/users/details/details_controller.js",
+			"checksum": "5435ba6c9a57bedd0dbd12cb885e933b12cc101a"
+		},
+		{
+			"path": "client/views/admin/users/insert/insert.html",
+			"checksum": "90a21fd4bd57e4c8743a40b27c074f5db403d7ea"
+		},
+		{
+			"path": "client/views/admin/users/insert/insert.js",
+			"checksum": "37e3c2b633402da824b3eb944d5b044207b99d99"
+		},
+		{
+			"path": "client/views/admin/users/insert/insert_controller.js",
+			"checksum": "43d95fb612dcf03e714465774852d78a80dad6f6"
+		},
+		{
+			"path": "client/views/admin/users/edit/edit.html",
+			"checksum": "e0c5564107f9e2ba6a4acba41f70c6da87af802d"
+		},
+		{
+			"path": "client/views/admin/users/edit/edit.js",
+			"checksum": "f2188a721fd91cf9f0c9c6447dabcc6348b313e9"
+		},
+		{
+			"path": "client/views/admin/users/edit/edit_controller.js",
+			"checksum": "d8b0a95ea0db204b5fce7969171a6a57404b12df"
+		},
+		{
+			"path": "client/views/user_settings/user_settings.html",
+			"checksum": "95bf5345fff800ef4a032838628b36e61b111655"
+		},
+		{
+			"path": "client/views/user_settings/user_settings.js",
+			"checksum": "4ada312e9513965000aa5d3e618d340608b1f7fa"
+		},
+		{
+			"path": "client/views/user_settings/user_settings_controller.js",
+			"checksum": "77e1814cdd4f9ce6b745ced47956493849fdb775"
+		},
+		{
+			"path": "client/views/user_settings/profile/profile.html",
+			"checksum": "44f2725a24aaaef192e150702cf301783f175c5a"
+		},
+		{
+			"path": "client/views/user_settings/profile/profile.js",
+			"checksum": "e18f419b7381b38358dc6d78c3c8227990bab888"
+		},
+		{
+			"path": "client/views/user_settings/profile/profile_controller.js",
+			"checksum": "8a98b0d3dfae905687bdebb945af9eec2b96c867"
+		},
+		{
+			"path": "client/views/user_settings/change_pass/change_pass.html",
+			"checksum": "33e7602afe9295992e2968e9e2f8efd93e3d761a"
+		},
+		{
+			"path": "client/views/user_settings/change_pass/change_pass.js",
+			"checksum": "110f5f91c289dce383d894d5f1eb7a861babb349"
+		},
+		{
+			"path": "client/views/user_settings/change_pass/change_pass_controller.js",
+			"checksum": "8d8b3a6044c8ec598765060b0ae83cc88e3208e3"
+		},
+		{
+			"path": "client/views/logout/logout.html",
+			"checksum": "ffde068f1a1cd15fdfee1b779579db44096d5975"
+		},
+		{
+			"path": "client/views/logout/logout.js",
+			"checksum": "ab89286e0186e1bc15c736024cf1bcb28fad11a9"
+		},
+		{
+			"path": "client/views/logout/logout_controller.js",
+			"checksum": "e97c228e35dc31c5b15853d630e36f2e5ba24402"
+		},
+		{
+			"path": "client/views/sensori/sensori.html",
+			"checksum": "d839fcd8e76addd996362bf0a508fbe4ec9ae260"
+		},
+		{
+			"path": "client/views/sensori/sensori.js",
+			"checksum": "50599aef02358cf499973d0b35904fed8aaeb3d8"
+		},
+		{
+			"path": "client/views/sensori/sensori_controller.js",
+			"checksum": "0854f81b8b1393baa45279c3f3339743fb1f0469"
+		},
+		{
+			"path": "client/views/sensori/inserisci/inserisci.html",
+			"checksum": "a00c96a9a62c2ea33a1a0206a18b2745e90a5770"
+		},
+		{
+			"path": "client/views/sensori/inserisci/inserisci.js",
+			"checksum": "6e1f3e661535501c239a6978a318be27958630b1"
+		},
+		{
+			"path": "client/views/sensori/inserisci/inserisci_controller.js",
+			"checksum": "b50f07a7263e8c980d0ca268121fda9ea8eb1b73"
+		},
+		{
+			"path": "client/views/sensori/dettagli/dettagli.html",
+			"checksum": "c6730cadbba833bf6c9285d8b3622472e0487e1d"
+		},
+		{
+			"path": "client/views/sensori/dettagli/dettagli.js",
+			"checksum": "372a7c547fccc7e03a778033ee008009ea80e20b"
+		},
+		{
+			"path": "client/views/sensori/dettagli/dettagli_controller.js",
+			"checksum": "d263ede2aed10475fe836d735ca3c65e7ac2c6fd"
+		},
+		{
+			"path": "client/views/sensori/modifica/modifica.html",
+			"checksum": "d33920180ff76b4f9a5d178d6e51716eda765391"
+		},
+		{
+			"path": "client/views/sensori/modifica/modifica.js",
+			"checksum": "3cdaed15b536262385ff52eecd13068820475145"
+		},
+		{
+			"path": "client/views/sensori/modifica/modifica_controller.js",
+			"checksum": "df8e3b227195af7f61ab97b47e626c81bb43d9c0"
+		},
+		{
+			"path": "client/views/caldaia/caldaia.html",
+			"checksum": "d2780da23c8ae4bd7a148905dee3d0e8f4c1cbaa"
+		},
+		{
+			"path": "client/views/caldaia/caldaia.js",
+			"checksum": "98b6100af7b1e4b3fa791cf27fb7b4f53c84b441"
+		},
+		{
+			"path": "client/views/caldaia/caldaia_controller.js",
+			"checksum": "c94aff18d29755f6ec1aa48a39a752a27206989e"
+		},
+		{
+			"path": "client/views/caldaia/dettagli/dettagli.html",
+			"checksum": "a995dd5978b210676a693051b85090712a1531ba"
+		},
+		{
+			"path": "client/views/caldaia/dettagli/dettagli.js",
+			"checksum": "d1c21ba67b8482635c4bbb066e336e30e14bffd5"
+		},
+		{
+			"path": "client/views/caldaia/dettagli/dettagli_controller.js",
+			"checksum": "6bafb30311536ba91af4100c9c7022371503a88f"
+		},
+		{
+			"path": "client/views/caldaia/modifica/modifica.html",
+			"checksum": "8dca681ac7230553a09b3c74c8154c9b9587cd3a"
+		},
+		{
+			"path": "client/views/caldaia/modifica/modifica.js",
+			"checksum": "c4159d68c446b2b9b9ac77a1b602569b55503940"
+		},
+		{
+			"path": "client/views/caldaia/modifica/modifica_controller.js",
+			"checksum": "64dccd6726465dcdc4238fd484b3eaf6d3337465"
+		},
+		{
+			"path": "client/views/cronotermostato/cronotermostato.html",
+			"checksum": "46fb346d1a6048d61abe9d213df27eadcf538c40"
+		},
+		{
+			"path": "client/views/cronotermostato/cronotermostato.js",
+			"checksum": "fa544a9f0270ea474374cb9400b1c145f9f2b44a"
+		},
+		{
+			"path": "client/views/cronotermostato/cronotermostato_controller.js",
+			"checksum": "855e110ab08fcc3847dd578ceea195efc8117059"
+		},
+		{
+			"path": "client/views/cronotermostato/modifica/modifica.html",
+			"checksum": "d2e3e35b167b09647686307ec840498b219247f9"
+		},
+		{
+			"path": "client/views/cronotermostato/modifica/modifica.js",
+			"checksum": "8d05e213df4d5c1d1a970f12f422f464a21b034b"
+		},
+		{
+			"path": "client/views/cronotermostato/modifica/modifica_controller.js",
+			"checksum": "b9da6d4717f45772289ba8eba67ced2167627ef5"
+		},
+		{
+			"path": "client/styles/my_styles.css",
+			"checksum": "3a22ba8ed8a39f6c5fe954547485c8ba28b992f9"
+		},
+		{
+			"path": "public/images/favicon.ico",
+			"checksum": "61565124d4c94ac874a6343e6cbf4f1fd4f4cfb7"
+		},
+		{
+			"path": "client/styles/my_stylesButton.css",
+			"checksum": "019d22b1dba6caf00b0c056ad96b8d86ab1d42b5"
+		},
+		{
+			"path": "client/styles/font-awesome.css",
+			"checksum": "988f9af34960295dac5a0230cbb0d69534c1e990"
+		},
+		{
+			"path": "public/fonts/fontawesome-webfont.woff",
+			"checksum": "0612cddf2f835cceffccc88fd194f97367d0b024"
+		},
+		{
+			"path": "public/fonts/fontawesome-webfont.ttf",
+			"checksum": "a9468f6a1fe965fbcaf5a1bd6c11705e2fc5f84c"
+		},
+		{
+			"path": "public/images/flame.gif",
+			"checksum": "97401295a4047a639abfc2a8222c4ec14f9aab93"
+		},
+		{
+			"path": "lib/string_utils.js",
+			"checksum": "96ac370ee5dcdac2e04febb014cf2ee15fdba6a1"
+		},
+		{
+			"path": "lib/object_utils.js",
+			"checksum": "26539aa054a0e47ea4ab255da797ab3a5033f618"
+		},
+		{
+			"path": "client/lib/http_utils.js",
+			"checksum": "7c50553db3f5da3ee622e6e9a37d86a457b737dd"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3/custom.bootstrap.import.less",
+			"checksum": "e2616e47ae8f1757fbf477a8903c771156384372"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3/custom.bootstrap.json",
+			"checksum": "a4d7042ed4b23f431944c0dd68b571e30137f408"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3/custom.bootstrap.less",
+			"checksum": "fd0207f6930370fa2d961f2403a0e6c84993faba"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3/custom.bootstrap.mixins.import.less",
+			"checksum": "ef8d3964d2131f4c226629251fe027ee76db3b80"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput.css",
+			"checksum": "7fd728eccb6183fd0c23c5eb45de593d44659e99"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput.js",
+			"checksum": "145b322605f850cde9bc4696573224bf7378fa6c"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_cz.js",
+			"checksum": "738132131cc421e0c6f0913a87edee8403d585cc"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_de.js",
+			"checksum": "4af7ff71286d61b9d4b966ac89cf900b8dfa8603"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_el.js",
+			"checksum": "eb97d6877bf7c76a9f6cad8c32582a69798574a2"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_es.js",
+			"checksum": "8d77a66595bf9f3ff527411e90561c8d87b82886"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_fr.js",
+			"checksum": "47ef1125dfa2f3f0829eac7552dfa761f61b803e"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_hu.js",
+			"checksum": "dacff251b1800c649ec73144314ebffecd318625"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_it.js",
+			"checksum": "0306fe06085584e73bda0763743e6acc20087bc4"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_LANG.js",
+			"checksum": "19e4fcd2529db6deefcdd81a7997e931861628e8"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_nl.js",
+			"checksum": "824db2633678886baed8483d8008910c298872f5"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_pl.js",
+			"checksum": "76cedf445b324408fe3e33b6d77568875ec9cc41"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_pt-BR.js",
+			"checksum": "dcb4280b869441d65939938bb3753a29cf38300b"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_pt.js",
+			"checksum": "415996ee1b81200a4b0a2ec41707d81ea65c52f2"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_ro.js",
+			"checksum": "4e2135d820fdb4fc3c0ad7b1a2db0efb90a7e8f8"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_ru.js",
+			"checksum": "80eac6f8f4f792db3eb221313e281ff20dcecf86"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_sk.js",
+			"checksum": "3609d56f2af857d2aaed5b9d2372b34c97173036"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_sr.js",
+			"checksum": "22b56a6784888e383b1ae402e142ead6672e3f89"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_th.js",
+			"checksum": "91a603176f55a62158642b24aeb49a6da0ed4d68"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_tr.js",
+			"checksum": "24863a9c201999b731b73db8de6984257ff0b65a"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_uk.js",
+			"checksum": "d3059aa40d8cabadf2f81ba40173569f64328f6c"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/fileinput_locale_zh.js",
+			"checksum": "f297ac5dd8c69a2522edb3e472adb3ed0981ff26"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-tagsinput/bootstrap-tagsinput.css",
+			"checksum": "b3e0f8d9ca31a65448bdf91a868da5f40d12b702"
+		},
+		{
+			"path": "client/styles/framework/bootstrap3-plugins/bootstrap-tagsinput/bootstrap-tagsinput.js",
+			"checksum": "4d941e8119dcf9b140347d647b925800cb7ef319"
+		},
+		{
+			"path": "client/lib/form_utils.js",
+			"checksum": "3fecb23d4f206376a8263bf9dd7debf5f0be8ef7"
+		}
+	],
+	"output_directories": [
+		"client/",
+		"client/lib/",
+		"client/components/",
+		"client/styles/",
+		"client/styles/framework/",
+		"client/styles/styles/",
+		"client/styles/styles/theme/",
+		"client/views/",
+		"client/views/not_found/",
+		"client/views/loading/",
+		"client/views/layout/",
+		"lib/",
+		"settings/",
+		"packages/",
+		"both/",
+		"both/lib/",
+		"both/collections/",
+		"both/joins/",
+		"public/",
+		"public/images/",
+		"public/fonts/",
+		"private/",
+		"server/",
+		"server/lib/",
+		"server/collections/",
+		"server/publish/",
+		"server/controllers/",
+		"server/methods/",
+		"client/views/home_public/",
+		"client/views/login/",
+		"client/views/register/",
+		"client/views/verify_email/",
+		"client/views/forgot_password/",
+		"client/views/reset_password/",
+		"client/views/sensors/",
+		"client/views/webcam/",
+		"client/views/airplanes/",
+		"client/views/powerconsumption/",
+		"client/views/solarpower/",
+		"client/views/home_private/",
+		"client/views/admin/",
+		"client/views/admin/users/",
+		"client/views/admin/users/details/",
+		"client/views/admin/users/insert/",
+		"client/views/admin/users/edit/",
+		"client/views/user_settings/",
+		"client/views/user_settings/profile/",
+		"client/views/user_settings/change_pass/",
+		"client/views/logout/",
+		"client/views/sensori/",
+		"client/views/sensori/inserisci/",
+		"client/views/sensori/dettagli/",
+		"client/views/sensori/modifica/",
+		"client/views/caldaia/",
+		"client/views/caldaia/dettagli/",
+		"client/views/caldaia/modifica/",
+		"client/views/cronotermostato/",
+		"client/views/cronotermostato/modifica/",
+		"client/styles/framework/bootstrap3/",
+		"client/styles/framework/bootstrap3-plugins/bootstrap-fileinput/",
+		"client/styles/framework/bootstrap3-plugins/bootstrap-tagsinput/"
+	]
+}
