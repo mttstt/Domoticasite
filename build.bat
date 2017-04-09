@@ -1,11 +1,12 @@
+@echo off
+
+echo BUILD
+ 
 SET dir1=C:\Users\matteo\Documents\GitHub\Domoticasite
 
-cd C:\Users\matteo\Downloads
-for /F "delims=" %%I in ('dir /b /a-d /od') do set LATEST=%%I
-echo "%LATEST%"
-copy "%LATEST%" "%dir1%"
+del /Q "%dir1%"\Domoticasite.json
 
-cd "%dir1%"
+curl https://www.meteorkitchen.com/api/getapp/json/N526wRpB3xekvDM5M -o %dir1%\Domoticasite.json
 
 rmdir DomoticasiteP /S /Q
 mkdir emptyfolder
@@ -13,11 +14,10 @@ robocopy emptyfolder DomoticasiteP /purge
 rmdir emptyfolder
 rmdir DomoticasiteP 
 rmdir Domoticasite /S /Q
-
-del /Q Domoticasite.json
-rename Domo*.json Domoticasite.json   
-
+  
 meteor-kitchen ./Domoticasite.json ./Domoticasite --meteor-release 1.3.4.1
 
 cd ./Domoticasite
-meteor build --architecture=os.linux.x86_64 --directory ../DomoticasiteP  2>build.log
+
+
+meteor build --architecture=os.linux.x86_64 --directory %dir1%\DomoticasiteP & cd %dir1%
