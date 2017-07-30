@@ -1,29 +1,4 @@
 
-
-Template.TEMPLATE_NAME.created = function() {
-
-};
-
-Template.TEMPLATE_NAME.destroyed = function() {
-
-};
-
-Template.TEMPLATE_NAME.rendered = function() {
-
-};
-
-Template.TEMPLATE_NAME.helpers({
-
-   'sensor' : function(){
-       return Sensori.find({});
-  }
-  
-
-});
-
-Template.TEMPLATE_NAME.events({
-
-});
 ----------------
 
 <template name="TEMPLATE_NAME">
