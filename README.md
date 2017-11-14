@@ -9,8 +9,15 @@ Web Application for home automation, the main function are:
 It is a IOT (Internet of things) solution, implemented on Raspberry 2, with the use of Wi-Fi sensor.
 The Web application is implemented with Meteor-Kitchen.
 
-<img src="https://d14xs1qewsqjcd.cloudfront.net/assets/logo.svg" alt="alt text" width="200px" height="200px">
-<img src="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px">
-<img src="https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg" alt="alt text" width="200px" height="200px">
-<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-" alt="alt text" width="100px" height="100px">
-<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr" alt="alt text" width="100px" height="100px">
+
+![alt-text-1](/images/meteor-icon.png)![alt-text-2](/images/highchart-icon.png)![alt-text-3](/images/rasp-icon.png)![alt-text-4](/images/esp8266-icon.png)![alt-text-5](/images/meteor-kitchen-icon.png)
+
+
+----------------
+
+
+![alt-text-1]<img src="https://d14xs1qewsqjcd.cloudfront.net/assets/logo.svg" alt="alt text" width="200px" height="200px">
+![alt-text-2]<img src="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px">
+![alt-text-3]<img src="https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg" alt="alt text" width="200px" height="200px">
+![alt-text-4]<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-" alt="alt text" width="100px" height="100px">
+![alt-text-5]<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr" alt="alt text" width="100px" height="100px">
