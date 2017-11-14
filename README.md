@@ -14,6 +14,10 @@ The Web application is implemented with Meteor-Kitchen.
   <a href='https://www.meteor.com'>
    <img src='https://user-images.githubusercontent.com/841294/26841702-0902bbee-4af3-11e7-9805-0618da66a246.png' height='60' alt='Meteor'>
   </a>
+   <a> 
+ <img src='https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg' alt='alttext' height='60'>
+  </a>
+  
 </p>
 
 <p align="center">
