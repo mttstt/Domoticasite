@@ -1,1 +1,1 @@
-build.bat & deploy.bat
+cmd /k build.bat & cmd /k upload.bat
