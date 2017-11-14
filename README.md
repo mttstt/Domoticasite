@@ -14,6 +14,7 @@ The Web application is implemented with Meteor-Kitchen.
   <a href='https://www.meteor.com'><img src='https://user-images.githubusercontent.com/841294/26841702-0902bbee-4af3-11e7-9805-0618da66a246.png' height='60' alt='Meteor'></a>
    <a><img src='https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg' alt='alttext' height='60'></a>
    <a><img src='https://yt3.ggpht.com/-Ru_3Y3MG2EE/AAAAAAAAAAI/AAAAAAAAAAA/sBdLAAaTKwA/s900-c-k-no-mo-rj-c0xffffff/photo.jpgalt='alttext' height='60'></a>
-   <a><img src='<img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-' alt='alttext' height='60'></a>
+     
+   <a><img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-' alt='alttext' height='60'></a>
    <a><img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr' alt='alttext' height='60'></a>
 </p>
