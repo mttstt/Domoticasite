@@ -10,21 +10,16 @@ It is a IOT (Internet of things) solution, implemented on Raspberry 2, with the 
 The Web application is implemented with Meteor-Kitchen.
 
 
-# <a href='https://www.meteor.com'><img src='https://user-images.githubusercontent.com/841294/26841702-0902bbee-4af3-11e7-9805-0618da66a246.png' height='60' alt='Meteor'></a>
-
-
 <p align="center">
   <a href='https://www.meteor.com'>
    <img src='https://user-images.githubusercontent.com/841294/26841702-0902bbee-4af3-11e7-9805-0618da66a246.png' height='60' alt='Meteor'>
   </a>
-  <a href='https://www.meteor.com'>
-   <img src="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px">
-  </a>
-  
 </p>
 
 <p align="center">
-  <a title="CII Best Practices" href="https://bestpractices.coreinfrastructure.org/projects/29"><img src="https://bestpractices.coreinfrastructure.org/projects/29/badge"></a>
+ <a href='https://www.meteor.com'>
+   <img src="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px">
+  </a>
 </p>
 
 
