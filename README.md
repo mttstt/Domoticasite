@@ -12,7 +12,10 @@ The Web application is implemented with Meteor-Kitchen.
 
 # <a href='https://www.meteor.com'><img src='https://user-images.githubusercontent.com/841294/26841702-0902bbee-4af3-11e7-9805-0618da66a246.png' height='60' alt='Meteor'></a>
 
-<a href="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px">
-<img src="https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg" alt="alt text" width="200px" height="200px">
-<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-" alt="alt text" width="100px" height="100px">
-<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr" alt="alt text" width="100px" height="100px">
+<a href="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px"></a>
+
+<a href="https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg" alt="alt text" width="200px" height="200px"></a>
+
+<a href="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-" alt="alt text" width="100px" height="100px"></a>
+
+<a src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr" alt="alt text" width="100px" height="100px"></a>
