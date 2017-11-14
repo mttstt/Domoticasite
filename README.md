@@ -15,7 +15,7 @@ The Web application is implemented with Meteor-Kitchen.
 
 [![TravisCI Status](https://travis-ci.org/meteor/meteor.svg?branch=devel)](https://travis-ci.org/meteor/meteor)
 
-[![TravisCI Status](href="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png")]
+[![TravisCI Status](https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png]
 
 
 <a href="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px"></a>
