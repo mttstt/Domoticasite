@@ -18,21 +18,18 @@ The Web application is implemented with Meteor-Kitchen.
 
 <p align="center">
  <a> 
- <img src='https://d14xs1qewsqjcd.cloudfront.net/assets/logo.svg' alt='alttext' height='60'>
-  </a>
-</p>
-
-<p align="center">
  <img src='https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg' alt='alttext' height='60'>
   </a>
 </p>
 
 <p align="center">
+  <a>
  <img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-' alt='alttext' height='60'>
   </a>
 </p>
 
 <p align="center">
+  <a>
  <img src='https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr' alt='alttext' height='60'>
   </a>
 </p>
