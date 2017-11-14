@@ -13,17 +13,23 @@ The Web application is implemented with Meteor-Kitchen.
 # <a href='https://www.meteor.com'><img src='https://user-images.githubusercontent.com/841294/26841702-0902bbee-4af3-11e7-9805-0618da66a246.png' height='60' alt='Meteor'></a>
 
 
-[![TravisCI Status](https://travis-ci.org/meteor/meteor.svg?branch=devel)](https://travis-ci.org/meteor/meteor)
+<p align="center">
+  <a href='https://www.meteor.com'>
+   <img src='https://user-images.githubusercontent.com/841294/26841702-0902bbee-4af3-11e7-9805-0618da66a246.png' height='60' alt='Meteor'>
+  </a>
+  <a href='https://www.meteor.com'>
+   <img src="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px">
+  </a>
+  
+</p>
 
-[![TravisCI Status](https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png)](https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png)
+<p align="center">
+  <a title="CII Best Practices" href="https://bestpractices.coreinfrastructure.org/projects/29"><img src="https://bestpractices.coreinfrastructure.org/projects/29/badge"></a>
+</p>
 
 
-
-
-<a href="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px"></a>
-
-<a href="https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg" alt="alt text" width="200px" height="200px"></a>
-
-<a href="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-" alt="alt text" width="100px" height="100px"></a>
-
-<a src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr" alt="alt text" width="100px" height="100px"></a>
+<img src="https://d14xs1qewsqjcd.cloudfront.net/assets/logo.svg" alt="alt text" width="200px" height="200px">
+<img src="https://pbs.twimg.com/profile_images/506475381122031617/ll6c40lP.png" alt="alt text" width="100px" height="100px">
+<img src="https://shop.highsoft.com/skin/frontend/highsoft/bootstrap/images/logo.svg" alt="alt text" width="200px" height="200px">
+<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ6OTvEpuXGtoQ7rS_MuwV8DurmIKFlEdWVsQBo8J-CMd-NLos-" alt="alt text" width="100px" height="100px">
+<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRvG55OJYJ0rQktTd5AtYW-yerEjB6dmeWLOibbsASKXRNbDNcJpUu0w-Hr" alt="alt text" width="100px" height="100px">
