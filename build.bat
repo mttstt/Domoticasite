@@ -1,23 +1,19 @@
 @echo off
-
 echo BUILD
- 
-SET dir1=C:\Users\matteo\Documents\GitHub\Domoticasite
-
+SET dir1=%~dp0
 del /Q "%dir1%"\Domoticasite.json
-
 curl https://www.meteorkitchen.com/api/getapp/json/N526wRpB3xekvDM5M -o %dir1%\Domoticasite.json
-
-rmdir DomoticasiteP /S /Q
+rmdir bundle /S /Q
 mkdir emptyfolder
-robocopy emptyfolder DomoticasiteP /purge
+robocopy emptyfolder bundle /purge
 rmdir emptyfolder
-rmdir DomoticasiteP 
+rmdir bundle 
 rmdir Domoticasite /S /Q
-  
-meteor-kitchen ./Domoticasite.json ./Domoticasite --meteor-release 1.3.4.1
-
+mkdir Domoticasite
+meteor-kitchen %dir1%\Domoticasite.json %dir1%\Domoticasite --meteor-release 1.5.2.2
 cd ./Domoticasite
+meteor add vansonhk:bootstrap3-datepicker & ^
+meteor remove rajit:bootstrap3-datepicker & ^
+meteor build --architecture=os.linux.x86_64 --directory %dir1% & cd %dir1%
 
-
-meteor build --architecture=os.linux.x86_64 --directory %dir1%\DomoticasiteP & cd %dir1%
+REM copy /Y "%dir1%"\files\packages "%dir1%"\Domoticasite\.meteor\packages
