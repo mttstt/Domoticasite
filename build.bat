@@ -15,5 +15,3 @@ cd ./Domoticasite
 meteor add vansonhk:bootstrap3-datepicker & ^
 meteor remove rajit:bootstrap3-datepicker & ^
 meteor build --architecture=os.linux.x86_64 --directory %dir1% & cd %dir1%
-
-REM copy /Y "%dir1%"\files\packages "%dir1%"\Domoticasite\.meteor\packages
