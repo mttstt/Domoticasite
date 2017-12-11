@@ -1,1 +1,1 @@
-cmd /k build.bat & cmd /k upload.bat
+for %%b in ("build.bat" "upload.bat") do call %%b|| exit /b 1

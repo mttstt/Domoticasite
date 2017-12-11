@@ -352,7 +352,8 @@
       "path": "packages/momentjs_moment.js"
     },
     {
-      "path": "packages/vansonhk_bootstrap3-datepicker.js"
+      "node_modules": "npm/node_modules/meteor/rajit_bootstrap3-datepicker/lib/bootstrap-datepicker/node_modules",
+      "path": "packages/rajit_bootstrap3-datepicker.js"
     },
     {
       "path": "packages/livedata.js"

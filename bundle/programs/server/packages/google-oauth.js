@@ -53,7 +53,7 @@ function getServiceDataFromTokens(tokens) {                                     
     scope: scopes                                                                                                     // 17
   };                                                                                                                  // 14
                                                                                                                       // 14
-  if (hasOwn.call(tokens, "expiresAt")) {                                                                             // 20
+  if (hasOwn.call(tokens, "expiresIn")) {                                                                             // 20
     serviceData.expiresAt = Date.now() + 1000 * parseInt(tokens.expiresIn, 10);                                       // 21
   }                                                                                                                   // 23
                                                                                                                       // 23

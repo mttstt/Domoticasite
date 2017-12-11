@@ -1,4 +1,92 @@
-var require = meteorInstall({"lib":{"object_utils.js":function(require){
+var require = meteorInstall({"lib":{"case_utils.js":function(){
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                   //
+// lib/case_utils.js                                                                                                 //
+//                                                                                                                   //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                                                                                     //
+var hasSpace = /\s/;                                                                                                 // 1
+var hasSeparator = /[\W_]/;                                                                                          // 2
+var hasCamel = /([a-z][A-Z]|[A-Z][a-z])/; /**                                                                        // 3
+                                           * Remove any starting case from a `string`, like camel or snake, but keep
+                                           * spaces and punctuation that may be important otherwise.                 // 5
+                                           *                                                                         // 5
+                                           * @param {String} string                                                  // 5
+                                           * @return {String}                                                        // 5
+                                           */                                                                        // 5
+                                                                                                                     // 5
+this.toNoCase = function (string) {                                                                                  // 13
+  if (hasSpace.test(string)) return string.toLowerCase();                                                            // 14
+  if (hasSeparator.test(string)) return (unseparate(string) || string).toLowerCase();                                // 15
+  if (hasCamel.test(string)) return uncamelize(string).toLowerCase();                                                // 16
+  return string.toLowerCase();                                                                                       // 17
+}; /**                                                                                                               // 18
+    * Separator splitter.                                                                                            // 20
+    */                                                                                                               // 20
+                                                                                                                     // 20
+var separatorSplitter = /[\W_]+(.|$)/g; /**                                                                          // 24
+                                         * Un-separate a `string`.                                                   // 26
+                                         *                                                                           // 26
+                                         * @param {String} string                                                    // 26
+                                         * @return {String}                                                          // 26
+                                         */                                                                          // 26
+                                                                                                                     // 26
+function unseparate(string) {                                                                                        // 33
+  return string.replace(separatorSplitter, function (m, next) {                                                      // 34
+    return next ? ' ' + next : '';                                                                                   // 35
+  });                                                                                                                // 36
+} /**                                                                                                                // 37
+   * Camelcase splitter.                                                                                             // 39
+   */                                                                                                                // 39
+                                                                                                                     // 39
+var camelSplitter = /(.)([A-Z]+)/g; /**                                                                              // 43
+                                     * Un-camelcase a `string`.                                                      // 45
+                                     *                                                                               // 45
+                                     * @param {String} string                                                        // 45
+                                     * @return {String}                                                              // 45
+                                     */                                                                              // 45
+                                                                                                                     // 45
+function uncamelize(string) {                                                                                        // 52
+  return string.replace(camelSplitter, function (m, previous, uppers) {                                              // 53
+    return previous + ' ' + uppers.toLowerCase().split('').join(' ');                                                // 54
+  });                                                                                                                // 55
+}                                                                                                                    // 56
+                                                                                                                     // 56
+this.toSpaceCase = function (string) {                                                                               // 58
+  return toNoCase(string).replace(/[\W_]+(.|$)/g, function (matches, match) {                                        // 59
+    return match ? ' ' + match : '';                                                                                 // 60
+  }).trim();                                                                                                         // 61
+};                                                                                                                   // 62
+                                                                                                                     // 58
+this.toCamelCase = function (string) {                                                                               // 64
+  return toSpaceCase(string).replace(/\s(\w)/g, function (matches, letter) {                                         // 65
+    return letter.toUpperCase();                                                                                     // 66
+  });                                                                                                                // 67
+};                                                                                                                   // 68
+                                                                                                                     // 64
+this.toSnakeCase = function (string) {                                                                               // 70
+  return toSpaceCase(string).replace(/\s/g, '_');                                                                    // 71
+};                                                                                                                   // 72
+                                                                                                                     // 70
+this.toKebabCase = function (string) {                                                                               // 74
+  return toSpaceCase(string).replace(/\s/g, '-');                                                                    // 75
+};                                                                                                                   // 76
+                                                                                                                     // 74
+this.toTitleCase = function (string) {                                                                               // 78
+  var str = toSpaceCase(string).replace(/\s(\w)/g, function (matches, letter) {                                      // 79
+    return " " + letter.toUpperCase();                                                                               // 80
+  });                                                                                                                // 81
+                                                                                                                     // 79
+  if (str) {                                                                                                         // 83
+    str = str.charAt(0).toUpperCase() + str.slice(1);                                                                // 84
+  }                                                                                                                  // 85
+                                                                                                                     // 85
+  return str;                                                                                                        // 86
+};                                                                                                                   // 87
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+},"object_utils.js":function(require){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                                   //
@@ -208,7 +296,7 @@ this.Caldaia.userCanInsert = function (userId, doc) {                           
 };                                                                                                                   // 5
                                                                                                                      // 3
 this.Caldaia.userCanUpdate = function (userId, doc) {                                                                // 7
-	return userId && Users.isInRoles(userId, ["admin", "user"]);                                                        // 8
+	return userId && (doc.ownerId == userId || Users.isInRoles(userId, ["admin", "user"]));                             // 8
 };                                                                                                                   // 9
                                                                                                                      // 7
 this.Caldaia.userCanRemove = function (userId, doc) {                                                                // 11
@@ -572,13 +660,13 @@ this.Watt.attachSchema(this.Schemas.Watt);                                      
                                                                                                                      //
 Caldaia.allow({                                                                                                      // 1
 	insert: function (userId, doc) {                                                                                    // 2
-		return Caldaia.userCanInsert(userId, doc);                                                                         // 3
+		return false;                                                                                                      // 3
 	},                                                                                                                  // 4
 	update: function (userId, doc, fields, modifier) {                                                                  // 6
-		return Caldaia.userCanUpdate(userId, doc);                                                                         // 7
+		return false;                                                                                                      // 7
 	},                                                                                                                  // 8
 	remove: function (userId, doc) {                                                                                    // 10
-		return Caldaia.userCanRemove(userId, doc);                                                                         // 11
+		return false;                                                                                                      // 11
 	}                                                                                                                   // 12
 });                                                                                                                  // 1
 Caldaia.before.insert(function (userId, doc) {                                                                       // 15
@@ -614,13 +702,13 @@ Caldaia.after.remove(function (userId, doc) {});                                
                                                                                                                      //
 Cronotermostato.allow({                                                                                              // 1
 	insert: function (userId, doc) {                                                                                    // 2
-		return Cronotermostato.userCanInsert(userId, doc);                                                                 // 3
+		return false;                                                                                                      // 3
 	},                                                                                                                  // 4
 	update: function (userId, doc, fields, modifier) {                                                                  // 6
-		return Cronotermostato.userCanUpdate(userId, doc);                                                                 // 7
+		return false;                                                                                                      // 7
 	},                                                                                                                  // 8
 	remove: function (userId, doc) {                                                                                    // 10
-		return Cronotermostato.userCanRemove(userId, doc);                                                                 // 11
+		return false;                                                                                                      // 11
 	}                                                                                                                   // 12
 });                                                                                                                  // 1
 Cronotermostato.before.insert(function (userId, doc) {                                                               // 15
@@ -656,13 +744,13 @@ Cronotermostato.after.remove(function (userId, doc) {});                        
                                                                                                                      //
 Rangetemp.allow({                                                                                                    // 1
 	insert: function (userId, doc) {                                                                                    // 2
-		return Rangetemp.userCanInsert(userId, doc);                                                                       // 3
+		return false;                                                                                                      // 3
 	},                                                                                                                  // 4
 	update: function (userId, doc, fields, modifier) {                                                                  // 6
-		return Rangetemp.userCanUpdate(userId, doc);                                                                       // 7
+		return false;                                                                                                      // 7
 	},                                                                                                                  // 8
 	remove: function (userId, doc) {                                                                                    // 10
-		return Rangetemp.userCanRemove(userId, doc);                                                                       // 11
+		return false;                                                                                                      // 11
 	}                                                                                                                   // 12
 });                                                                                                                  // 1
 Rangetemp.before.insert(function (userId, doc) {                                                                     // 15
@@ -698,13 +786,13 @@ Rangetemp.after.remove(function (userId, doc) {});                              
                                                                                                                      //
 Sensori.allow({                                                                                                      // 1
 	insert: function (userId, doc) {                                                                                    // 2
-		return Sensori.userCanInsert(userId, doc);                                                                         // 3
+		return false;                                                                                                      // 3
 	},                                                                                                                  // 4
 	update: function (userId, doc, fields, modifier) {                                                                  // 6
-		return Sensori.userCanUpdate(userId, doc);                                                                         // 7
+		return false;                                                                                                      // 7
 	},                                                                                                                  // 8
 	remove: function (userId, doc) {                                                                                    // 10
-		return Sensori.userCanRemove(userId, doc);                                                                         // 11
+		return false;                                                                                                      // 11
 	}                                                                                                                   // 12
 });                                                                                                                  // 1
 Sensori.before.insert(function (userId, doc) {                                                                       // 15
@@ -740,13 +828,13 @@ Sensori.after.remove(function (userId, doc) {});                                
                                                                                                                      //
 Watt.allow({                                                                                                         // 1
 	insert: function (userId, doc) {                                                                                    // 2
-		return Watt.userCanInsert(userId, doc);                                                                            // 3
+		return false;                                                                                                      // 3
 	},                                                                                                                  // 4
 	update: function (userId, doc, fields, modifier) {                                                                  // 6
-		return Watt.userCanUpdate(userId, doc);                                                                            // 7
+		return false;                                                                                                      // 7
 	},                                                                                                                  // 8
 	remove: function (userId, doc) {                                                                                    // 10
-		return Watt.userCanRemove(userId, doc);                                                                            // 11
+		return false;                                                                                                      // 11
 	}                                                                                                                   // 12
 });                                                                                                                  // 1
 Watt.before.insert(function (userId, doc) {                                                                          // 15
@@ -1133,19 +1221,13 @@ Meteor.publish("watt_list", function () {                                       
 });                                                                                                                  // 7
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"server.js":function(require,exports,module){
+}},"server.js":function(require){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                                   //
 // server/server.js                                                                                                  //
 //                                                                                                                   //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                                                                                                     //
-var _typeof2 = require("babel-runtime/helpers/typeof");                                                              //
-                                                                                                                     //
-var _typeof3 = _interopRequireDefault(_typeof2);                                                                     //
-                                                                                                                     //
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }                    //
                                                                                                                      //
 var verifyEmail = true;                                                                                              // 1
 Accounts.config({                                                                                                    // 3
@@ -1251,1021 +1333,1009 @@ Meteor.startup(function () {                                                    
 		}                                                                                                                  // 109
 	}                                                                                                                   // 110
                                                                                                                      // 110
-	var csvpath = "/var/www/123solar/data/invt1/csv/";                                                                  // 113
-	var csvpathwin = "C://Users//matteo//Documents//GitHub//Domoticasite//files//20170318.csv";                         // 114
-                                                                                                                     // 114
-	var fs = require("fs");                                                                                             // 115
-                                                                                                                     // 115
-	console.log('System:', process.env.OS); //                                                                          // 117
+	var fs = require("fs");                                                                                             // 113
+                                                                                                                     // 113
+	var csvpath = "/var/www/123solar/data/invt1/csv/";                                                                  // 114
+	var csvpathwin = "C://Users//matteo//Documents//GitHub//Domoticasite//files//20170318.csv";                         // 115
+	console.log('=>', process.env.ROOT_URL, ':', process.env.PORT);                                                     // 117
+                                                                                                                     // 117
+	var os = require('os');                                                                                             // 119
+                                                                                                                     // 119
+	console.log('=> Domoticasite Server:', os.type(), ' - ', os.release(), ' - ', os.platform());                       // 120
+	var Raspberry = process.env.WIRINGPI_GPIOMEM == '1' ? true : false;                                                 // 122
+	console.log('=> Raspberry? ', Raspberry); //                                                                        // 123
 	// funzione TODO: feature per cercare nuovi sensori in rete e comunicarne l'esistenza all'amministratore per la loro  inclusione.
-	//                                                                                                                  // 121
-                                                                                                                     // 121
-	function find_sensor() {                                                                                            // 122
-		var base = "192.168.1.";                                                                                           // 123
-		var i = 1;                                                                                                         // 124
-                                                                                                                     // 124
-		for (i = 1; index < 254; ++index) {                                                                                // 125
-			var ip = base + i;                                                                                                // 126
-			var oldip = Sensori.find({}).ip.map(function (row) {                                                              // 127
-				return row;                                                                                                      // 127
-			});                                                                                                               // 127
-                                                                                                                     // 127
-			try {                                                                                                             // 129
-				response = HTTP.get("http://" + ip + "/json", {});                                                               // 129
-                                                                                                                     // 129
-				if (response.data.Sensors[0].TaskName !== null) {                                                                // 130
-					Sensori.insert({                                                                                                // 131
-						ip: ip,                                                                                                        // 131
-						location: response.data.Sensors[0].TaskName,                                                                   // 131
-						note: '-',                                                                                                     // 131
-						tipo: '',                                                                                                      // 131
-						active: true,                                                                                                  // 131
-						timescheduler: 30,                                                                                             // 131
-						on: true                                                                                                       // 131
-					});                                                                                                             // 131
-				}                                                                                                                // 132
-			} catch (e) {                                                                                                     // 133
-				console.log('no found', ip, ' -', e);                                                                            // 134
-			}                                                                                                                 // 134
-		}                                                                                                                  // 135
-	}                                                                                                                   // 136
+	//                                                                                                                  // 128
+                                                                                                                     // 128
+	function find_sensor() {                                                                                            // 129
+		var base = "192.168.1.";                                                                                           // 130
+		var i = 1;                                                                                                         // 131
+                                                                                                                     // 131
+		for (i = 1; index < 254; ++index) {                                                                                // 132
+			var ip = base + i;                                                                                                // 133
+			var oldip = Sensori.find({}).ip.map(function (row) {                                                              // 134
+				return row;                                                                                                      // 134
+			});                                                                                                               // 134
+                                                                                                                     // 134
+			try {                                                                                                             // 136
+				response = HTTP.get("http://" + ip + "/json", {});                                                               // 136
                                                                                                                      // 136
-	if (Sensori.find().count() === 0) {                                                                                 // 139
-		var VariantSensoriSchema = {}; //Edit.insert({text: 'o'});                                                         // 140
-                                                                                                                     // 141
-		Sensori.attachSchema(VariantSensoriSchema, {                                                                       // 142
-			ip: {                                                                                                             // 142
-				optional: false                                                                                                  // 142
-			},                                                                                                                // 142
-			location: {                                                                                                       // 142
-				optional: true                                                                                                   // 142
-			},                                                                                                                // 142
-			note: {                                                                                                           // 142
-				optional: true                                                                                                   // 142
-			},                                                                                                                // 142
-			tipo: {                                                                                                           // 142
-				optional: true                                                                                                   // 142
-			},                                                                                                                // 142
-			temp: {                                                                                                           // 142
-				optional: true                                                                                                   // 142
-			},                                                                                                                // 142
-			hum: {                                                                                                            // 142
-				optional: true                                                                                                   // 142
-			},                                                                                                                // 142
-			active: {                                                                                                         // 142
-				optional: true                                                                                                   // 142
-			}                                                                                                                 // 142
-		});                                                                                                                // 142
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '15'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '16'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '17'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '18'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '19'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '20'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '21'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '22'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '23'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '24'                                                                                                       // 143
-		});                                                                                                                // 143
-		Rangetemp.insert({                                                                                                 // 143
-			grado: '25'                                                                                                       // 143
-		});                                                                                                                // 143
-		Caldaia.insert({                                                                                                   // 144
-			statocaldaia: false,                                                                                              // 144
-			statoriscaldamento: false,                                                                                        // 144
-			statotermostato: false,                                                                                           // 144
-			sensoretermostato: 'Cameretta',                                                                                   // 144
-			isteresi: '0.5',                                                                                                  // 144
-			timescheduler: '60'                                                                                               // 144
-		});                                                                                                                // 144
-		Sensori.insert({                                                                                                   // 145
-			ip: '127.0.0.1',                                                                                                  // 145
-			location: 'Garage',                                                                                               // 145
-			note: '-',                                                                                                        // 145
-			tipo: 'DHT22 (on PIN 22)',                                                                                        // 145
-			active: false,                                                                                                    // 145
-			timescheduler: 30,                                                                                                // 145
-			on: true                                                                                                          // 145
-		});                                                                                                                // 145
-		Sensori.insert({                                                                                                   // 146
-			ip: '192.168.1.111',                                                                                              // 146
-			location: 'Contatore',                                                                                            // 146
-			note: 'Consumi Enel',                                                                                             // 146
-			tipo: 'pulse',                                                                                                    // 146
-			active: false,                                                                                                    // 146
-			timescheduler: 30,                                                                                                // 146
-			on: true                                                                                                          // 146
-		});                                                                                                                // 146
-		Sensori.insert({                                                                                                   // 147
-			ip: '192.168.1.112',                                                                                              // 147
-			location: 'Sala',                                                                                                 // 147
-			note: '-',                                                                                                        // 147
-			tipo: 'DHT22',                                                                                                    // 147
-			active: false,                                                                                                    // 147
-			timescheduler: 30,                                                                                                // 147
-			on: true                                                                                                          // 147
-		});                                                                                                                // 147
-		Sensori.insert({                                                                                                   // 148
-			ip: '192.168.1.113',                                                                                              // 148
-			location: 'Cameretta',                                                                                            // 148
-			note: '-',                                                                                                        // 148
-			tipo: 'DHT22',                                                                                                    // 148
-			active: false,                                                                                                    // 148
-			timescheduler: 30,                                                                                                // 148
-			on: true                                                                                                          // 148
-		});                                                                                                                // 148
-		Sensori.insert({                                                                                                   // 149
-			ip: '192.168.1.114',                                                                                              // 149
-			location: 'Ingresso',                                                                                             // 149
-			note: '-',                                                                                                        // 149
-			tipo: 'DHT22',                                                                                                    // 149
-			active: false,                                                                                                    // 149
-			timescheduler: 30,                                                                                                // 149
-			on: true                                                                                                          // 149
+				if (response.data.Sensors[0].TaskName !== null) {                                                                // 137
+					Sensori.insert({                                                                                                // 138
+						ip: ip,                                                                                                        // 138
+						location: response.data.Sensors[0].TaskName,                                                                   // 138
+						note: '-',                                                                                                     // 138
+						tipo: '',                                                                                                      // 138
+						active: true,                                                                                                  // 138
+						timescheduler: 30,                                                                                             // 138
+						on: true                                                                                                       // 138
+					});                                                                                                             // 138
+				}                                                                                                                // 139
+			} catch (e) {                                                                                                     // 140
+				console.log('no found', ip, ' -', e);                                                                            // 141
+			}                                                                                                                 // 141
+		}                                                                                                                  // 142
+	}                                                                                                                   // 143
+                                                                                                                     // 143
+	if (Sensori.find().count() === 0) {                                                                                 // 146
+		var VariantSensoriSchema = {}; //Edit.insert({text: 'o'});                                                         // 147
+                                                                                                                     // 148
+		Sensori.attachSchema(VariantSensoriSchema, {                                                                       // 149
+			ip: {                                                                                                             // 149
+				optional: false                                                                                                  // 149
+			},                                                                                                                // 149
+			location: {                                                                                                       // 149
+				optional: true                                                                                                   // 149
+			},                                                                                                                // 149
+			note: {                                                                                                           // 149
+				optional: true                                                                                                   // 149
+			},                                                                                                                // 149
+			tipo: {                                                                                                           // 149
+				optional: true                                                                                                   // 149
+			},                                                                                                                // 149
+			temp: {                                                                                                           // 149
+				optional: true                                                                                                   // 149
+			},                                                                                                                // 149
+			hum: {                                                                                                            // 149
+				optional: true                                                                                                   // 149
+			},                                                                                                                // 149
+			active: {                                                                                                         // 149
+				optional: true                                                                                                   // 149
+			}                                                                                                                 // 149
 		});                                                                                                                // 149
-		Cronotermostato.insert({                                                                                           // 150
-			day: 'Lunedì',                                                                                                    // 150
-			dayofweek: '1',                                                                                                   // 150
-			h001: '18',                                                                                                       // 150
-			h012: '18',                                                                                                       // 150
-			h023: '18',                                                                                                       // 150
-			h034: '18',                                                                                                       // 150
-			h045: '18',                                                                                                       // 150
-			h056: '18',                                                                                                       // 150
-			h067: '18',                                                                                                       // 150
-			h078: '18',                                                                                                       // 150
-			h089: '18',                                                                                                       // 150
-			h0910: '18',                                                                                                      // 150
-			h1011: '18',                                                                                                      // 150
-			h1112: '18',                                                                                                      // 150
-			h1213: '18',                                                                                                      // 150
-			h1314: '18',                                                                                                      // 150
-			h1415: '18',                                                                                                      // 150
-			h1516: '18',                                                                                                      // 150
-			h1617: '18',                                                                                                      // 150
-			h1718: '18',                                                                                                      // 150
-			h1819: '18',                                                                                                      // 150
-			h1920: '18',                                                                                                      // 150
-			h2021: '18',                                                                                                      // 150
-			h2122: '18',                                                                                                      // 150
-			h2223: '18',                                                                                                      // 150
-			h2324: '18'                                                                                                       // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '15'                                                                                                       // 150
 		});                                                                                                                // 150
-		Cronotermostato.insert({                                                                                           // 151
-			day: 'Martedì',                                                                                                   // 151
-			dayofweek: '2',                                                                                                   // 151
-			h001: '18',                                                                                                       // 151
-			h012: '18',                                                                                                       // 151
-			h023: '18',                                                                                                       // 151
-			h034: '18',                                                                                                       // 151
-			h045: '18',                                                                                                       // 151
-			h056: '18',                                                                                                       // 151
-			h067: '18',                                                                                                       // 151
-			h078: '18',                                                                                                       // 151
-			h089: '18',                                                                                                       // 151
-			h0910: '18',                                                                                                      // 151
-			h1011: '18',                                                                                                      // 151
-			h1112: '18',                                                                                                      // 151
-			h1213: '18',                                                                                                      // 151
-			h1314: '18',                                                                                                      // 151
-			h1415: '18',                                                                                                      // 151
-			h1516: '18',                                                                                                      // 151
-			h1617: '18',                                                                                                      // 151
-			h1718: '18',                                                                                                      // 151
-			h1819: '18',                                                                                                      // 151
-			h1920: '18',                                                                                                      // 151
-			h2021: '18',                                                                                                      // 151
-			h2122: '18',                                                                                                      // 151
-			h2223: '18',                                                                                                      // 151
-			h2324: '18'                                                                                                       // 151
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '16'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '17'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '18'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '19'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '20'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '21'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '22'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '23'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '24'                                                                                                       // 150
+		});                                                                                                                // 150
+		Rangetemp.insert({                                                                                                 // 150
+			grado: '25'                                                                                                       // 150
+		});                                                                                                                // 150
+		Caldaia.insert({                                                                                                   // 151
+			statocaldaia: false,                                                                                              // 151
+			statoriscaldamento: false,                                                                                        // 151
+			statotermostato: false,                                                                                           // 151
+			sensoretermostato: 'Cameretta',                                                                                   // 151
+			isteresi: '0.5',                                                                                                  // 151
+			timescheduler: '60'                                                                                               // 151
 		});                                                                                                                // 151
-		Cronotermostato.insert({                                                                                           // 152
-			day: 'Mercoledì',                                                                                                 // 152
-			dayofweek: '3',                                                                                                   // 152
-			h001: '18',                                                                                                       // 152
-			h012: '18',                                                                                                       // 152
-			h023: '18',                                                                                                       // 152
-			h034: '18',                                                                                                       // 152
-			h045: '18',                                                                                                       // 152
-			h056: '18',                                                                                                       // 152
-			h067: '18',                                                                                                       // 152
-			h078: '18',                                                                                                       // 152
-			h089: '18',                                                                                                       // 152
-			h0910: '18',                                                                                                      // 152
-			h1011: '18',                                                                                                      // 152
-			h1112: '18',                                                                                                      // 152
-			h1213: '18',                                                                                                      // 152
-			h1314: '18',                                                                                                      // 152
-			h1415: '18',                                                                                                      // 152
-			h1516: '18',                                                                                                      // 152
-			h1617: '18',                                                                                                      // 152
-			h1718: '18',                                                                                                      // 152
-			h1819: '18',                                                                                                      // 152
-			h1920: '18',                                                                                                      // 152
-			h2021: '18',                                                                                                      // 152
-			h2122: '18',                                                                                                      // 152
-			h2223: '18',                                                                                                      // 152
-			h2324: '18'                                                                                                       // 152
+		Sensori.insert({                                                                                                   // 152
+			ip: '127.0.0.1',                                                                                                  // 152
+			location: 'Garage',                                                                                               // 152
+			note: '-',                                                                                                        // 152
+			tipo: 'DHT22 (on PIN 22)',                                                                                        // 152
+			active: false,                                                                                                    // 152
+			timescheduler: 30,                                                                                                // 152
+			on: true                                                                                                          // 152
 		});                                                                                                                // 152
-		Cronotermostato.insert({                                                                                           // 153
-			day: 'Giovedì',                                                                                                   // 153
-			dayofweek: '4',                                                                                                   // 153
-			h001: '18',                                                                                                       // 153
-			h012: '18',                                                                                                       // 153
-			h023: '18',                                                                                                       // 153
-			h034: '18',                                                                                                       // 153
-			h045: '18',                                                                                                       // 153
-			h056: '18',                                                                                                       // 153
-			h067: '18',                                                                                                       // 153
-			h078: '18',                                                                                                       // 153
-			h089: '18',                                                                                                       // 153
-			h0910: '18',                                                                                                      // 153
-			h1011: '18',                                                                                                      // 153
-			h1112: '18',                                                                                                      // 153
-			h1213: '18',                                                                                                      // 153
-			h1314: '18',                                                                                                      // 153
-			h1415: '18',                                                                                                      // 153
-			h1516: '18',                                                                                                      // 153
-			h1617: '18',                                                                                                      // 153
-			h1718: '18',                                                                                                      // 153
-			h1819: '18',                                                                                                      // 153
-			h1920: '18',                                                                                                      // 153
-			h2021: '18',                                                                                                      // 153
-			h2122: '18',                                                                                                      // 153
-			h2223: '18',                                                                                                      // 153
-			h2324: '18'                                                                                                       // 153
+		Sensori.insert({                                                                                                   // 153
+			ip: '192.168.1.111',                                                                                              // 153
+			location: 'Contatore',                                                                                            // 153
+			note: 'Consumi Enel',                                                                                             // 153
+			tipo: 'pulse',                                                                                                    // 153
+			active: false,                                                                                                    // 153
+			timescheduler: 30,                                                                                                // 153
+			on: true                                                                                                          // 153
 		});                                                                                                                // 153
-		Cronotermostato.insert({                                                                                           // 154
-			day: 'Venerdì',                                                                                                   // 154
-			dayofweek: '5',                                                                                                   // 154
-			h001: '18',                                                                                                       // 154
-			h012: '18',                                                                                                       // 154
-			h023: '18',                                                                                                       // 154
-			h034: '18',                                                                                                       // 154
-			h045: '18',                                                                                                       // 154
-			h056: '18',                                                                                                       // 154
-			h067: '18',                                                                                                       // 154
-			h078: '18',                                                                                                       // 154
-			h089: '18',                                                                                                       // 154
-			h0910: '18',                                                                                                      // 154
-			h1011: '18',                                                                                                      // 154
-			h1112: '18',                                                                                                      // 154
-			h1213: '18',                                                                                                      // 154
-			h1314: '18',                                                                                                      // 154
-			h1415: '18',                                                                                                      // 154
-			h1516: '18',                                                                                                      // 154
-			h1617: '18',                                                                                                      // 154
-			h1718: '18',                                                                                                      // 154
-			h1819: '18',                                                                                                      // 154
-			h1920: '18',                                                                                                      // 154
-			h2021: '18',                                                                                                      // 154
-			h2122: '18',                                                                                                      // 154
-			h2223: '18',                                                                                                      // 154
-			h2324: '18'                                                                                                       // 154
+		Sensori.insert({                                                                                                   // 154
+			ip: '192.168.1.112',                                                                                              // 154
+			location: 'Sala',                                                                                                 // 154
+			note: '-',                                                                                                        // 154
+			tipo: 'DHT22',                                                                                                    // 154
+			active: false,                                                                                                    // 154
+			timescheduler: 30,                                                                                                // 154
+			on: true                                                                                                          // 154
 		});                                                                                                                // 154
-		Cronotermostato.insert({                                                                                           // 155
-			day: 'Sabato',                                                                                                    // 155
-			dayofweek: '6',                                                                                                   // 155
-			h001: '18',                                                                                                       // 155
-			h012: '18',                                                                                                       // 155
-			h023: '18',                                                                                                       // 155
-			h034: '18',                                                                                                       // 155
-			h045: '18',                                                                                                       // 155
-			h056: '18',                                                                                                       // 155
-			h067: '18',                                                                                                       // 155
-			h078: '18',                                                                                                       // 155
-			h089: '18',                                                                                                       // 155
-			h0910: '18',                                                                                                      // 155
-			h1011: '18',                                                                                                      // 155
-			h1112: '18',                                                                                                      // 155
-			h1213: '18',                                                                                                      // 155
-			h1314: '18',                                                                                                      // 155
-			h1415: '18',                                                                                                      // 155
-			h1516: '18',                                                                                                      // 155
-			h1617: '18',                                                                                                      // 155
-			h1718: '18',                                                                                                      // 155
-			h1819: '18',                                                                                                      // 155
-			h1920: '18',                                                                                                      // 155
-			h2021: '18',                                                                                                      // 155
-			h2122: '18',                                                                                                      // 155
-			h2223: '18',                                                                                                      // 155
-			h2324: '18'                                                                                                       // 155
+		Sensori.insert({                                                                                                   // 155
+			ip: '192.168.1.113',                                                                                              // 155
+			location: 'Cameretta',                                                                                            // 155
+			note: '-',                                                                                                        // 155
+			tipo: 'DHT22',                                                                                                    // 155
+			active: false,                                                                                                    // 155
+			timescheduler: 30,                                                                                                // 155
+			on: true                                                                                                          // 155
 		});                                                                                                                // 155
-		Cronotermostato.insert({                                                                                           // 156
-			day: 'Domenica',                                                                                                  // 156
-			dayofweek: '7',                                                                                                   // 156
-			h001: '18',                                                                                                       // 156
-			h012: '18',                                                                                                       // 156
-			h023: '18',                                                                                                       // 156
-			h034: '18',                                                                                                       // 156
-			h045: '18',                                                                                                       // 156
-			h056: '18',                                                                                                       // 156
-			h067: '18',                                                                                                       // 156
-			h078: '18',                                                                                                       // 156
-			h089: '18',                                                                                                       // 156
-			h0910: '18',                                                                                                      // 156
-			h1011: '18',                                                                                                      // 156
-			h1112: '18',                                                                                                      // 156
-			h1213: '18',                                                                                                      // 156
-			h1314: '18',                                                                                                      // 156
-			h1415: '18',                                                                                                      // 156
-			h1516: '18',                                                                                                      // 156
-			h1617: '18',                                                                                                      // 156
-			h1718: '18',                                                                                                      // 156
-			h1819: '18',                                                                                                      // 156
-			h1920: '18',                                                                                                      // 156
-			h2021: '18',                                                                                                      // 156
-			h2122: '18',                                                                                                      // 156
-			h2223: '18',                                                                                                      // 156
-			h2324: '18'                                                                                                       // 156
+		Sensori.insert({                                                                                                   // 156
+			ip: '192.168.1.114',                                                                                              // 156
+			location: 'Ingresso',                                                                                             // 156
+			note: '-',                                                                                                        // 156
+			tipo: 'DHT22',                                                                                                    // 156
+			active: false,                                                                                                    // 156
+			timescheduler: 30,                                                                                                // 156
+			on: true                                                                                                          // 156
 		});                                                                                                                // 156
-	}                                                                                                                   // 157
-                                                                                                                     // 157
-	var Raspberry = process.env.WIRINGPI_GPIOMEM == '1' ? true : false;                                                 // 160
-                                                                                                                     // 160
-	if (Raspberry) {                                                                                                    // 164
-		var _wpi = void 0;                                                                                                 // 1
-                                                                                                                     // 1
-		module.watch(require("wiringpi-node"), {                                                                           // 1
-			"default": function (v) {                                                                                         // 1
-				_wpi = v;                                                                                                        // 1
-			}                                                                                                                 // 1
-		}, 0);                                                                                                             // 1
-                                                                                                                     // 1
-		var _sensorLib = void 0;                                                                                           // 1
-                                                                                                                     // 1
-		module.watch(require("node-dht-sensor"), {                                                                         // 1
-			"default": function (v) {                                                                                         // 1
-				_sensorLib = v;                                                                                                  // 1
-			}                                                                                                                 // 1
-		}, 1);                                                                                                             // 1
-                                                                                                                     // 1
-		_wpi.setup('sys');                                                                                                 // 166
-                                                                                                                     // 166
-		var GpioPin = 22;                                                                                                  // 168
-                                                                                                                     // 168
-		if (GpioPin !== '') {                                                                                              // 169
-			var sensorType = 22; // 11 for DHT11, 22 for DHT22 and AM2302                                                     // 170
+		Cronotermostato.insert({                                                                                           // 157
+			day: 'Lunedì',                                                                                                    // 157
+			dayofweek: '1',                                                                                                   // 157
+			h001: '18',                                                                                                       // 157
+			h012: '18',                                                                                                       // 157
+			h023: '18',                                                                                                       // 157
+			h034: '18',                                                                                                       // 157
+			h045: '18',                                                                                                       // 157
+			h056: '18',                                                                                                       // 157
+			h067: '18',                                                                                                       // 157
+			h078: '18',                                                                                                       // 157
+			h089: '18',                                                                                                       // 157
+			h0910: '18',                                                                                                      // 157
+			h1011: '18',                                                                                                      // 157
+			h1112: '18',                                                                                                      // 157
+			h1213: '18',                                                                                                      // 157
+			h1314: '18',                                                                                                      // 157
+			h1415: '18',                                                                                                      // 157
+			h1516: '18',                                                                                                      // 157
+			h1617: '18',                                                                                                      // 157
+			h1718: '18',                                                                                                      // 157
+			h1819: '18',                                                                                                      // 157
+			h1920: '18',                                                                                                      // 157
+			h2021: '18',                                                                                                      // 157
+			h2122: '18',                                                                                                      // 157
+			h2223: '18',                                                                                                      // 157
+			h2324: '18'                                                                                                       // 157
+		});                                                                                                                // 157
+		Cronotermostato.insert({                                                                                           // 158
+			day: 'Martedì',                                                                                                   // 158
+			dayofweek: '2',                                                                                                   // 158
+			h001: '18',                                                                                                       // 158
+			h012: '18',                                                                                                       // 158
+			h023: '18',                                                                                                       // 158
+			h034: '18',                                                                                                       // 158
+			h045: '18',                                                                                                       // 158
+			h056: '18',                                                                                                       // 158
+			h067: '18',                                                                                                       // 158
+			h078: '18',                                                                                                       // 158
+			h089: '18',                                                                                                       // 158
+			h0910: '18',                                                                                                      // 158
+			h1011: '18',                                                                                                      // 158
+			h1112: '18',                                                                                                      // 158
+			h1213: '18',                                                                                                      // 158
+			h1314: '18',                                                                                                      // 158
+			h1415: '18',                                                                                                      // 158
+			h1516: '18',                                                                                                      // 158
+			h1617: '18',                                                                                                      // 158
+			h1718: '18',                                                                                                      // 158
+			h1819: '18',                                                                                                      // 158
+			h1920: '18',                                                                                                      // 158
+			h2021: '18',                                                                                                      // 158
+			h2122: '18',                                                                                                      // 158
+			h2223: '18',                                                                                                      // 158
+			h2324: '18'                                                                                                       // 158
+		});                                                                                                                // 158
+		Cronotermostato.insert({                                                                                           // 159
+			day: 'Mercoledì',                                                                                                 // 159
+			dayofweek: '3',                                                                                                   // 159
+			h001: '18',                                                                                                       // 159
+			h012: '18',                                                                                                       // 159
+			h023: '18',                                                                                                       // 159
+			h034: '18',                                                                                                       // 159
+			h045: '18',                                                                                                       // 159
+			h056: '18',                                                                                                       // 159
+			h067: '18',                                                                                                       // 159
+			h078: '18',                                                                                                       // 159
+			h089: '18',                                                                                                       // 159
+			h0910: '18',                                                                                                      // 159
+			h1011: '18',                                                                                                      // 159
+			h1112: '18',                                                                                                      // 159
+			h1213: '18',                                                                                                      // 159
+			h1314: '18',                                                                                                      // 159
+			h1415: '18',                                                                                                      // 159
+			h1516: '18',                                                                                                      // 159
+			h1617: '18',                                                                                                      // 159
+			h1718: '18',                                                                                                      // 159
+			h1819: '18',                                                                                                      // 159
+			h1920: '18',                                                                                                      // 159
+			h2021: '18',                                                                                                      // 159
+			h2122: '18',                                                                                                      // 159
+			h2223: '18',                                                                                                      // 159
+			h2324: '18'                                                                                                       // 159
+		});                                                                                                                // 159
+		Cronotermostato.insert({                                                                                           // 160
+			day: 'Giovedì',                                                                                                   // 160
+			dayofweek: '4',                                                                                                   // 160
+			h001: '18',                                                                                                       // 160
+			h012: '18',                                                                                                       // 160
+			h023: '18',                                                                                                       // 160
+			h034: '18',                                                                                                       // 160
+			h045: '18',                                                                                                       // 160
+			h056: '18',                                                                                                       // 160
+			h067: '18',                                                                                                       // 160
+			h078: '18',                                                                                                       // 160
+			h089: '18',                                                                                                       // 160
+			h0910: '18',                                                                                                      // 160
+			h1011: '18',                                                                                                      // 160
+			h1112: '18',                                                                                                      // 160
+			h1213: '18',                                                                                                      // 160
+			h1314: '18',                                                                                                      // 160
+			h1415: '18',                                                                                                      // 160
+			h1516: '18',                                                                                                      // 160
+			h1617: '18',                                                                                                      // 160
+			h1718: '18',                                                                                                      // 160
+			h1819: '18',                                                                                                      // 160
+			h1920: '18',                                                                                                      // 160
+			h2021: '18',                                                                                                      // 160
+			h2122: '18',                                                                                                      // 160
+			h2223: '18',                                                                                                      // 160
+			h2324: '18'                                                                                                       // 160
+		});                                                                                                                // 160
+		Cronotermostato.insert({                                                                                           // 161
+			day: 'Venerdì',                                                                                                   // 161
+			dayofweek: '5',                                                                                                   // 161
+			h001: '18',                                                                                                       // 161
+			h012: '18',                                                                                                       // 161
+			h023: '18',                                                                                                       // 161
+			h034: '18',                                                                                                       // 161
+			h045: '18',                                                                                                       // 161
+			h056: '18',                                                                                                       // 161
+			h067: '18',                                                                                                       // 161
+			h078: '18',                                                                                                       // 161
+			h089: '18',                                                                                                       // 161
+			h0910: '18',                                                                                                      // 161
+			h1011: '18',                                                                                                      // 161
+			h1112: '18',                                                                                                      // 161
+			h1213: '18',                                                                                                      // 161
+			h1314: '18',                                                                                                      // 161
+			h1415: '18',                                                                                                      // 161
+			h1516: '18',                                                                                                      // 161
+			h1617: '18',                                                                                                      // 161
+			h1718: '18',                                                                                                      // 161
+			h1819: '18',                                                                                                      // 161
+			h1920: '18',                                                                                                      // 161
+			h2021: '18',                                                                                                      // 161
+			h2122: '18',                                                                                                      // 161
+			h2223: '18',                                                                                                      // 161
+			h2324: '18'                                                                                                       // 161
+		});                                                                                                                // 161
+		Cronotermostato.insert({                                                                                           // 162
+			day: 'Sabato',                                                                                                    // 162
+			dayofweek: '6',                                                                                                   // 162
+			h001: '18',                                                                                                       // 162
+			h012: '18',                                                                                                       // 162
+			h023: '18',                                                                                                       // 162
+			h034: '18',                                                                                                       // 162
+			h045: '18',                                                                                                       // 162
+			h056: '18',                                                                                                       // 162
+			h067: '18',                                                                                                       // 162
+			h078: '18',                                                                                                       // 162
+			h089: '18',                                                                                                       // 162
+			h0910: '18',                                                                                                      // 162
+			h1011: '18',                                                                                                      // 162
+			h1112: '18',                                                                                                      // 162
+			h1213: '18',                                                                                                      // 162
+			h1314: '18',                                                                                                      // 162
+			h1415: '18',                                                                                                      // 162
+			h1516: '18',                                                                                                      // 162
+			h1617: '18',                                                                                                      // 162
+			h1718: '18',                                                                                                      // 162
+			h1819: '18',                                                                                                      // 162
+			h1920: '18',                                                                                                      // 162
+			h2021: '18',                                                                                                      // 162
+			h2122: '18',                                                                                                      // 162
+			h2223: '18',                                                                                                      // 162
+			h2324: '18'                                                                                                       // 162
+		});                                                                                                                // 162
+		Cronotermostato.insert({                                                                                           // 163
+			day: 'Domenica',                                                                                                  // 163
+			dayofweek: '7',                                                                                                   // 163
+			h001: '18',                                                                                                       // 163
+			h012: '18',                                                                                                       // 163
+			h023: '18',                                                                                                       // 163
+			h034: '18',                                                                                                       // 163
+			h045: '18',                                                                                                       // 163
+			h056: '18',                                                                                                       // 163
+			h067: '18',                                                                                                       // 163
+			h078: '18',                                                                                                       // 163
+			h089: '18',                                                                                                       // 163
+			h0910: '18',                                                                                                      // 163
+			h1011: '18',                                                                                                      // 163
+			h1112: '18',                                                                                                      // 163
+			h1213: '18',                                                                                                      // 163
+			h1314: '18',                                                                                                      // 163
+			h1415: '18',                                                                                                      // 163
+			h1516: '18',                                                                                                      // 163
+			h1617: '18',                                                                                                      // 163
+			h1718: '18',                                                                                                      // 163
+			h1819: '18',                                                                                                      // 163
+			h1920: '18',                                                                                                      // 163
+			h2021: '18',                                                                                                      // 163
+			h2122: '18',                                                                                                      // 163
+			h2223: '18',                                                                                                      // 163
+			h2324: '18'                                                                                                       // 163
+		});                                                                                                                // 163
+	}                                                                                                                   // 164
+                                                                                                                     // 164
+	if (Raspberry) {                                                                                                    // 168
+		//  import wpi from 'wiringpi-node';                                                                               // 169
+		var wpi = require('wiringpi-node');                                                                                // 170
                                                                                                                      // 170
-			if (!_sensorLib.initialize(sensorType, GpioPin)) {                                                                // 171
-				console.log('Failed to initialize sensor');                                                                      // 172
-				process.exit(1);                                                                                                 // 173
-			}                                                                                                                 // 174
+		wpi.setup('sys'); // import sensorLib from 'node-dht-sensor';                                                      // 171
+                                                                                                                     // 173
+		var sensorLib = require('node-dht-sensor');                                                                        // 174
                                                                                                                      // 174
-			console.log('Pin GPIO del sensore sul Raspberry: ' + GpioPin);                                                    // 175
-		} else {                                                                                                           // 176
-			console.log('DHT Sensor non configured on Raspberry');                                                            // 177
-		}                                                                                                                  // 178
-	}                                                                                                                   // 179
-                                                                                                                     // 179
-	function switchOnOff(onoff) {                                                                                       // 182
-		var state = onoff ? 1 : 0;                                                                                         // 183
-		console.log('function switchOnOff: ', typeof win === "undefined" ? "undefined" : (0, _typeof3.default)(win), ' - ', state);
-                                                                                                                     // 184
-		if (Raspberry) {                                                                                                   // 185
-			wpi.pinMode(7, wpi.OUTPUT);                                                                                       // 185
-			wpi.digitalWrite(7, state);                                                                                       // 185
-			console.log('function switchOnOff : Inviato segnale al relay');                                                   // 185
-		}                                                                                                                  // 185
-	}                                                                                                                   // 186
-                                                                                                                     // 186
-	function cron_read_sensor(ip) {                                                                                     // 189
-		var tipo = Sensori.findOne({                                                                                       // 190
-			ip: ip                                                                                                            // 190
-		}).tipo;                                                                                                           // 190
-                                                                                                                     // 190
-		if (tipo == 'DHT22') {                                                                                             // 191
-			try {                                                                                                             // 192
-				var response = HTTP.get("http://" + ip + "/json", {});                                                           // 193
-                                                                                                                     // 193
-				if (response.data !== null) {                                                                                    // 194
+		var GpioPin = 22;                                                                                                  // 175
+		var sensorType = 22; // 11 for DHT11, 22 for DHT22 and AM2302                                                      // 176
+                                                                                                                     // 176
+		if (!sensorLib.initialize(sensorType, GpioPin)) {                                                                  // 177
+			console.log('Failed to initialize sensor');                                                                       // 178
+			process.exit(1);                                                                                                  // 179
+		}                                                                                                                  // 180
+                                                                                                                     // 180
+		var readout = sensorLib.read();                                                                                    // 181
+		console.log('Pin GPIO del sensore sul Raspberry: ' + GpioPin + " - T:", readout.temperature.toFixed(1), "- U:", readout.humidity.toFixed(1));
+	}                                                                                                                   // 183
+                                                                                                                     // 183
+	function switchOnOff(onoff) {                                                                                       // 187
+		var state = onoff ? 1 : 0;                                                                                         // 188
+		console.log('function switchOnOff: ', state);                                                                      // 189
+                                                                                                                     // 189
+		if (Raspberry) {                                                                                                   // 190
+			wpi.pinMode(7, wpi.OUTPUT);                                                                                       // 190
+			wpi.digitalWrite(7, state);                                                                                       // 190
+			console.log('function switchOnOff : Inviato segnale al relay');                                                   // 190
+		}                                                                                                                  // 190
+	}                                                                                                                   // 191
+                                                                                                                     // 191
+	function cron_read_sensor(ip) {                                                                                     // 194
+		var tipo = Sensori.findOne({                                                                                       // 195
+			ip: ip                                                                                                            // 195
+		}).tipo;                                                                                                           // 195
+                                                                                                                     // 195
+		if (tipo == 'DHT22') {                                                                                             // 196
+			try {                                                                                                             // 197
+				var response = HTTP.get("http://" + ip + "/json", {});                                                           // 198
+                                                                                                                     // 198
+				if (response.data !== null) {                                                                                    // 199
 					//console.log(ip," (" , response.data.Sensors[0].TaskName,") - T:",response.data.Sensors[0].Temperature ,"- U:", response.data.Sensors[0].Humidity);
-					Sensori.update({                                                                                                // 196
-						ip: ip                                                                                                         // 196
-					}, {                                                                                                            // 196
-						$set: {                                                                                                        // 196
-							hum: response.data.Sensors[0].Humidity,                                                                       // 196
-							active: true,                                                                                                 // 196
-							temp: response.data.Sensors[0].Temperature,                                                                   // 196
-							location: response.data.Sensors[0].TaskName                                                                   // 196
-						}                                                                                                              // 196
-					});                                                                                                             // 196
-				} else {                                                                                                         // 197
-					console.log('Warning reading sensor:', ip);                                                                     // 197
-					Sensori.update({                                                                                                // 197
-						ip: ip                                                                                                         // 197
-					}, {                                                                                                            // 197
-						$set: {                                                                                                        // 197
-							active: false                                                                                                 // 197
-						}                                                                                                              // 197
-					});                                                                                                             // 197
-				}                                                                                                                // 197
-			} catch (e) {                                                                                                     // 198
-				console.log('Warning reading sensor:', ip);                                                                      // 200
-				Sensori.update({                                                                                                 // 201
-					ip: ip                                                                                                          // 201
-				}, {                                                                                                             // 201
-					$set: {                                                                                                         // 201
-						active: false                                                                                                  // 201
-					}                                                                                                               // 201
-				});                                                                                                              // 201
-			}                                                                                                                 // 202
-		} //	if (tipo == 'pulse')	{                                                                                        // 203
-		//		HTTP.get("http://"+ip+"/json", {}, function( error, response ) {                                               // 206
-		//				if ( error ) { console.log('Error:',ip, error); Sensori.update({ip: ip}, {$set:{ active: false}}); }         // 207
-		//				else { if (response.data !== null) {                                                                         // 208
+					Sensori.update({                                                                                                // 201
+						ip: ip                                                                                                         // 201
+					}, {                                                                                                            // 201
+						$set: {                                                                                                        // 201
+							hum: response.data.Sensors[0].Humidity,                                                                       // 201
+							active: true,                                                                                                 // 201
+							temp: response.data.Sensors[0].Temperature,                                                                   // 201
+							location: response.data.Sensors[0].TaskName                                                                   // 201
+						}                                                                                                              // 201
+					});                                                                                                             // 201
+				} else {                                                                                                         // 202
+					console.log('Warning reading sensor:', ip);                                                                     // 202
+					Sensori.update({                                                                                                // 202
+						ip: ip                                                                                                         // 202
+					}, {                                                                                                            // 202
+						$set: {                                                                                                        // 202
+							active: false                                                                                                 // 202
+						}                                                                                                              // 202
+					});                                                                                                             // 202
+				}                                                                                                                // 202
+			} catch (e) {                                                                                                     // 203
+				console.log('Warning reading sensor:', ip);                                                                      // 205
+				Sensori.update({                                                                                                 // 206
+					ip: ip                                                                                                          // 206
+				}, {                                                                                                             // 206
+					$set: {                                                                                                         // 206
+						active: false                                                                                                  // 206
+					}                                                                                                               // 206
+				});                                                                                                              // 206
+			}                                                                                                                 // 207
+		} //	if (tipo == 'pulse')	{                                                                                        // 208
+		//		HTTP.get("http://"+ip+"/json", {}, function( error, response ) {                                               // 211
+		//				if ( error ) { console.log('Error:',ip, error); Sensori.update({ip: ip}, {$set:{ active: false}}); }         // 212
+		//				else { if (response.data !== null) {                                                                         // 213
 		//													// console.log(ip," (" , response.data.Sensors[0].TaskName,") - Count:", response.data.Sensors[0].Total);
 		//													Sensori.update({ip: ip}, {$set:{ active: true, location: response.data.Sensors[0].TaskName, note: 'counter:'+response.data.Sensors[0].Total}});
-		//													}	else {console.log(ip," - No data !"); Sensori.update({ip:ip}, {$set:{active: false}}); }          // 211
-		//				}                                                                                                            // 212
-		//		});                                                                                                            // 213
-		//	}                                                                                                               // 214
-                                                                                                                     // 214
-                                                                                                                     // 214
-		if (Raspberry && tipo == 'DHT22 (on PIN 22)') {                                                                    // 216
-			var readout = sensorLib.read();                                                                                   // 217
-                                                                                                                     // 217
-			if (readout.temperature.toFixed(1) !== '0.0') {                                                                   // 218
-				// console.log(ip," (Raspberry) - T:", readout.temperature.toFixed(1),"- U:", readout.humidity.toFixed(1));      // 219
-				Sensori.update({                                                                                                 // 220
-					ip: ip                                                                                                          // 220
-				}, {                                                                                                             // 220
-					$set: {                                                                                                         // 220
-						hum: readout.humidity.toFixed(1),                                                                              // 220
-						active: true,                                                                                                  // 220
-						temp: readout.temperature.toFixed(1)                                                                           // 220
-					}                                                                                                               // 220
-				});                                                                                                              // 220
-			}                                                                                                                 // 221
-		}                                                                                                                  // 222
-	}                                                                                                                   // 223
-                                                                                                                     // 223
-	function cron_cronotermostato() {                                                                                   // 226
-		var today = moment().format('E');                                                                                  // 227
-		var hournow = moment().format('HH');                                                                               // 228
-		var temphour = Cronotermostato.find({                                                                              // 229
-			dayofweek: parseInt(today)                                                                                        // 229
-		}).map(function (o) {                                                                                              // 229
+		//													}	else {console.log(ip," - No data !"); Sensori.update({ip:ip}, {$set:{active: false}}); }          // 216
+		//				}                                                                                                            // 217
+		//		});                                                                                                            // 218
+		//	}                                                                                                               // 219
+                                                                                                                     // 219
+                                                                                                                     // 219
+		if (Raspberry && tipo == 'DHT22 (on PIN 22)') {                                                                    // 221
+			var readout = sensorLib.read();                                                                                   // 222
+                                                                                                                     // 222
+			if (readout.temperature.toFixed(1) !== '0.0') {                                                                   // 223
+				// console.log(ip," (Raspberry) - T:", readout.temperature.toFixed(1),"- U:", readout.humidity.toFixed(1));      // 224
+				Sensori.update({                                                                                                 // 225
+					ip: ip                                                                                                          // 225
+				}, {                                                                                                             // 225
+					$set: {                                                                                                         // 225
+						hum: readout.humidity.toFixed(1),                                                                              // 225
+						active: true,                                                                                                  // 225
+						temp: readout.temperature.toFixed(1)                                                                           // 225
+					}                                                                                                               // 225
+				});                                                                                                              // 225
+			}                                                                                                                 // 226
+		}                                                                                                                  // 227
+	}                                                                                                                   // 228
+                                                                                                                     // 228
+	function cron_cronotermostato() {                                                                                   // 231
+		var today = moment().format('E');                                                                                  // 232
+		var hournow = moment().format('HH');                                                                               // 233
+		var temphour = Cronotermostato.find({                                                                              // 234
+			dayofweek: parseInt(today)                                                                                        // 234
+		}).map(function (o) {                                                                                              // 234
 			return [o.h001, o.h012, o.h023, o.h034, o.h045, o.h056, o.h067, o.h078, o.h089, o.h0910, o.h1011, o.h1112, o.h1213, o.h1314, o.h1415, o.h1516, o.h1617, o.h1718, o.h1819, o.h1920, o.h2021, o.h2122, o.h2223, o.h2324];
-		})[0][parseInt(hournow)];                                                                                          // 229
-		var sensoretermostato = Caldaia.findOne({}).sensoretermostato;                                                     // 230
-		var isteresi = Caldaia.findOne({}).isteresi;                                                                       // 231
-		var temprilevata = Sensori.findOne({                                                                               // 232
-			location: sensoretermostato                                                                                       // 232
-		}).temp;                                                                                                           // 232
+		})[0][parseInt(hournow)];                                                                                          // 234
+		var sensoretermostato = Caldaia.findOne({}).sensoretermostato;                                                     // 235
+		var isteresi = Caldaia.findOne({}).isteresi;                                                                       // 236
+		var temprilevata = Sensori.findOne({                                                                               // 237
+			location: sensoretermostato                                                                                       // 237
+		}).temp;                                                                                                           // 237
 		console.log('today:', today, ' - hournow:', hournow, ' - temphour:', temphour, ' - sensoretermostato:', sensoretermostato, ' - isteresi:', isteresi, ' - temprilevata:', temprilevata);
-                                                                                                                     // 233
-		if (temphour - isteresi >= temprilevata) {                                                                         // 234
-			Caldaia.update({}, {                                                                                              // 235
-				$set: {                                                                                                          // 235
-					statocaldaia: true                                                                                              // 235
-				}                                                                                                                // 235
-			});                                                                                                               // 235
-			switchOnOff(true);                                                                                                // 236
-		} else {                                                                                                           // 237
-			Caldaia.update({}, {                                                                                              // 238
-				$set: {                                                                                                          // 238
-					statocaldaia: false                                                                                             // 238
-				}                                                                                                                // 238
-			});                                                                                                               // 238
-			switchOnOff(false);                                                                                               // 239
-		}                                                                                                                  // 240
-	}                                                                                                                   // 241
-                                                                                                                     // 241
-	var termostato = Caldaia.find({}, {                                                                                 // 245
-		fields: {                                                                                                          // 245
-			_id: true,                                                                                                        // 245
-			statotermostato: true,                                                                                            // 245
-			timescheduler: true                                                                                               // 245
+                                                                                                                     // 238
+		if (temphour - isteresi >= temprilevata) {                                                                         // 239
+			Caldaia.update({}, {                                                                                              // 240
+				$set: {                                                                                                          // 240
+					statocaldaia: true                                                                                              // 240
+				}                                                                                                                // 240
+			});                                                                                                               // 240
+			switchOnOff(true);                                                                                                // 241
+		} else {                                                                                                           // 242
+			Caldaia.update({}, {                                                                                              // 243
+				$set: {                                                                                                          // 243
+					statocaldaia: false                                                                                             // 243
+				}                                                                                                                // 243
+			});                                                                                                               // 243
+			switchOnOff(false);                                                                                               // 244
 		}                                                                                                                  // 245
-	}).observeChanges({                                                                                                 // 245
-		changed: function (id, s) {                                                                                        // 246
-			if (s.statotermostato === true) {                                                                                 // 247
-				//stop                                                                                                           // 248
-				if (SyncedCron.nextScheduledAtDate('cronotermostato')) {                                                         // 249
-					SyncedCron.remove('cronotermostato');                                                                           // 249
-				} //start                                                                                                        // 249
-                                                                                                                     // 250
-                                                                                                                     // 250
-				SyncedCron.add({                                                                                                 // 251
-					name: 'cronotermostato',                                                                                        // 251
-					schedule: function (parser) {                                                                                   // 251
-						return parser.recur().every(Caldaia.findOne().timescheduler).second();                                         // 251
-					},                                                                                                              // 251
-					job: cron_cronotermostato                                                                                       // 251
-				});                                                                                                              // 251
-				Caldaia.update({}, {                                                                                             // 252
-					$set: {                                                                                                         // 252
-						statoriscaldamento: true                                                                                       // 252
-					}                                                                                                               // 252
-				});                                                                                                              // 252
-			} else {                                                                                                          // 253
-				if (SyncedCron.nextScheduledAtDate('cronotermostato')) {                                                         // 253
-					SyncedCron.remove('cronotermostato');                                                                           // 253
-				}                                                                                                                // 253
-			}                                                                                                                 // 253
-		},                                                                                                                 // 254
-		added: function (id, s) {                                                                                          // 255
-			if (s.cronotermostato === true) {                                                                                 // 255
-				switchOnOff(true);                                                                                               // 255
-				Caldaia.update({}, {                                                                                             // 255
-					$set: {                                                                                                         // 255
-						statoriscaldamento: true                                                                                       // 255
-					}                                                                                                               // 255
-				});                                                                                                              // 255
-			}                                                                                                                 // 255
-		}                                                                                                                  // 255
-	});                                                                                                                 // 245
-	var riscaldamento = Caldaia.find({}, {                                                                              // 259
-		fields: {                                                                                                          // 259
-			statoriscaldamento: true                                                                                          // 259
-		}                                                                                                                  // 259
-	}).observeChanges({                                                                                                 // 259
-		changed: function (id, s) {                                                                                        // 260
-			// workaround: per qulache motivo non funziona s.on s.ip                                                          // 261
-			if (s.statoriscaldamento === true) {                                                                              // 262
-				switchOnOff(true);                                                                                               // 262
-				Caldaia.update({}, {                                                                                             // 262
-					$set: {                                                                                                         // 262
-						statocaldaia: true                                                                                             // 262
-					}                                                                                                               // 262
-				});                                                                                                              // 262
-			} else {                                                                                                          // 263
-				switchOnOff(false);                                                                                              // 263
-				Caldaia.update({}, {                                                                                             // 263
-					$set: {                                                                                                         // 263
-						statocaldaia: false,                                                                                           // 263
-						statotermostato: false                                                                                         // 263
-					}                                                                                                               // 263
-				});                                                                                                              // 263
-			}                                                                                                                 // 263
-		},                                                                                                                 // 264
-		added: function (id, s) {                                                                                          // 265
-			if (s.statoriscaldamento === true) {                                                                              // 265
-				switchOnOff(true);                                                                                               // 265
-				Caldaia.update({}, {                                                                                             // 265
-					$set: {                                                                                                         // 265
-						statocaldaia: true                                                                                             // 265
-					}                                                                                                               // 265
-				});                                                                                                              // 265
-			}                                                                                                                 // 265
-		}                                                                                                                  // 265
-	});                                                                                                                 // 259
-	var on = Sensori.find({}, {                                                                                         // 269
-		fields: {                                                                                                          // 269
-			ip: true,                                                                                                         // 269
-			on: true,                                                                                                         // 269
-			timescheduler: true                                                                                               // 269
-		}                                                                                                                  // 269
-	}).observeChanges({                                                                                                 // 269
-		changed: function (id, s) {                                                                                        // 270
-			var ip = Sensori.findOne({                                                                                        // 271
-				_id: id                                                                                                          // 271
-			}).ip;                                                                                                            // 271
-                                                                                                                     // 271
-			if (Sensori.findOne({                                                                                             // 272
-				_id: id                                                                                                          // 272
-			}).on === true) {                                                                                                 // 272
-				// shutdown                                                                                                      // 273
-				if (SyncedCron.nextScheduledAtDate(ip + '_read sensors')) {                                                      // 274
-					SyncedCron.remove(ip + '_read sensors');                                                                        // 274
-				} //activatesensor                                                                                               // 274
-                                                                                                                     // 275
-                                                                                                                     // 275
-				SyncedCron.add({                                                                                                 // 276
-					name: ip + '_read sensors',                                                                                     // 277
-					schedule: function (parser) {                                                                                   // 278
-						return parser.recur().every(Sensori.findOne({                                                                  // 278
-							ip: ip                                                                                                        // 278
-						}).timescheduler).second();                                                                                    // 278
-					},                                                                                                              // 278
-					job: function () {                                                                                              // 279
-						cron_read_sensor(ip);                                                                                          // 279
-						return ip + '_read sensors';                                                                                   // 279
-					}                                                                                                               // 279
-				});                                                                                                              // 276
-			} else {                                                                                                          // 281
-				if (SyncedCron.nextScheduledAtDate(ip + '_read sensors')) {                                                      // 281
-					SyncedCron.remove(ip + '_read sensors');                                                                        // 281
-				}                                                                                                                // 281
-			}                                                                                                                 // 281
-		},                                                                                                                 // 282
-		added: function (id, s) {                                                                                          // 283
-			var ip = Sensori.findOne({                                                                                        // 284
-				_id: id                                                                                                          // 284
-			}).ip;                                                                                                            // 284
-                                                                                                                     // 284
-			if (Sensori.findOne({                                                                                             // 285
-				_id: id                                                                                                          // 285
-			}).on === true) {                                                                                                 // 285
-				console.log("Added sensor:", s.ip, s.on, s.timescheduler);                                                       // 286
-				SyncedCron.add({                                                                                                 // 287
-					name: ip + '_read sensors',                                                                                     // 288
-					schedule: function (parser) {                                                                                   // 289
-						return parser.recur().every(Sensori.findOne({                                                                  // 289
-							ip: ip                                                                                                        // 289
-						}).timescheduler).second();                                                                                    // 289
-					},                                                                                                              // 289
-					job: function () {                                                                                              // 290
-						cron_read_sensor(ip);                                                                                          // 290
-						return ip + '_read sensors';                                                                                   // 290
-					}                                                                                                               // 290
-				});                                                                                                              // 287
-			}                                                                                                                 // 292
-		}                                                                                                                  // 293
-	});                                                                                                                 // 269
-                                                                                                                     // 269
-	function cron_watt_after(now, response) {                                                                           // 297
-		var today = moment().format("YYYYMMDD");                                                                           // 298
-		var matrix = [];                                                                                                   // 299
-		var csvfs = '';                                                                                                    // 299
-		var solararr = [];                                                                                                 // 299
-                                                                                                                     // 299
-		if (Raspberry) {                                                                                                   // 300
-			csvfs = csvpath + today + ".csv";                                                                                 // 300
-		} else {                                                                                                           // 300
-			csvfs = csvpathwin;                                                                                               // 300
-		} // Leggo immediatamente i valori de sensore per garantire il timeframe dei 5 minuti 		                           // 300
-                                                                                                                     // 302
-                                                                                                                     // 302
-		if (fs.existsSync(csvfs)) {                                                                                        // 303
-			matrix = fs.readFileSync(csvfs).toString().split("\n").map(function (row) {                                       // 304
-				return {                                                                                                         // 304
-					x: moment(today + " " + row.split(",")[0], "YYYYMMDD HH:mm").unix(),                                            // 304
-					y: Number(row.split(",")[27])                                                                                   // 304
-				};                                                                                                               // 304
-			}).slice(1, -1);                                                                                                  // 304
-			solararr = solar(matrix); //console.log('solarray',solarray);                                                     // 305
-                                                                                                                     // 306
-			Watt.update({                                                                                                     // 307
-				day: today                                                                                                       // 307
-			}, {                                                                                                              // 307
-				$set: {                                                                                                          // 307
-					solararr: solararr                                                                                              // 307
-				}                                                                                                                // 307
-			}, {                                                                                                              // 307
-				upsert: true,                                                                                                    // 307
-				multi: false                                                                                                     // 307
-			});                                                                                                               // 307
-		} else {                                                                                                           // 308
-			console.log('File not found: ', csvfs);                                                                           // 308
-		}                                                                                                                  // 308
-                                                                                                                     // 308
-		if (response.data !== null) {                                                                                      // 310
+	}                                                                                                                   // 246
+                                                                                                                     // 246
+	var termostato = Caldaia.find({}, {                                                                                 // 250
+		fields: {                                                                                                          // 250
+			_id: true,                                                                                                        // 250
+			statotermostato: true,                                                                                            // 250
+			timescheduler: true                                                                                               // 250
+		}                                                                                                                  // 250
+	}).observeChanges({                                                                                                 // 250
+		changed: function (id, s) {                                                                                        // 251
+			if (s.statotermostato === true) {                                                                                 // 252
+				//stop                                                                                                           // 253
+				if (SyncedCron.nextScheduledAtDate('cronotermostato')) {                                                         // 254
+					SyncedCron.remove('cronotermostato');                                                                           // 254
+				} //start                                                                                                        // 254
+                                                                                                                     // 255
+                                                                                                                     // 255
+				SyncedCron.add({                                                                                                 // 256
+					name: 'cronotermostato',                                                                                        // 256
+					schedule: function (parser) {                                                                                   // 256
+						return parser.recur().every(Caldaia.findOne().timescheduler).second();                                         // 256
+					},                                                                                                              // 256
+					job: cron_cronotermostato                                                                                       // 256
+				});                                                                                                              // 256
+				Caldaia.update({}, {                                                                                             // 257
+					$set: {                                                                                                         // 257
+						statoriscaldamento: true                                                                                       // 257
+					}                                                                                                               // 257
+				});                                                                                                              // 257
+			} else {                                                                                                          // 258
+				if (SyncedCron.nextScheduledAtDate('cronotermostato')) {                                                         // 258
+					SyncedCron.remove('cronotermostato');                                                                           // 258
+				}                                                                                                                // 258
+			}                                                                                                                 // 258
+		},                                                                                                                 // 259
+		added: function (id, s) {                                                                                          // 260
+			if (s.cronotermostato === true) {                                                                                 // 260
+				switchOnOff(true);                                                                                               // 260
+				Caldaia.update({}, {                                                                                             // 260
+					$set: {                                                                                                         // 260
+						statoriscaldamento: true                                                                                       // 260
+					}                                                                                                               // 260
+				});                                                                                                              // 260
+			}                                                                                                                 // 260
+		}                                                                                                                  // 260
+	});                                                                                                                 // 250
+	var riscaldamento = Caldaia.find({}, {                                                                              // 264
+		fields: {                                                                                                          // 264
+			statoriscaldamento: true                                                                                          // 264
+		}                                                                                                                  // 264
+	}).observeChanges({                                                                                                 // 264
+		changed: function (id, s) {                                                                                        // 265
+			// workaround: per qulache motivo non funziona s.on s.ip                                                          // 266
+			if (s.statoriscaldamento === true) {                                                                              // 267
+				switchOnOff(true);                                                                                               // 267
+				Caldaia.update({}, {                                                                                             // 267
+					$set: {                                                                                                         // 267
+						statocaldaia: true                                                                                             // 267
+					}                                                                                                               // 267
+				});                                                                                                              // 267
+			} else {                                                                                                          // 268
+				switchOnOff(false);                                                                                              // 268
+				Caldaia.update({}, {                                                                                             // 268
+					$set: {                                                                                                         // 268
+						statocaldaia: false,                                                                                           // 268
+						statotermostato: false                                                                                         // 268
+					}                                                                                                               // 268
+				});                                                                                                              // 268
+			}                                                                                                                 // 268
+		},                                                                                                                 // 269
+		added: function (id, s) {                                                                                          // 270
+			if (s.statoriscaldamento === true) {                                                                              // 270
+				switchOnOff(true);                                                                                               // 270
+				Caldaia.update({}, {                                                                                             // 270
+					$set: {                                                                                                         // 270
+						statocaldaia: true                                                                                             // 270
+					}                                                                                                               // 270
+				});                                                                                                              // 270
+			}                                                                                                                 // 270
+		}                                                                                                                  // 270
+	});                                                                                                                 // 264
+	var on = Sensori.find({}, {                                                                                         // 274
+		fields: {                                                                                                          // 274
+			ip: true,                                                                                                         // 274
+			on: true,                                                                                                         // 274
+			timescheduler: true                                                                                               // 274
+		}                                                                                                                  // 274
+	}).observeChanges({                                                                                                 // 274
+		changed: function (id, s) {                                                                                        // 275
+			var ip = Sensori.findOne({                                                                                        // 276
+				_id: id                                                                                                          // 276
+			}).ip;                                                                                                            // 276
+                                                                                                                     // 276
+			if (Sensori.findOne({                                                                                             // 277
+				_id: id                                                                                                          // 277
+			}).on === true) {                                                                                                 // 277
+				// shutdown                                                                                                      // 278
+				if (SyncedCron.nextScheduledAtDate(ip + '_read sensors')) {                                                      // 279
+					SyncedCron.remove(ip + '_read sensors');                                                                        // 279
+				} //activatesensor                                                                                               // 279
+                                                                                                                     // 280
+                                                                                                                     // 280
+				SyncedCron.add({                                                                                                 // 281
+					name: ip + '_read sensors',                                                                                     // 282
+					schedule: function (parser) {                                                                                   // 283
+						return parser.recur().every(Sensori.findOne({                                                                  // 283
+							ip: ip                                                                                                        // 283
+						}).timescheduler).second();                                                                                    // 283
+					},                                                                                                              // 283
+					job: function () {                                                                                              // 284
+						cron_read_sensor(ip);                                                                                          // 284
+						return ip + '_read sensors';                                                                                   // 284
+					}                                                                                                               // 284
+				});                                                                                                              // 281
+			} else {                                                                                                          // 286
+				if (SyncedCron.nextScheduledAtDate(ip + '_read sensors')) {                                                      // 286
+					SyncedCron.remove(ip + '_read sensors');                                                                        // 286
+				}                                                                                                                // 286
+			}                                                                                                                 // 286
+		},                                                                                                                 // 287
+		added: function (id, s) {                                                                                          // 288
+			var ip = Sensori.findOne({                                                                                        // 289
+				_id: id                                                                                                          // 289
+			}).ip;                                                                                                            // 289
+                                                                                                                     // 289
+			if (Sensori.findOne({                                                                                             // 290
+				_id: id                                                                                                          // 290
+			}).on === true) {                                                                                                 // 290
+				console.log("Added sensor:", s.ip, s.on, s.timescheduler);                                                       // 291
+				SyncedCron.add({                                                                                                 // 292
+					name: ip + '_read sensors',                                                                                     // 293
+					schedule: function (parser) {                                                                                   // 294
+						return parser.recur().every(Sensori.findOne({                                                                  // 294
+							ip: ip                                                                                                        // 294
+						}).timescheduler).second();                                                                                    // 294
+					},                                                                                                              // 294
+					job: function () {                                                                                              // 295
+						cron_read_sensor(ip);                                                                                          // 295
+						return ip + '_read sensors';                                                                                   // 295
+					}                                                                                                               // 295
+				});                                                                                                              // 292
+			}                                                                                                                 // 297
+		}                                                                                                                  // 298
+	});                                                                                                                 // 274
+                                                                                                                     // 274
+	function cron_watt_after(now, response) {                                                                           // 302
+		var today = moment().format("YYYYMMDD");                                                                           // 303
+		var matrix = [];                                                                                                   // 304
+		var csvfs = '';                                                                                                    // 304
+		var solararr = [];                                                                                                 // 304
+                                                                                                                     // 304
+		if (Raspberry) {                                                                                                   // 305
+			csvfs = csvpath + today + ".csv";                                                                                 // 305
+		} else {                                                                                                           // 305
+			csvfs = csvpathwin;                                                                                               // 305
+		} // Leggo immediatamente i valori de sensore per garantire il timeframe dei 5 minuti 		                           // 305
+                                                                                                                     // 307
+                                                                                                                     // 307
+		if (fs.existsSync(csvfs)) {                                                                                        // 308
+			matrix = fs.readFileSync(csvfs).toString().split("\n").map(function (row) {                                       // 309
+				return {                                                                                                         // 309
+					x: moment(today + " " + row.split(",")[0], "YYYYMMDD HH:mm").unix(),                                            // 309
+					y: Number(row.split(",")[27])                                                                                   // 309
+				};                                                                                                               // 309
+			}).slice(1, -1);                                                                                                  // 309
+			solararr = solar(matrix); //console.log('solarray',solarray);                                                     // 310
+                                                                                                                     // 311
+			Watt.update({                                                                                                     // 312
+				day: today                                                                                                       // 312
+			}, {                                                                                                              // 312
+				$set: {                                                                                                          // 312
+					solararr: solararr                                                                                              // 312
+				}                                                                                                                // 312
+			}, {                                                                                                              // 312
+				upsert: true,                                                                                                    // 312
+				multi: false                                                                                                     // 312
+			});                                                                                                               // 312
+		} else {                                                                                                           // 313
+			console.log('File not found: ', csvfs);                                                                           // 313
+		}                                                                                                                  // 313
+                                                                                                                     // 313
+		if (response.data !== null) {                                                                                      // 315
 			var pulsearr = pulse(today, now, response.data.Sensors[0].Total, solararr); //	console.log('pulserray',pulsearr);      
-                                                                                                                     // 312
-			Watt.update({                                                                                                     // 313
-				day: today                                                                                                       // 313
-			}, {                                                                                                              // 313
-				$set: {                                                                                                          // 313
-					pulsearr: pulsearr                                                                                              // 313
-				}                                                                                                                // 313
-			}, {                                                                                                              // 313
-				upsert: true,                                                                                                    // 313
-				multi: false                                                                                                     // 313
-			});                                                                                                               // 313
-		} else {// console.log('Warning cron_watt (problem reading sensor):',today,' - ',response);                        // 314
-		}                                                                                                                  // 316
-	}                                                                                                                   // 317
                                                                                                                      // 317
-	function pulse(date, now, ytmp, solararr) {                                                                         // 320
-		var b = [];                                                                                                        // 321
-		var x0 = 0;                                                                                                        // 321
-		var y0 = 0;                                                                                                        // 321
-		var e = Watt.findOne({                                                                                             // 321
-			day: date                                                                                                         // 321
-		});                                                                                                                // 321
-		var sx = 0;                                                                                                        // 321
-		var sy = 0;                                                                                                        // 321
-		console.log('solararr.length', solararr.length);                                                                   // 322
+			Watt.update({                                                                                                     // 318
+				day: today                                                                                                       // 318
+			}, {                                                                                                              // 318
+				$set: {                                                                                                          // 318
+					pulsearr: pulsearr                                                                                              // 318
+				}                                                                                                                // 318
+			}, {                                                                                                              // 318
+				upsert: true,                                                                                                    // 318
+				multi: false                                                                                                     // 318
+			});                                                                                                               // 318
+		} else {// console.log('Warning cron_watt (problem reading sensor):',today,' - ',response);                        // 319
+		}                                                                                                                  // 321
+	}                                                                                                                   // 322
                                                                                                                      // 322
-		if (solararr.length > 0) {                                                                                         // 324
-			sx = solararr[solararr.length - 1].x;                                                                             // 324
-			sy = solararr[solararr.length - 1].y;                                                                             // 324
-		}                                                                                                                  // 324
-                                                                                                                     // 324
-		if (e && e.pulsearr) {                                                                                             // 325
-			e.pulsearr.push({                                                                                                 // 326
-				x: now,                                                                                                          // 326
-				y: 0,                                                                                                            // 326
-				ytmp: ytmp                                                                                                       // 326
-			});                                                                                                               // 326
-			e.pulsearr.forEach(function (p) {                                                                                 // 327
-				var x1 = p.x;                                                                                                    // 328
-				var y1 = p.ytmp;                                                                                                 // 328
-				var deltat = (x1 - x0) / 1000;                                                                                   // 328
-                                                                                                                     // 328
-				if (deltat <= 0 || y1 < y0) {                                                                                    // 329
-					console.log('!!!  y1:', y1, 'y0:', y0, 'x1:', x1, 'x0:', x0);                                                   // 329
-				}                                                                                                                // 329
+	function pulse(date, now, ytmp, solararr) {                                                                         // 325
+		var b = [];                                                                                                        // 326
+		var x0 = 0;                                                                                                        // 326
+		var y0 = 0;                                                                                                        // 326
+		var e = Watt.findOne({                                                                                             // 326
+			day: date                                                                                                         // 326
+		});                                                                                                                // 326
+		var sx = 0;                                                                                                        // 326
+		var sy = 0;                                                                                                        // 326
+		console.log('solararr.length', solararr.length);                                                                   // 327
+                                                                                                                     // 327
+		if (solararr.length > 0) {                                                                                         // 329
+			sx = solararr[solararr.length - 1].x;                                                                             // 329
+			sy = solararr[solararr.length - 1].y;                                                                             // 329
+		}                                                                                                                  // 329
                                                                                                                      // 329
-				;                                                                                                                // 329
-                                                                                                                     // 329
-				if (deltat > 0 && y1 - y0 >= 0) {                                                                                // 331
-					var y = Math.round((y1 - y0) * 3600 / deltat, 3);                                                               // 332
-                                                                                                                     // 332
-					if (now === sx) {                                                                                               // 333
-						if (sy >= y) {                                                                                                 // 333
-							y = sy + y;                                                                                                   // 333
-						} else {                                                                                                       // 333
-							y = sy - y;                                                                                                   // 333
-						}                                                                                                              // 333
-					}                                                                                                               // 333
+		if (e && e.pulsearr) {                                                                                             // 330
+			e.pulsearr.push({                                                                                                 // 331
+				x: now,                                                                                                          // 331
+				y: 0,                                                                                                            // 331
+				ytmp: ytmp                                                                                                       // 331
+			});                                                                                                               // 331
+			e.pulsearr.forEach(function (p) {                                                                                 // 332
+				var x1 = p.x;                                                                                                    // 333
+				var y1 = p.ytmp;                                                                                                 // 333
+				var deltat = (x1 - x0) / 1000;                                                                                   // 333
                                                                                                                      // 333
-					console.log('now', now, 'sx', sx, 'sy', sy, 'y', y, 'y1', y1, 'y0', y0);                                        // 334
-					b.push({                                                                                                        // 335
-						x: x1,                                                                                                         // 335
-						y: y,                                                                                                          // 335
-						ytmp: y1                                                                                                       // 335
-					});                                                                                                             // 335
-				} else {                                                                                                         // 336
-					console.log('Warning (pulse) deltat or (y1-y0):', deltat, '|', y1 - y0);                                        // 336
-				}                                                                                                                // 336
-                                                                                                                     // 336
-				x0 = x1;                                                                                                         // 337
-				y0 = y1;                                                                                                         // 337
-			});                                                                                                               // 338
-		} else {                                                                                                           // 339
-			b.push({                                                                                                          // 339
-				x: now,                                                                                                          // 339
-				y: 0,                                                                                                            // 339
-				ytmp: ytmp                                                                                                       // 339
-			});                                                                                                               // 339
-			console.log('First entry for pulsearr:', now);                                                                    // 339
-		}                                                                                                                  // 339
-                                                                                                                     // 339
-		return b;                                                                                                          // 340
-	}                                                                                                                   // 341
+				if (deltat <= 0 || y1 < y0) {                                                                                    // 334
+					console.log('!!!  y1:', y1, 'y0:', y0, 'x1:', x1, 'x0:', x0);                                                   // 334
+				}                                                                                                                // 334
+                                                                                                                     // 334
+				;                                                                                                                // 334
+                                                                                                                     // 334
+				if (deltat > 0 && y1 - y0 >= 0) {                                                                                // 336
+					var y = Math.round((y1 - y0) * 3600 / deltat, 3);                                                               // 337
+                                                                                                                     // 337
+					if (now === sx) {                                                                                               // 338
+						if (sy >= y) {                                                                                                 // 338
+							y = sy + y;                                                                                                   // 338
+						} else {                                                                                                       // 338
+							y = sy - y;                                                                                                   // 338
+						}                                                                                                              // 338
+					}                                                                                                               // 338
+                                                                                                                     // 338
+					console.log('now', now, 'sx', sx, 'sy', sy, 'y', y, 'y1', y1, 'y0', y0);                                        // 339
+					b.push({                                                                                                        // 340
+						x: x1,                                                                                                         // 340
+						y: y,                                                                                                          // 340
+						ytmp: y1                                                                                                       // 340
+					});                                                                                                             // 340
+				} else {                                                                                                         // 341
+					console.log('Warning (pulse) deltat or (y1-y0):', deltat, '|', y1 - y0);                                        // 341
+				}                                                                                                                // 341
                                                                                                                      // 341
-	function solar(matrix) {                                                                                            // 344
-		var b = [];                                                                                                        // 345
-		var x0 = 0;                                                                                                        // 345
-		var y0 = 0;                                                                                                        // 345
-                                                                                                                     // 345
-		if (matrix) {                                                                                                      // 346
-			matrix.forEach(function (s) {                                                                                     // 347
-				var x1 = s.x;                                                                                                    // 348
-				var y1 = s.y;                                                                                                    // 348
-				var deltat = x1 - x0;                                                                                            // 348
-                                                                                                                     // 348
-				if (deltat > 0) {                                                                                                // 349
+				x0 = x1;                                                                                                         // 342
+				y0 = y1;                                                                                                         // 342
+			});                                                                                                               // 343
+		} else {                                                                                                           // 344
+			b.push({                                                                                                          // 344
+				x: now,                                                                                                          // 344
+				y: 0,                                                                                                            // 344
+				ytmp: ytmp                                                                                                       // 344
+			});                                                                                                               // 344
+			console.log('First entry for pulsearr:', now);                                                                    // 344
+		}                                                                                                                  // 344
+                                                                                                                     // 344
+		return b;                                                                                                          // 345
+	}                                                                                                                   // 346
+                                                                                                                     // 346
+	function solar(matrix) {                                                                                            // 349
+		var b = [];                                                                                                        // 350
+		var x0 = 0;                                                                                                        // 350
+		var y0 = 0;                                                                                                        // 350
+                                                                                                                     // 350
+		if (matrix) {                                                                                                      // 351
+			matrix.forEach(function (s) {                                                                                     // 352
+				var x1 = s.x;                                                                                                    // 353
+				var y1 = s.y;                                                                                                    // 353
+				var deltat = x1 - x0;                                                                                            // 353
+                                                                                                                     // 353
+				if (deltat > 0) {                                                                                                // 354
 					var KwFull = Math.round((y1 - y0) * 3600 / deltat * 1000, 3); //console.log('solar:',{x: x1*1000, y: KwFull });
-                                                                                                                     // 351
-					b.push({                                                                                                        // 352
-						x: x1 * 1000,                                                                                                  // 352
-						y: KwFull                                                                                                      // 352
-					});                                                                                                             // 352
-				} else {//  console.log('Warning (solar) deltat:', deltat);                                                      // 353
-				}                                                                                                                // 355
-                                                                                                                     // 355
-				x0 = x1;                                                                                                         // 356
-				y0 = y1;                                                                                                         // 356
-			});                                                                                                               // 357
-		} else {                                                                                                           // 358
-			console.log('No found MATRIX');                                                                                   // 358
-		}                                                                                                                  // 358
-                                                                                                                     // 358
-		return b;                                                                                                          // 359
-	}                                                                                                                   // 360
+                                                                                                                     // 356
+					b.push({                                                                                                        // 357
+						x: x1 * 1000,                                                                                                  // 357
+						y: KwFull                                                                                                      // 357
+					});                                                                                                             // 357
+				} else {//  console.log('Warning (solar) deltat:', deltat);                                                      // 358
+				}                                                                                                                // 360
                                                                                                                      // 360
-	function cron_watt() {                                                                                              // 363
-		var now = Math.floor(moment().unix());                                                                             // 364
-		var ip = Sensori.findOne({                                                                                         // 365
-			tipo: 'pulse'                                                                                                     // 365
-		}).ip; // Leggo immediatamente i valori del sensore per garantire il timeframe dei 5 minuti                        // 365
-                                                                                                                     // 366
-		var response = HTTP.get("http://" + ip + "/json", {});                                                             // 367
-		setTimeout(cron_watt_after(now * 1000, response), 10000);                                                          // 368
-	}                                                                                                                   // 369
-                                                                                                                     // 369
-	var watt = SyncedCron.add({                                                                                         // 372
-		name: 'watt',                                                                                                      // 373
-		schedule: function (parser) {                                                                                      // 374
-			return parser.recur().every(5).minute();                                                                          // 374
-		},                                                                                                                 // 374
-		//schedule: function(parser) {return parser.recur().every(20).second();},                                          // 375
-		job: cron_watt                                                                                                     // 376
-	});                                                                                                                 // 372
-	SyncedCron.config({                                                                                                 // 381
-		log: false                                                                                                         // 381
-	});                                                                                                                 // 381
-	SyncedCron.start();                                                                                                 // 383
-});                                                                                                                  // 385
-Meteor.methods({                                                                                                     // 387
-	"createUserAccount": function (options) {                                                                           // 388
-		if (!Users.isAdmin(Meteor.userId())) {                                                                             // 389
-			throw new Meteor.Error(403, "Access denied.");                                                                    // 390
-		}                                                                                                                  // 391
-                                                                                                                     // 391
-		var userOptions = {};                                                                                              // 393
-		if (options.username) userOptions.username = options.username;                                                     // 394
-		if (options.email) userOptions.email = options.email;                                                              // 395
-		if (options.password) userOptions.password = options.password;                                                     // 396
-		if (options.profile) userOptions.profile = options.profile;                                                        // 397
-		if (options.profile && options.profile.email) userOptions.email = options.profile.email;                           // 398
-		Accounts.createUser(userOptions);                                                                                  // 400
-	},                                                                                                                  // 401
-	"updateUserAccount": function (userId, options) {                                                                   // 402
-		// only admin or users own profile                                                                                 // 403
-		if (!(Users.isAdmin(Meteor.userId()) || userId == Meteor.userId())) {                                              // 404
-			throw new Meteor.Error(403, "Access denied.");                                                                    // 405
-		} // non-admin user can change only profile                                                                        // 406
-                                                                                                                     // 408
-                                                                                                                     // 408
-		if (!Users.isAdmin(Meteor.userId())) {                                                                             // 409
-			var keys = Object.keys(options);                                                                                  // 410
-                                                                                                                     // 410
-			if (keys.length !== 1 || !options.profile) {                                                                      // 411
-				throw new Meteor.Error(403, "Access denied.");                                                                   // 412
-			}                                                                                                                 // 413
-		}                                                                                                                  // 414
-                                                                                                                     // 414
-		var userOptions = {};                                                                                              // 416
-		if (options.username) userOptions.username = options.username;                                                     // 417
-		if (options.email) userOptions.email = options.email;                                                              // 418
-		if (options.password) userOptions.password = options.password;                                                     // 419
-		if (options.profile) userOptions.profile = options.profile;                                                        // 420
-		if (options.profile && options.profile.email) userOptions.email = options.profile.email;                           // 422
-		if (options.roles) userOptions.roles = options.roles;                                                              // 423
-                                                                                                                     // 423
-		if (userOptions.email) {                                                                                           // 425
-			var email = userOptions.email;                                                                                    // 426
-			delete userOptions.email;                                                                                         // 427
-			var userData = Users.findOne(this.userId);                                                                        // 428
+				x0 = x1;                                                                                                         // 361
+				y0 = y1;                                                                                                         // 361
+			});                                                                                                               // 362
+		} else {                                                                                                           // 363
+			console.log('No found MATRIX');                                                                                   // 363
+		}                                                                                                                  // 363
+                                                                                                                     // 363
+		return b;                                                                                                          // 364
+	}                                                                                                                   // 365
+                                                                                                                     // 365
+	function cron_watt() {                                                                                              // 368
+		var now = Math.floor(moment().unix());                                                                             // 369
+		var ip = Sensori.findOne({                                                                                         // 370
+			tipo: 'pulse'                                                                                                     // 370
+		}).ip; // Leggo immediatamente i valori del sensore per garantire il timeframe dei 5 minuti                        // 370
+                                                                                                                     // 371
+		var response = HTTP.get("http://" + ip + "/json", {});                                                             // 372
+		setTimeout(cron_watt_after(now * 1000, response), 10000);                                                          // 373
+	}                                                                                                                   // 374
+                                                                                                                     // 374
+	var watt = SyncedCron.add({                                                                                         // 377
+		name: 'watt',                                                                                                      // 378
+		schedule: function (parser) {                                                                                      // 379
+			return parser.recur().every(5).minute();                                                                          // 379
+		},                                                                                                                 // 379
+		//schedule: function(parser) {return parser.recur().every(20).second();},                                          // 380
+		job: cron_watt                                                                                                     // 381
+	});                                                                                                                 // 377
+	SyncedCron.config({                                                                                                 // 386
+		log: false                                                                                                         // 386
+	});                                                                                                                 // 386
+	SyncedCron.start();                                                                                                 // 388
+});                                                                                                                  // 390
+Meteor.methods({                                                                                                     // 392
+	"createUserAccount": function (options) {                                                                           // 393
+		if (!Users.isAdmin(Meteor.userId())) {                                                                             // 394
+			throw new Meteor.Error(403, "Access denied.");                                                                    // 395
+		}                                                                                                                  // 396
+                                                                                                                     // 396
+		var userOptions = {};                                                                                              // 398
+		if (options.username) userOptions.username = options.username;                                                     // 399
+		if (options.email) userOptions.email = options.email;                                                              // 400
+		if (options.password) userOptions.password = options.password;                                                     // 401
+		if (options.profile) userOptions.profile = options.profile;                                                        // 402
+		if (options.profile && options.profile.email) userOptions.email = options.profile.email;                           // 403
+		Accounts.createUser(userOptions);                                                                                  // 405
+	},                                                                                                                  // 406
+	"updateUserAccount": function (userId, options) {                                                                   // 407
+		// only admin or users own profile                                                                                 // 408
+		if (!(Users.isAdmin(Meteor.userId()) || userId == Meteor.userId())) {                                              // 409
+			throw new Meteor.Error(403, "Access denied.");                                                                    // 410
+		} // non-admin user can change only profile                                                                        // 411
+                                                                                                                     // 413
+                                                                                                                     // 413
+		if (!Users.isAdmin(Meteor.userId())) {                                                                             // 414
+			var keys = Object.keys(options);                                                                                  // 415
+                                                                                                                     // 415
+			if (keys.length !== 1 || !options.profile) {                                                                      // 416
+				throw new Meteor.Error(403, "Access denied.");                                                                   // 417
+			}                                                                                                                 // 418
+		}                                                                                                                  // 419
+                                                                                                                     // 419
+		var userOptions = {};                                                                                              // 421
+		if (options.username) userOptions.username = options.username;                                                     // 422
+		if (options.email) userOptions.email = options.email;                                                              // 423
+		if (options.password) userOptions.password = options.password;                                                     // 424
+		if (options.profile) userOptions.profile = options.profile;                                                        // 425
+		if (options.profile && options.profile.email) userOptions.email = options.profile.email;                           // 427
+		if (options.roles) userOptions.roles = options.roles;                                                              // 428
                                                                                                                      // 428
-			if (userData.emails && !userData.emails.find(function (mail) {                                                    // 429
-				return mail.address == email;                                                                                    // 429
-			})) {                                                                                                             // 429
-				userOptions.emails = [{                                                                                          // 430
-					address: email                                                                                                  // 430
-				}];                                                                                                              // 430
-			}                                                                                                                 // 431
-		}                                                                                                                  // 432
-                                                                                                                     // 432
-		var password = "";                                                                                                 // 434
-                                                                                                                     // 434
-		if (userOptions.password) {                                                                                        // 435
-			password = userOptions.password;                                                                                  // 436
-			delete userOptions.password;                                                                                      // 437
-		}                                                                                                                  // 438
-                                                                                                                     // 438
-		if (userOptions) {                                                                                                 // 440
-			for (var key in meteorBabelHelpers.sanitizeForInObject(userOptions)) {                                            // 441
-				var obj = userOptions[key];                                                                                      // 442
-                                                                                                                     // 442
-				if (_.isObject(obj)) {                                                                                           // 443
-					for (var k in meteorBabelHelpers.sanitizeForInObject(obj)) {                                                    // 444
-						userOptions[key + "." + k] = obj[k];                                                                           // 445
-					}                                                                                                               // 446
-                                                                                                                     // 446
-					delete userOptions[key];                                                                                        // 447
-				}                                                                                                                // 448
-			}                                                                                                                 // 449
-                                                                                                                     // 449
-			Users.update(userId, {                                                                                            // 450
-				$set: userOptions                                                                                                // 450
-			});                                                                                                               // 450
-		}                                                                                                                  // 451
+		if (userOptions.email) {                                                                                           // 430
+			var email = userOptions.email;                                                                                    // 431
+			delete userOptions.email;                                                                                         // 432
+			var userData = Users.findOne(this.userId);                                                                        // 433
+                                                                                                                     // 433
+			if (userData.emails && !userData.emails.find(function (mail) {                                                    // 434
+				return mail.address == email;                                                                                    // 434
+			})) {                                                                                                             // 434
+				userOptions.emails = [{                                                                                          // 435
+					address: email                                                                                                  // 435
+				}];                                                                                                              // 435
+			}                                                                                                                 // 436
+		}                                                                                                                  // 437
+                                                                                                                     // 437
+		var password = "";                                                                                                 // 439
+                                                                                                                     // 439
+		if (userOptions.password) {                                                                                        // 440
+			password = userOptions.password;                                                                                  // 441
+			delete userOptions.password;                                                                                      // 442
+		}                                                                                                                  // 443
+                                                                                                                     // 443
+		if (userOptions) {                                                                                                 // 445
+			for (var key in meteorBabelHelpers.sanitizeForInObject(userOptions)) {                                            // 446
+				var obj = userOptions[key];                                                                                      // 447
+                                                                                                                     // 447
+				if (_.isObject(obj)) {                                                                                           // 448
+					for (var k in meteorBabelHelpers.sanitizeForInObject(obj)) {                                                    // 449
+						userOptions[key + "." + k] = obj[k];                                                                           // 450
+					}                                                                                                               // 451
                                                                                                                      // 451
-		if (password) {                                                                                                    // 453
-			Accounts.setPassword(userId, password);                                                                           // 454
-		}                                                                                                                  // 455
-	},                                                                                                                  // 456
-	"sendMail": function (options) {                                                                                    // 458
-		this.unblock();                                                                                                    // 459
-		Email.send(options);                                                                                               // 461
-	}                                                                                                                   // 462
-});                                                                                                                  // 387
-Accounts.onCreateUser(function (options, user) {                                                                     // 465
-	user.roles = ["user"];                                                                                              // 466
-                                                                                                                     // 466
-	if (options.profile) {                                                                                              // 468
-		user.profile = options.profile;                                                                                    // 469
-	}                                                                                                                   // 470
-                                                                                                                     // 470
-	if (!Users.findOne({                                                                                                // 472
-		roles: "admin"                                                                                                     // 472
-	}) && user.roles.indexOf("admin") < 0) {                                                                            // 472
-		user.roles.push("admin");                                                                                          // 473
-	}                                                                                                                   // 474
-                                                                                                                     // 474
-	return user;                                                                                                        // 476
-});                                                                                                                  // 477
-Accounts.validateLoginAttempt(function (info) {                                                                      // 479
-	// reject users with role "blocked"                                                                                 // 481
-	if (info.user && Users.isInRole(info.user._id, "blocked")) {                                                        // 482
-		throw new Meteor.Error(403, "Your account is blocked.");                                                           // 483
-	}                                                                                                                   // 484
-                                                                                                                     // 484
-	if (verifyEmail && info.user && info.user.emails && info.user.emails.length && !info.user.emails[0].verified) {     // 486
-		throw new Meteor.Error(499, "E-mail not verified.");                                                               // 487
-	}                                                                                                                   // 488
-                                                                                                                     // 488
-	return true;                                                                                                        // 490
-});                                                                                                                  // 491
-Users.before.insert(function (userId, doc) {                                                                         // 494
-	if (doc.emails && doc.emails[0] && doc.emails[0].address) {                                                         // 495
-		doc.profile = doc.profile || {};                                                                                   // 496
-		doc.profile.email = doc.emails[0].address;                                                                         // 497
-	} else {                                                                                                            // 498
-		// oauth                                                                                                           // 499
-		if (doc.services) {                                                                                                // 500
-			// google e-mail                                                                                                  // 501
-			if (doc.services.google && doc.services.google.email) {                                                           // 502
-				doc.profile = doc.profile || {};                                                                                 // 503
-				doc.profile.email = doc.services.google.email;                                                                   // 504
-			} else {                                                                                                          // 505
-				// github e-mail                                                                                                 // 506
-				if (doc.services.github && doc.services.github.accessToken) {                                                    // 507
-					var github = new GitHub({                                                                                       // 508
-						version: "3.0.0",                                                                                              // 509
-						timeout: 5000                                                                                                  // 510
-					});                                                                                                             // 508
-					github.authenticate({                                                                                           // 513
-						type: "oauth",                                                                                                 // 514
-						token: doc.services.github.accessToken                                                                         // 515
+					delete userOptions[key];                                                                                        // 452
+				}                                                                                                                // 453
+			}                                                                                                                 // 454
+                                                                                                                     // 454
+			Users.update(userId, {                                                                                            // 455
+				$set: userOptions                                                                                                // 455
+			});                                                                                                               // 455
+		}                                                                                                                  // 456
+                                                                                                                     // 456
+		if (password) {                                                                                                    // 458
+			Accounts.setPassword(userId, password);                                                                           // 459
+		}                                                                                                                  // 460
+	},                                                                                                                  // 461
+	"sendMail": function (options) {                                                                                    // 463
+		this.unblock();                                                                                                    // 464
+		Email.send(options);                                                                                               // 466
+	}                                                                                                                   // 467
+});                                                                                                                  // 392
+Accounts.onCreateUser(function (options, user) {                                                                     // 470
+	user.roles = ["user"];                                                                                              // 471
+                                                                                                                     // 471
+	if (options.profile) {                                                                                              // 473
+		user.profile = options.profile;                                                                                    // 474
+	}                                                                                                                   // 475
+                                                                                                                     // 475
+	if (!Users.findOne({                                                                                                // 477
+		roles: "admin"                                                                                                     // 477
+	}) && user.roles.indexOf("admin") < 0) {                                                                            // 477
+		user.roles = ["admin"];                                                                                            // 478
+	}                                                                                                                   // 479
+                                                                                                                     // 479
+	return user;                                                                                                        // 481
+});                                                                                                                  // 482
+Accounts.validateLoginAttempt(function (info) {                                                                      // 484
+	// reject users with role "blocked"                                                                                 // 486
+	if (info.user && Users.isInRole(info.user._id, "blocked")) {                                                        // 487
+		throw new Meteor.Error(403, "Your account is blocked.");                                                           // 488
+	}                                                                                                                   // 489
+                                                                                                                     // 489
+	if (verifyEmail && info.user && info.user.emails && info.user.emails.length && !info.user.emails[0].verified) {     // 491
+		throw new Meteor.Error(499, "E-mail not verified.");                                                               // 492
+	}                                                                                                                   // 493
+                                                                                                                     // 493
+	return true;                                                                                                        // 495
+});                                                                                                                  // 496
+Users.before.insert(function (userId, doc) {                                                                         // 499
+	if (doc.emails && doc.emails[0] && doc.emails[0].address) {                                                         // 500
+		doc.profile = doc.profile || {};                                                                                   // 501
+		doc.profile.email = doc.emails[0].address;                                                                         // 502
+	} else {                                                                                                            // 503
+		// oauth                                                                                                           // 504
+		if (doc.services) {                                                                                                // 505
+			// google e-mail                                                                                                  // 506
+			if (doc.services.google && doc.services.google.email) {                                                           // 507
+				doc.profile = doc.profile || {};                                                                                 // 508
+				doc.profile.email = doc.services.google.email;                                                                   // 509
+			} else {                                                                                                          // 510
+				// github e-mail                                                                                                 // 511
+				if (doc.services.github && doc.services.github.accessToken) {                                                    // 512
+					var github = new GitHub({                                                                                       // 513
+						version: "3.0.0",                                                                                              // 514
+						timeout: 5000                                                                                                  // 515
 					});                                                                                                             // 513
-                                                                                                                     // 513
-					try {                                                                                                           // 518
-						var result = github.user.getEmails({});                                                                        // 519
-                                                                                                                     // 519
-						var email = _.findWhere(result, {                                                                              // 520
-							primary: true                                                                                                 // 520
-						});                                                                                                            // 520
-                                                                                                                     // 520
-						if (!email && result.length && _.isString(result[0])) {                                                        // 521
-							email = {                                                                                                     // 522
-								email: result[0]                                                                                             // 522
-							};                                                                                                            // 522
-						}                                                                                                              // 523
-                                                                                                                     // 523
-						if (email) {                                                                                                   // 525
-							doc.profile = doc.profile || {};                                                                              // 526
-							doc.profile.email = email.email;                                                                              // 527
+					github.authenticate({                                                                                           // 518
+						type: "oauth",                                                                                                 // 519
+						token: doc.services.github.accessToken                                                                         // 520
+					});                                                                                                             // 518
+                                                                                                                     // 518
+					try {                                                                                                           // 523
+						var result = github.user.getEmails({});                                                                        // 524
+                                                                                                                     // 524
+						var email = _.findWhere(result, {                                                                              // 525
+							primary: true                                                                                                 // 525
+						});                                                                                                            // 525
+                                                                                                                     // 525
+						if (!email && result.length && _.isString(result[0])) {                                                        // 526
+							email = {                                                                                                     // 527
+								email: result[0]                                                                                             // 527
+							};                                                                                                            // 527
 						}                                                                                                              // 528
-					} catch (e) {                                                                                                   // 529
-						console.log(e);                                                                                                // 530
-					}                                                                                                               // 531
-				} else {                                                                                                         // 532
-					// linkedin email                                                                                               // 533
-					if (doc.services.linkedin && doc.services.linkedin.emailAddress) {                                              // 534
-						doc.profile = doc.profile || {};                                                                               // 535
-						doc.profile.name = doc.services.linkedin.firstName + " " + doc.services.linkedin.lastName;                     // 536
-						doc.profile.email = doc.services.linkedin.emailAddress;                                                        // 537
-					} else {                                                                                                        // 538
-						if (doc.services.facebook && doc.services.facebook.email) {                                                    // 539
-							doc.profile = doc.profile || {};                                                                              // 540
-							doc.profile.email = doc.services.facebook.email;                                                              // 541
-						} else {                                                                                                       // 542
-							if (doc.services.twitter && doc.services.twitter.email) {                                                     // 543
-								doc.profile = doc.profile || {};                                                                             // 544
-								doc.profile.email = doc.services.twitter.email;                                                              // 545
-							} else {                                                                                                      // 546
+                                                                                                                     // 528
+						if (email) {                                                                                                   // 530
+							doc.profile = doc.profile || {};                                                                              // 531
+							doc.profile.email = email.email;                                                                              // 532
+						}                                                                                                              // 533
+					} catch (e) {                                                                                                   // 534
+						console.log(e);                                                                                                // 535
+					}                                                                                                               // 536
+				} else {                                                                                                         // 537
+					// linkedin email                                                                                               // 538
+					if (doc.services.linkedin && doc.services.linkedin.emailAddress) {                                              // 539
+						doc.profile = doc.profile || {};                                                                               // 540
+						doc.profile.name = doc.services.linkedin.firstName + " " + doc.services.linkedin.lastName;                     // 541
+						doc.profile.email = doc.services.linkedin.emailAddress;                                                        // 542
+					} else {                                                                                                        // 543
+						if (doc.services.facebook && doc.services.facebook.email) {                                                    // 544
+							doc.profile = doc.profile || {};                                                                              // 545
+							doc.profile.email = doc.services.facebook.email;                                                              // 546
+						} else {                                                                                                       // 547
+							if (doc.services.twitter && doc.services.twitter.email) {                                                     // 548
+								doc.profile = doc.profile || {};                                                                             // 549
+								doc.profile.email = doc.services.twitter.email;                                                              // 550
+							} else {                                                                                                      // 551
 								if (doc.services["meteor-developer"] && doc.services["meteor-developer"].emails && doc.services["meteor-developer"].emails.length) {
-									doc.profile = doc.profile || {};                                                                            // 548
-									doc.profile.email = doc.services["meteor-developer"].emails[0].address;                                     // 549
-								}                                                                                                            // 550
-							}                                                                                                             // 551
-						}                                                                                                              // 552
-					}                                                                                                               // 553
-				}                                                                                                                // 554
-			}                                                                                                                 // 555
-		}                                                                                                                  // 556
-	}                                                                                                                   // 557
-});                                                                                                                  // 558
-Users.before.update(function (userId, doc, fieldNames, modifier, options) {                                          // 560
-	if (modifier.$set && modifier.$set.emails && modifier.$set.emails.length && modifier.$set.emails[0].address) {      // 561
-		modifier.$set.profile.email = modifier.$set.emails[0].address;                                                     // 562
-	}                                                                                                                   // 563
-});                                                                                                                  // 564
-Accounts.onLogin(function (info) {});                                                                                // 566
-                                                                                                                     // 566
-Accounts.urls.resetPassword = function (token) {                                                                     // 570
-	return Meteor.absoluteUrl('reset_password/' + token);                                                               // 571
-};                                                                                                                   // 572
-                                                                                                                     // 570
-Accounts.urls.verifyEmail = function (token) {                                                                       // 574
-	return Meteor.absoluteUrl('verify_email/' + token);                                                                 // 575
-};                                                                                                                   // 576
+									doc.profile = doc.profile || {};                                                                            // 553
+									doc.profile.email = doc.services["meteor-developer"].emails[0].address;                                     // 554
+								}                                                                                                            // 555
+							}                                                                                                             // 556
+						}                                                                                                              // 557
+					}                                                                                                               // 558
+				}                                                                                                                // 559
+			}                                                                                                                 // 560
+		}                                                                                                                  // 561
+	}                                                                                                                   // 562
+});                                                                                                                  // 563
+Users.before.update(function (userId, doc, fieldNames, modifier, options) {                                          // 565
+	if (modifier.$set && modifier.$set.emails && modifier.$set.emails.length && modifier.$set.emails[0].address) {      // 566
+		modifier.$set.profile.email = modifier.$set.emails[0].address;                                                     // 567
+	}                                                                                                                   // 568
+});                                                                                                                  // 569
+Accounts.onLogin(function (info) {});                                                                                // 571
+                                                                                                                     // 571
+Accounts.urls.resetPassword = function (token) {                                                                     // 575
+	return Meteor.absoluteUrl('reset_password/' + token);                                                               // 576
+};                                                                                                                   // 577
+                                                                                                                     // 575
+Accounts.urls.verifyEmail = function (token) {                                                                       // 579
+	return Meteor.absoluteUrl('verify_email/' + token);                                                                 // 580
+};                                                                                                                   // 581
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }}},{
@@ -2274,6 +2344,7 @@ Accounts.urls.verifyEmail = function (token) {                                  
     ".json"
   ]
 });
+require("./lib/case_utils.js");
 require("./lib/object_utils.js");
 require("./lib/string_utils.js");
 require("./both/collections/caldaia.js");
