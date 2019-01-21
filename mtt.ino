@@ -1,6 +1,8 @@
 
 #include <ESP8266WiFi.h>
 #include <SoftwareSerial.h>
+//#include <WiFiClient.h>
+//#include <ESP8266WebServer.h>
 
 // Set web server port number to 80
 WiFiServer server(80);
