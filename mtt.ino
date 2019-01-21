@@ -1,22 +1,16 @@
 
-
-void setup()
-{
- 
-}
-
-
-
-
-
-
 #include <ESP8266WiFi.h>
 #include <SoftwareSerial.h>
 
-#define rxPin 2   // pin for receiving transmissions, input
-#define txPin 3   // pin for sending transmissions, output
+// Set web server port number to 80
+WiFiServer server(80);
+// Variable to store the HTTP request
+String header;
 
-//#define rtsPin 4  // pin for switching modes between send and receive, output
+
+#define rxPin GPIO03   // pin for receiving transmissions, input
+#define txPin GPIO01   // pin for sending transmissions, output
+#define rtsPin GPIO05  // pin for switching modes between send and receive, output
 
 SoftwareSerial RS485(rxPin, txPin);
 
@@ -161,7 +155,10 @@ void setup() {
   Serial.println();
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
-// -------------
+  server.on("/", handleRootPath);    
+  server.begin(); //Start the server
+  Serial.println("Server listening");
+// ------------- 
 
 //Serial.begin(9600);  // initialize serial console
   RS485.begin(19200);  // initialize serial connection to the inverter
@@ -170,8 +167,16 @@ void setup() {
   pinMode(rtsPin, OUTPUT);
 }
 
+void handleRootPath() { server.send(200, "text/plain", "Hello world"); }
+
 void loop() {
-  if (getGridPower(&GridPower)) {
+ //-----------
+ WiFiClient client = server.available();
+ if (client) { Serial.println("New Client.");  }
+ client.stop();
+ Serial.println("Client disconnected.");
+ //----------------
+ if (getGridPower(&GridPower)) {
     Serial.println("Current power being produced is: ");
     Serial.print(GridPower);
     Serial.print(" Watts");
