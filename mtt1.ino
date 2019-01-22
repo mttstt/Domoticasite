@@ -1,9 +1,10 @@
 #include <ESP8266WiFi.h>
  
-const char* ssid = "YOUR_SSID";//type your ssid
-const char* password = "YOUR_PASSWORD";//type your password
+const char* ssid = "MTT_2.4";//type your ssid
+const char* password = "x";//type your password
  
-int ledPin = 2; // GPIO2 of ESP8266
+// int ledPin = 2; // GPIO2 of ESP8266
+
 WiFiServer server(80);
  
 void setup() {
@@ -11,8 +12,8 @@ void setup() {
   delay(10);
  
  
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);
+//  pinMode(ledPin, OUTPUT);
+//  digitalWrite(ledPin, LOW);
    
   // Connect to WiFi network
   Serial.println();
@@ -60,16 +61,15 @@ void loop() {
   client.flush();
    
   // Match the request
- 
-  int value = LOW;
-  if (request.indexOf("/LED=ON") != -1) {
-    digitalWrite(ledPin, HIGH);
-    value = HIGH;
-  } 
-  if (request.indexOf("/LED=OFF") != -1){
-    digitalWrite(ledPin, LOW);
-    value = LOW;
-  }
+  // int value = LOW;
+  //if (request.indexOf("/LED=ON") != -1) {
+  //  digitalWrite(ledPin, HIGH);
+  //  value = HIGH;
+  //} 
+  //if (request.indexOf("/LED=OFF") != -1){
+  //  digitalWrite(ledPin, LOW);
+  //  value = LOW;
+  //}
  
 // Set ledPin according to the request
 //digitalWrite(ledPin, value);
@@ -84,14 +84,14 @@ void loop() {
    
   client.print("Led pin is now: ");
    
-  if(value == HIGH) {
-    client.print("On");  
-  } else {
-    client.print("Off");
-  }
-  client.println("<br><br>");
-  client.println("Click <a href=\"/LED=ON\">here</a> turn the LED on pin 2 ON<br>");
-  client.println("Click <a href=\"/LED=OFF\">here</a> turn the LED on pin 2 OFF<br>");
+ // if(value == HIGH) {
+ //   client.print("On");  
+ // } else {
+ //   client.print("Off");
+ // }
+ // client.println("<br><br>");
+ // client.println("Click <a href=\"/LED=ON\">here</a> turn the LED on pin 2 ON<br>");
+ // client.println("Click <a href=\"/LED=OFF\">here</a> turn the LED on pin 2 OFF<br>");
   client.println("</html>");
  
   delay(1);
