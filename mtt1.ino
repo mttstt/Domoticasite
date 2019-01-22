@@ -1,4 +1,5 @@
-// from https://www.hackster.io/ROBINTHOMAS/esp8266-esp-01-webserver-7248ca
+// References:
+// https://www.hackster.io/ROBINTHOMAS/esp8266-esp-01-webserver-7248ca
 // https://github.com/H4ndl3/pvimon/blob/master/pvimon.ino
 // http://www.gianlucaghettini.net/lettura-fotovoltaico-da-remoto-con-nodemcu/
 // https://github.com/jrbenito/ABBAurora
@@ -198,7 +199,7 @@ void loop() {
   Serial.println("Client disonnected");
   Serial.println("");
  
-  // Talk to RS485
+  // Interrogation to RS485
   if (getGridPower(&GridPower)) {
     Serial.println("Current power being produced is: ");
     Serial.print(GridPower);
