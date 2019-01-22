@@ -1,3 +1,8 @@
+// from https://www.hackster.io/ROBINTHOMAS/esp8266-esp-01-webserver-7248ca
+// https://github.com/H4ndl3/pvimon/blob/master/pvimon.ino
+// http://www.gianlucaghettini.net/lettura-fotovoltaico-da-remoto-con-nodemcu/
+// https://github.com/jrbenito/ABBAurora
+
 #include <ESP8266WiFi.h>
 // #include <SoftwareSerial.h>
  
@@ -203,5 +208,5 @@ void loop() {
   }
   else
     Serial.println("Error, please look above for details.");
-    delay(1000);  
-}
+    delay(1000);
+ }
