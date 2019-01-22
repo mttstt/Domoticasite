@@ -124,6 +124,7 @@ float toFloat(byte byteValues[]) {
 
 //ReadDSP
 bool getGridPower(float *GridPower) {
+  Serial.print("xxx");
   byte tmpBuff[8];
   byte i;
   recOk = false;
