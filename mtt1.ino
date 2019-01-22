@@ -11,6 +11,10 @@ const char* ssid = "MTT_2.4";//type your ssid
 const char* password = "x";//type your password
  
 // =================================================================
+#define rxPin 2   // pin for receiving transmissions, input
+#define txPin 3   // pin for sending transmissions, output
+#define rtsPin 4  // pin for switching modes between send and receive, output
+
 SoftwareSerial RS485(rxPin, txPin);
 #define pviAddr 2  // address of the inverter (2 is the default)
 #define timeout 1000  // timeout while receiving data in ms
@@ -84,7 +88,8 @@ byte receiveAnswer() {
     Serial.print(" ");
   } */
   
-  return(recBuff);
+//  return(recBuff);
+return(*recBuff);
 }
 
 bool sendQuery(byte addr, byte cmd1, byte cmd2, byte cmd3) {
