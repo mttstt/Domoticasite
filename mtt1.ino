@@ -79,7 +79,7 @@ byte receiveAnswer() {
  /* Serial.println("Values for Debugging: ");
   for (i = 0; i < 8; i++) {
     Serial.print(i);
-    Serial.print(". Wert: ");
+    Serial.print(". Value: ");
     Serial.print(recBuff[i]);
     Serial.print(" ");
   } */
