@@ -16,8 +16,8 @@ char password[] = "xxx";//type your password
 #define SERVER_PORT 80
 const int pulse = 360; //μs
 //const char* up6 = '110011000000100100000000000000001011100100000001101000100000000000'
-#define ARRAYUP6_SIZE 67 
-int Arrayup6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
+#define UP6_SIZE 67
+int up6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
 #define pin 3  //GPIO3 = RX pin
 #define NUM_ATTEMPTS 3
 
@@ -30,9 +30,8 @@ void trc(String msg){if (TRACE) { Serial.println(msg); } }
 WiFiServer server(SERVER_PORT);
  
 void setup() {
-  delay(10);
   // Connect to WiFi network
-  //Serial.begin(9600);
+  // Serial.begin(9600);
   delay(10);
   Serial.print("Attempting to connect to WPA network...");
   Serial.println(ssid);
@@ -52,7 +51,6 @@ void setup() {
   Serial.print("http://");
   Serial.print(WiFi.localIP());
   Serial.println("/"); 
- 
   // =======================================================
      // Set up mDNS responder:
      // - first argument is the domain name, in this example
@@ -68,7 +66,6 @@ void setup() {
      Serial.println("mDNS responder started");
      MDNS.addService("http", "tcp", SERVER_PORT);
   // =======================================================
- 
   pinMode(pin,OUTPUT);  // sets the digital pin 3 as output
   trc("Sets the digital pin 3 as output");
 }
@@ -115,7 +112,7 @@ void transmit_code(int code[]){
       digitalWrite(pin, LOW);
       delayMicroseconds(3500); // added 3,5 millis
       int c=0;
-      for (c=0;c<ARRAYUP6_SIZE;c++) {     
+      for (c=0;c<UP6_SIZE;c++) {     
          if (code[c] == '1'){   
              digitalWrite(pin, HIGH); 
              delayMicroseconds(pulse);
@@ -157,10 +154,10 @@ void loop() {
         //============================================================
         if (line.indexOf("GET /up6") >= 0) {
             Serial.println("/up6");              
-            transmit_code(Arrayup6);  //transmit_code_old(up6);
+            transmit_code(up6);  //transmit_code_old(up6);
            } else if (line.indexOf("GET /do6") >= 0) {
              Serial.println("/up6");
-             transmit_code(Arrayup6); //transmit_code_old(up6);
+             transmit_code(up6); //transmit_code_old(up6);
         }
         //=============================================================              
         // wait for end of client's request, that is marked with an empty line             
