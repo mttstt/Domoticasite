@@ -24,12 +24,15 @@ int Arrayup6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 //Do we want to see trace for debugging purposes
 #define TRACE 1  // 0= trace off 1 = trace on
 
+//trace function
+void trc(String msg){if (TRACE) { Serial.println(msg); } }
+
 WiFiServer server(SERVER_PORT);
  
 void setup() {
   delay(10);
   // Connect to WiFi network
-  Serial.begin(9600);
+  //Serial.begin(9600);
   delay(10);
   Serial.print("Attempting to connect to WPA network...");
   Serial.println(ssid);
@@ -70,7 +73,7 @@ void setup() {
   trc("Sets the digital pin 3 as output");
 }
 
-String prepareHtmlPage(String line)
+String prepareHtmlPage()
 {
  String htmlPage =
      String("HTTP/1.1 200 OK\r\n") +
@@ -84,7 +87,7 @@ String prepareHtmlPage(String line)
             "<link rel=\"icon\" href=\"data:,\">" +
             "<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}" +
             ".button { background-color: #195B6A; border: none; color: white; padding: 16px 40px;" +
-            "text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;} +
+            "text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}" +
             ".button2 {background-color: #77878A;}</style></head>" +
             "<body><h1>Esp8266 Gateway RF</h1>" +
             "<p>Command - " + "line" + "</p>" +
@@ -92,6 +95,48 @@ String prepareHtmlPage(String line)
             "</body></html>" +
             "\r\n";
   return htmlPage;
+}
+
+void transmit_code(int code[]){
+  for (int i = 0; i < NUM_ATTEMPTS; i++) {        
+      // ----------------------- Preamble ----------------------
+      trc("transmit preamble");
+      digitalWrite(pin, LOW); 
+      delay(3000);  // sleep for 0,3 seconds
+      for (int i = 0; i < 11; i++) { 
+        digitalWrite(pin, HIGH); 
+        delayMicroseconds(pulse);
+        digitalWrite(pin, LOW); 
+        delayMicroseconds(pulse);  
+      }
+     // ---------------------- End Preamble --------------------
+     // -----------------------Segnal --------------------------
+      trc("transmit segnal");
+      digitalWrite(pin, LOW);
+      delayMicroseconds(3500); // added 3,5 millis
+      int c=0;
+      for (c=0;c<ARRAYUP6_SIZE;c++) {     
+         if (code[c] == '1'){   
+             digitalWrite(pin, HIGH); 
+             delayMicroseconds(pulse);
+             digitalWrite(pin, LOW); 
+             delayMicroseconds(pulse*2);
+         } 
+         else if (code[c] == '0'){
+             digitalWrite(pin, HIGH); 
+             delayMicroseconds(pulse*2);
+             digitalWrite(pin, LOW); 
+             delayMicroseconds(pulse);
+         } 
+         else
+         {     
+            digitalWrite(pin, LOW);
+            delayMicroseconds(3000); // added 3 millis
+         }
+    // ---------------------End Segnal --------------------------   
+    } 
+    delay(2000); // added 2 millis 
+ }
 }
 
 
@@ -114,7 +159,7 @@ void loop() {
         if (line.indexOf("GET /up6") >= 0) {
             Serial.println("/up6");              
             transmit_code(Arrayup6);  //transmit_code_old(up6);
-           } else if (header.indexOf("GET /do6") >= 0) {
+           } else if (line.indexOf("GET /do6") >= 0) {
              Serial.println("/up6");
              transmit_code(Arrayup6); //transmit_code_old(up6);
         }
@@ -132,83 +177,5 @@ void loop() {
     client.stop();
     Serial.println("[Client disonnected]");
   }
-}
- 
-//trace function
-void trc(String msg){if (TRACE) { Serial.println(msg); } }
-
-void transmit_code_old(String code){
-  for (int i = 0; i < NUM_ATTEMPTS; i++) {        
-      # ----------------------- Preamble ----------------------
-      trc("Begin Preamble");
-      digitalWrite(pin, LOW); 
-      delay(3000);  // sleep for 0,3 seconds
-      for (int i = 0; i < 11; i++) { 
-        digitalWrite(pin, HIGH); 
-        delayMicroseconds(pulse);
-        digitalWrite(pin, LOW); 
-        delayMicroseconds(pulse);  
-      }
-      # ---------------------- End Preamble --------------------
-      # -----------------------Segnal --------------------------
-      digitalWrite(pin, LOW);
-      delayMicroseconds(3500); # added 3,5 millis       
-      for c in code:
-         if c == '1':
-             digitalWrite(pin, HIGH); 
-             delayMicroseconds(pulse);
-             digitalWrite(pin, LOW); 
-             delayMicroseconds(pulse*2);  
-         elif c == '0':
-             digitalWrite(pin, HIGH); 
-             delayMicroseconds(pulse*2);
-             digitalWrite(pin, LOW); 
-             delayMicroseconds(pulse);  
-         else:
-            continue     
-      digitalWrite(pin, LOW);
-      delayMicroseconds(3000); # added 3 millis       
-      # ---------------------End Segnal --------------------------        
-      delay(2000); # added 2 millis 
-}
-
- 
-void transmit_code(Array code){
-  for (int i = 0; i < NUM_ATTEMPTS; i++) {        
-      # ----------------------- Preamble ----------------------
-      trc("transmit preamble");
-      digitalWrite(pin, LOW); 
-      delay(3000);  // sleep for 0,3 seconds
-      for (int i = 0; i < 11; i++) { 
-        digitalWrite(pin, HIGH); 
-        delayMicroseconds(pulse);
-        digitalWrite(pin, LOW); 
-        delayMicroseconds(pulse);  
-      }
-      # ---------------------- End Preamble --------------------
-      # -----------------------Segnal --------------------------
-      trc("transmit segnal");
-      digitalWrite(pin, LOW);
-      delayMicroseconds(3500); # added 3,5 millis
-      for (c=0;c<ARRAYUP6_SIZE;c++) {     
-         if (code[c] == 1){   
-             digitalWrite(pin, HIGH); 
-             delayMicroseconds(pulse);
-             digitalWrite(pin, LOW); 
-             delayMicroseconds(pulse*2);
-         } 
-         else if (code[c] == 0){
-             digitalWrite(pin, HIGH); 
-             delayMicroseconds(pulse*2);
-             digitalWrite(pin, LOW); 
-             delayMicroseconds(pulse);
-         } 
-         else:
-         {     
-            digitalWrite(pin, LOW);
-            delayMicroseconds(3000); # added 3 millis
-         }
-    # ---------------------End Segnal --------------------------   
-    } 
-    delay(2000); # added 2 millis 
+ }
 }
