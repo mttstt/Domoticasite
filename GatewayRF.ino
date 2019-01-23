@@ -73,9 +73,8 @@ void setup() {
 void loop() {
   // listen for incoming clients
   WiFiClient client = server.available();
-  if (!client) {
-    return;
-  }   
+  if (!client) { return; }   
+ 
   // Wait until the client sends some data
   Serial.println("new client");
   while(!client.available()){
