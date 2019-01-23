@@ -141,7 +141,6 @@ void transmit_code(int code[]){
 
 
 void loop() {
-{
   WiFiClient client = server.available();
   // wait for a client (web browser) to connect
   if (client)
@@ -177,5 +176,4 @@ void loop() {
     client.stop();
     Serial.println("[Client disonnected]");
   }
- }
 }
