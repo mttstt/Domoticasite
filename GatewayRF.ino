@@ -9,54 +9,69 @@
 // Note(2): digitalwrite()Esp8286 function runs to 160Khz (6,25 μs): it is enough for this program
 
 #include <ESP8266WiFi.h>
+#include <ESP8266mDNS.h>
  
-const char* ssid = "MTT_2.4";//type your ssid
-const char* password = "xxx";//type your password
+char ssid[] = "MTT_2.4";//type your ssid
+char password[] = "xxx";//type your password
+#define SERVER_PORT 80
 const int pulse = 360; //μs
 //const char* up6 = '110011000000100100000000000000001011100100000001101000100000000000'
 #define ARRAYUP6_SIZE 67 
 int Arrayup6[] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
-
-
 #define pin 3  //GPIO3 = RX pin
 #define NUM_ATTEMPTS 3
- 
+
 //Do we want to see trace for debugging purposes
 #define TRACE 1  // 0= trace off 1 = trace on
 
-WiFiServer server(80);
+WiFiServer server(SERVER_PORT);
  
 void setup() {
   delay(10);
   // Connect to WiFi network
-  Serial.println();
-  Serial.println();
-  Serial.print("Connecting to ");
+  Serial.begin(9600);
+  delay(10);
+  Serial.print("Attempting to connect to WPA network...");
   Serial.println(ssid);
-  WiFi.begin(ssid, password);  
+  WiFi.begin(ssid, password);
+ 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
   Serial.println("");
-  Serial.println("WiFi connected");
-   
+  Serial.println("WiFi connected");   
   // Start the server
   server.begin();
-  Serial.println("Server started");
- 
+  Serial.println("Server started"); 
   // Print the IP address
   Serial.print("Use this URL to connect: ");
   Serial.print("http://");
   Serial.print(WiFi.localIP());
+  // =======================================================
+     // Set up mDNS responder:
+     // - first argument is the domain name, in this example
+     //   the fully-qualified domain name is "esp8266.local"
+     // - second argument is the IP address to advertise
+     //   we send our IP address on the WiFi network
+     if (!MDNS.begin("esp8266GatewayRF")) {
+       Serial.println("Error setting up MDNS responder!");
+       while(1) { 
+         delay(1000);
+       }
+     }
+     Serial.println("mDNS responder started");
+     MDNS.addService("http", "tcp", SERVER_PORT);
+  // =======================================================
+ 
   Serial.println("/"); 
 
   pinMode(pin,OUTPUT);  // sets the digital pin 3 as output
-  trc("sets the digital pin 3 as output");
+  trc("Sets the digital pin 3 as output");
 }
 
 void loop() {
-  // Check if a client has connected
+  // listen for incoming clients
   WiFiClient client = server.available();
   if (!client) {
     return;
@@ -79,8 +94,9 @@ void loop() {
   client.print("I'm here !");  
   client.println("</html>"); 
   delay(1);
+  client.stop();
   Serial.println("Client disonnected");
-  Serial.println(""); 
+  Serial.println(); 
   trc("Transmit");
   //transmit_code_old(up6);
   transmit_code(Arrayup6);
