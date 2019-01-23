@@ -22,7 +22,7 @@ int Arrayup6[] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 #define NUM_ATTEMPTS 3
  
 //Do we want to see trace for debugging purposes
-#define TRACE 0  // 0= trace off 1 = trace on
+#define TRACE 1  // 0= trace off 1 = trace on
 
 WiFiServer server(80);
  
@@ -51,8 +51,8 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("/"); 
 
-  pinMode(pin,OUTPUT);  // sets the digital pin 13 as output
-  trc("Open pin");
+  pinMode(pin,OUTPUT);  // sets the digital pin 3 as output
+  trc("sets the digital pin 3 as output");
 }
 
 void loop() {
@@ -60,19 +60,16 @@ void loop() {
   WiFiClient client = server.available();
   if (!client) {
     return;
-  }
-   
+  }   
   // Wait until the client sends some data
   Serial.println("new client");
   while(!client.available()){
     delay(1);
-  }
-   
+  }   
   // Read the first line of the request
   String request = client.readStringUntil('\r');
   Serial.println(request);
   client.flush();
-   
    // Return the response
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: text/html");
@@ -83,33 +80,15 @@ void loop() {
   client.println("</html>"); 
   delay(1);
   Serial.println("Client disonnected");
-  Serial.println("");
- 
+  Serial.println(""); 
   trc("Transmit");
   //transmit_code_old(up6);
- transmit_code(Arrayup6);
- 
-  trc("End Transmit");
- 
+  transmit_code(Arrayup6);
+  trc("End Transmit"); 
  }
 
-
-void sleepSeconds(int seconds)
-{
-  for (int i = 0; i < seconds; i++) { 
-     LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF); 
-  }
-}
-
-
-
 //trace function
-void trc(String msg){
-  if (TRACE) {
-  Serial.println(msg);
-  }
-}
-
+void trc(String msg){if (TRACE) { Serial.println(msg); } }
 
 
 void transmit_code_old(String code){
@@ -151,7 +130,7 @@ void transmit_code_old(String code){
  void transmit_code(Array code){
   for (int i = 0; i < NUM_ATTEMPTS; i++) {        
       # ----------------------- Preamble ----------------------
-      trc("Begin Preamble");
+      trc("transmit preamble");
       digitalWrite(pin, LOW); 
       delay(3000);  // sleep for 0,3 seconds
       for (int i = 0; i < 11; i++) { 
@@ -162,6 +141,7 @@ void transmit_code_old(String code){
       }
       # ---------------------- End Preamble --------------------
       # -----------------------Segnal --------------------------
+      trc("transmit segnal");
       digitalWrite(pin, LOW);
       delayMicroseconds(3500); # added 3,5 millis
       for (c=0;c<ARRAYUP6_SIZE;c++) {     
@@ -179,11 +159,11 @@ void transmit_code_old(String code){
          } 
          else:
          {     
-         digitalWrite(pin, LOW);
-         delayMicroseconds(3000); # added 3 millis
+            digitalWrite(pin, LOW);
+            delayMicroseconds(3000); # added 3 millis
          }
-      } 
-      # ---------------------End Segnal --------------------------        
-      delay(2000); # added 2 millis 
+    # ---------------------End Segnal --------------------------   
+    } 
+    delay(2000); # added 2 millis 
 }
 
