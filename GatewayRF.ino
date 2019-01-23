@@ -31,7 +31,7 @@ WiFiServer server(SERVER_PORT);
  
 void setup() {
   // Connect to WiFi network
-  // Serial.begin(9600);
+  Serial.begin(9600);
   delay(10);
   Serial.print("Attempting to connect to WPA network...");
   Serial.println(ssid);
