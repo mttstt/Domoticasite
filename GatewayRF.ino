@@ -6,7 +6,7 @@
 // http://nerdralph.blogspot.com/2015/04/a-4mbps-shiftout-for-esp8266arduino.html
 
 // Note(1): Watt OK. max pinout watt of Nodemcu 1.0 10mW, Cheap transmitter 433mhz 10 10mW
-// Note(2): digitalwrite()Esp8286 function runs to 160Khz (6,25 μs): it is enough for this program
+// Note(2): digitalwrite() Esp8286 function runs to 160Khz (6,25 μs): it is enough for this program
 
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
@@ -17,7 +17,7 @@ char password[] = "xxx";//type your password
 const int pulse = 360; //μs
 //const char* up6 = '110011000000100100000000000000001011100100000001101000100000000000'
 #define ARRAYUP6_SIZE 67 
-int Arrayup6[] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
+int Arrayup6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
 #define pin 3  //GPIO3 = RX pin
 #define NUM_ATTEMPTS 3
 
@@ -48,6 +48,8 @@ void setup() {
   Serial.print("Use this URL to connect: ");
   Serial.print("http://");
   Serial.print(WiFi.localIP());
+  Serial.println("/"); 
+ 
   // =======================================================
      // Set up mDNS responder:
      // - first argument is the domain name, in this example
@@ -64,47 +66,81 @@ void setup() {
      MDNS.addService("http", "tcp", SERVER_PORT);
   // =======================================================
  
-  Serial.println("/"); 
-
   pinMode(pin,OUTPUT);  // sets the digital pin 3 as output
   trc("Sets the digital pin 3 as output");
 }
 
-void loop() {
-  // listen for incoming clients
-  WiFiClient client = server.available();
-  if (!client) { return; }   
- 
-  // Wait until the client sends some data
-  Serial.println("new client");
-  while(!client.available()){
-    delay(1);
-  }   
-  // Read the first line of the request
-  String request = client.readStringUntil('\r');
-  Serial.println(request);
-  client.flush();
-   // Return the response
-  client.println("HTTP/1.1 200 OK");
-  client.println("Content-Type: text/html");
-  client.println(""); //  do not forget this one
-  client.println("<!DOCTYPE HTML>");
-  client.println("<html>");   
-  client.print("I'm here !");  
-  client.println("</html>"); 
-  delay(1);
-  client.stop();
-  Serial.println("Client disonnected");
-  Serial.println(); 
-  trc("Transmit");
-  //transmit_code_old(up6);
-  transmit_code(Arrayup6);
-  trc("End Transmit"); 
- }
+String prepareHtmlPage(String line)
+{
+ String htmlPage =
+     String("HTTP/1.1 200 OK\r\n") +
+            "Content-Type: text/html\r\n" +
+            "Connection: close\r\n" +  // the connection will be closed after completion of the response
+            "Refresh: 5\r\n" +  // refresh the page automatically every 5 sec
+            "\r\n" +
+            "<!DOCTYPE HTML>" +
+            "<html>" +
+            "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
+            "<link rel=\"icon\" href=\"data:,\">" +
+            "<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}" +
+            ".button { background-color: #195B6A; border: none; color: white; padding: 16px 40px;" +
+            "text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;} +
+            ".button2 {background-color: #77878A;}</style></head>" +
+            "<body><h1>Esp8266 Gateway RF</h1>" +
+            "<p>Command - " + line + "</p>" +
+            "<p><a href=\"/up6\"><button class=\"button\">MOVE</button></a></p>" +  // to adjust          
+            "</body></html>" +
+            "\r\n";
+  return htmlPage;
+}
 
+
+void loop() {
+{
+  WiFiClient client = server.available();
+  // wait for a client (web browser) to connect
+  if (client)
+  {
+    Serial.println("\n[Client connected]");
+    // loop while the client's connected
+    while (client.connected())
+    {
+      // read line by line what the client (web browser) is requesting
+      if (client.available())
+      {
+        String line = client.readStringUntil('\r');
+        Serial.print(line);
+        // wait for end of client's request, that is marked with an empty line             
+        if (line.length() == 1 && line[0] == '\n')
+        {          
+          //=================================================
+           if (line.indexOf("GET /up6") >= 0) {
+              Serial.println("/up6");
+              trc("Transmit");
+              //transmit_code_old(up6);
+              transmit_code(Arrayup6);
+              trc("End Transmit");             
+            } else if (header.indexOf("GET /do6") >= 0) {
+              Serial.println("/up6");
+              trc("Transmit");
+              //transmit_code_old(up6);
+              transmit_code(Arrayup6);            
+            }
+          //=================================================         
+          client.println(prepareHtmlPage(line));
+          break;
+        }
+      }
+    }
+    delay(1); // give the web browser time to receive the data
+    // close the connection:
+    client.stop();
+    Serial.println("[Client disonnected]");
+  }
+}
+ 
 //trace function
 void trc(String msg){if (TRACE) { Serial.println(msg); } }
-
 
 void transmit_code_old(String code){
   for (int i = 0; i < NUM_ATTEMPTS; i++) {        
@@ -140,9 +176,9 @@ void transmit_code_old(String code){
       # ---------------------End Segnal --------------------------        
       delay(2000); # added 2 millis 
 }
+
  
- 
- void transmit_code(Array code){
+void transmit_code(Array code){
   for (int i = 0; i < NUM_ATTEMPTS; i++) {        
       # ----------------------- Preamble ----------------------
       trc("transmit preamble");
@@ -181,4 +217,3 @@ void transmit_code_old(String code){
     } 
     delay(2000); # added 2 millis 
 }
-
