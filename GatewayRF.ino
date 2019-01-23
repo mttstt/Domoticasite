@@ -2,17 +2,25 @@
 // https://1technophile.blogspot.com/2016/08/low-cost-low-power-6ua-garden-433mhz.html
 // https://github.com/esp8266/Arduino/blob/master/doc/reference.rst
 // https://arduino.stackexchange.com/questions/44531/arduino-esp8266-direct-fast-control-of-the-digital-pins
-// Note: digitalwrite()Esp8286 function runs to 160Khz (6,25 μs): it is enough for this program
+// https://www.instructables.com/id/Using-an-ESP8266-to-Control-Mains-Sockets-Using-43/
+// http://nerdralph.blogspot.com/2015/04/a-4mbps-shiftout-for-esp8266arduino.html
+
+// Note(1): Watt OK. max pinout watt of Nodemcu 1.0 10mW, Cheap transmitter 433mhz 10 10mW
+// Note(2): digitalwrite()Esp8286 function runs to 160Khz (6,25 μs): it is enough for this program
 
 #include <ESP8266WiFi.h>
  
 const char* ssid = "MTT_2.4";//type your ssid
-const char* password = "xx";//type your password
-const int pin = ???;
+const char* password = "xxx";//type your password
 const int pulse = 360; //μs
+//const char* up6 = '110011000000100100000000000000001011100100000001101000100000000000'
+#define ARRAYUP6_SIZE 67 
+int Arrayup6[] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
 
-const char* up6 = '110011000000100100000000000000001011100100000001101000100000000000'
 
+#define pin 3  //GPIO3 = RX pin
+#define NUM_ATTEMPTS 3
+ 
 //Do we want to see trace for debugging purposes
 #define TRACE 0  // 0= trace off 1 = trace on
 
@@ -42,9 +50,8 @@ void setup() {
   Serial.print("http://");
   Serial.print(WiFi.localIP());
   Serial.println("/"); 
- 
-  // Configure pin
-  pinMode(pin,OUTPUT);
+
+  pinMode(pin,OUTPUT);  // sets the digital pin 13 as output
   trc("Open pin");
 }
 
@@ -77,46 +84,12 @@ void loop() {
   delay(1);
   Serial.println("Client disonnected");
   Serial.println("");
- // ==================================
-  def transmit_code(code):
-      # ----------------------- Preamble ----------------------
-      trc("Begin Preamble");
-      digitalWrite(pin, LOW); 
-      delay(3000);  // sleep for 0,3 seconds
-      for (int i = 0; i < 11; i++) { 
-        digitalWrite(pin, HIGH); 
-        delayMicroseconds(pulse);
-        digitalWrite(pin, LOW); 
-        delayMicroseconds(pulse);  
-      }
-      # ---------------------- End Preamble --------------------
-      # -----------------------Segnal --------------------------
-      digitalWrite(pin, LOW);
-      delayMicroseconds(3500); # added 3,5 millis
-      for c in code:
-         if c == '1':
-             digitalWrite(pin, HIGH); 
-             delayMicroseconds(pulse);
-             digitalWrite(pin, LOW); 
-             delayMicroseconds(pulse*2);  
-         elif c == '0':
-             digitalWrite(pin, HIGH); 
-             delayMicroseconds(pulse*2);
-             digitalWrite(pin, LOW); 
-             delayMicroseconds(pulse);  
-         else:
-            continue     
-      digitalWrite(pin, LOW);
-      delayMicroseconds(3000); # added 3 millis       
-             
-      # -------End Segnal ------------------------------------------
-      pi.wave_clear()
-      pi.wave_add_generic(f1)
-      f = pi.wave_create() # create and save id
-      for t in range(NUM_ATTEMPTS):
-         print("sending {}".format(t))
-         pi.wave_send_repeat(f)
-         time.sleep(0.2)
+ 
+  trc("Transmit");
+  //transmit_code_old(up6);
+ transmit_code(Arrayup6);
+ 
+  trc("End Transmit");
  
  }
 
@@ -136,3 +109,81 @@ void trc(String msg){
   Serial.println(msg);
   }
 }
+
+
+
+void transmit_code_old(String code){
+  for (int i = 0; i < NUM_ATTEMPTS; i++) {        
+      # ----------------------- Preamble ----------------------
+      trc("Begin Preamble");
+      digitalWrite(pin, LOW); 
+      delay(3000);  // sleep for 0,3 seconds
+      for (int i = 0; i < 11; i++) { 
+        digitalWrite(pin, HIGH); 
+        delayMicroseconds(pulse);
+        digitalWrite(pin, LOW); 
+        delayMicroseconds(pulse);  
+      }
+      # ---------------------- End Preamble --------------------
+      # -----------------------Segnal --------------------------
+      digitalWrite(pin, LOW);
+      delayMicroseconds(3500); # added 3,5 millis       
+      for c in code:
+         if c == '1':
+             digitalWrite(pin, HIGH); 
+             delayMicroseconds(pulse);
+             digitalWrite(pin, LOW); 
+             delayMicroseconds(pulse*2);  
+         elif c == '0':
+             digitalWrite(pin, HIGH); 
+             delayMicroseconds(pulse*2);
+             digitalWrite(pin, LOW); 
+             delayMicroseconds(pulse);  
+         else:
+            continue     
+      digitalWrite(pin, LOW);
+      delayMicroseconds(3000); # added 3 millis       
+      # ---------------------End Segnal --------------------------        
+      delay(2000); # added 2 millis 
+}
+ 
+ 
+ void transmit_code(Array code){
+  for (int i = 0; i < NUM_ATTEMPTS; i++) {        
+      # ----------------------- Preamble ----------------------
+      trc("Begin Preamble");
+      digitalWrite(pin, LOW); 
+      delay(3000);  // sleep for 0,3 seconds
+      for (int i = 0; i < 11; i++) { 
+        digitalWrite(pin, HIGH); 
+        delayMicroseconds(pulse);
+        digitalWrite(pin, LOW); 
+        delayMicroseconds(pulse);  
+      }
+      # ---------------------- End Preamble --------------------
+      # -----------------------Segnal --------------------------
+      digitalWrite(pin, LOW);
+      delayMicroseconds(3500); # added 3,5 millis
+      for (c=0;c<ARRAYUP6_SIZE;c++) {     
+         if (code[c] == 1){   
+             digitalWrite(pin, HIGH); 
+             delayMicroseconds(pulse);
+             digitalWrite(pin, LOW); 
+             delayMicroseconds(pulse*2);
+         } 
+         else if (code[c] == 0){
+             digitalWrite(pin, HIGH); 
+             delayMicroseconds(pulse*2);
+             digitalWrite(pin, LOW); 
+             delayMicroseconds(pulse);
+         } 
+         else:
+         {     
+         digitalWrite(pin, LOW);
+         delayMicroseconds(3000); # added 3 millis
+         }
+      } 
+      # ---------------------End Segnal --------------------------        
+      delay(2000); # added 2 millis 
+}
+
