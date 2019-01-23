@@ -87,7 +87,7 @@ String prepareHtmlPage(String line)
             "text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;} +
             ".button2 {background-color: #77878A;}</style></head>" +
             "<body><h1>Esp8266 Gateway RF</h1>" +
-            "<p>Command - " + line + "</p>" +
+            "<p>Command - " + "line" + "</p>" +
             "<p><a href=\"/up6\"><button class=\"button\">MOVE</button></a></p>" +  // to adjust          
             "</body></html>" +
             "\r\n";
@@ -109,25 +109,20 @@ void loop() {
       if (client.available())
       {
         String line = client.readStringUntil('\r');
-        Serial.print(line);
+        Serial.print(line);       
+        //============================================================
+        if (line.indexOf("GET /up6") >= 0) {
+            Serial.println("/up6");              
+            transmit_code(Arrayup6);  //transmit_code_old(up6);
+           } else if (header.indexOf("GET /do6") >= 0) {
+             Serial.println("/up6");
+             transmit_code(Arrayup6); //transmit_code_old(up6);
+        }
+        //=============================================================              
         // wait for end of client's request, that is marked with an empty line             
         if (line.length() == 1 && line[0] == '\n')
-        {          
-          //=================================================
-           if (line.indexOf("GET /up6") >= 0) {
-              Serial.println("/up6");
-              trc("Transmit");
-              //transmit_code_old(up6);
-              transmit_code(Arrayup6);
-              trc("End Transmit");             
-            } else if (header.indexOf("GET /do6") >= 0) {
-              Serial.println("/up6");
-              trc("Transmit");
-              //transmit_code_old(up6);
-              transmit_code(Arrayup6);            
-            }
-          //=================================================         
-          client.println(prepareHtmlPage(line));
+        {                      
+          client.println(prepareHtmlPage());
           break;
         }
       }
