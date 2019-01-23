@@ -3,6 +3,7 @@
 // https://github.com/H4ndl3/pvimon/blob/master/pvimon.ino
 // http://www.gianlucaghettini.net/lettura-fotovoltaico-da-remoto-con-nodemcu/
 // https://github.com/jrbenito/ABBAurora
+// https://forum.arduino.cc/index.php?topic=154407.0
 
 #include <ESP8266WiFi.h>
 #include <SoftwareSerial.h>
