@@ -31,7 +31,7 @@ char header[10];
 
 void trc(String msg);              // function prototypes 
 void transmit_code(int code[]);
-void handleRoot();
+void handleRoot(String uri);
 
 
 WiFiServer server (SERVER_PORT);
@@ -70,7 +70,7 @@ void setup(void) {
   MDNS.addService("http", "tcp", SERVER_PORT);
   // =======================================================
 
-  server.on("/UP6", HTTP_GET, handleRoot);
+  server.on("/UP6", HTTP_GET, handleRoot(server.uri()));
   server.onNotFound([](){server.send(404, "text/plain", "404: Not found"); });
 
   pinMode(pin,OUTPUT);  // sets the digital pin 3 as output
@@ -131,6 +131,6 @@ void transmit_code(int code[]){
 }
 
 
-void handleRoot() {server.send(200, "text/html", "<h1> Gateway Rf </h1> <p>up6</p> ");
+void handleRoot(String uri) {server.send(200, "text/html", "<h1> Gateway Rf </h1> <p>uri</p> ");
                    transmit_code(up6);                   
                    }
