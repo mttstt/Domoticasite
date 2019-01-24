@@ -30,18 +30,23 @@ void trc(String msg){if (TRACE) { Serial.println(msg); } }
 WiFiServer server(SERVER_PORT);
  
 void setup() {
-  // Connect to WiFi network
+  delay(100);
   Serial.begin(9600);
-  delay(10);
+  delay(100);
+  // Connect to WiFi network
   Serial.print("Attempting to connect to WPA network...");
   Serial.println(ssid);
+ 
+  Serial.flush();
+  SerialUSB.println("I'm here!")
+   
+   
   WiFi.begin(ssid, password);
  
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("");
   Serial.println("WiFi connected");   
   // Start the server
   server.begin();
