@@ -21,7 +21,7 @@ int up6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
 #define pin 3  //GPIO3 = RX pin
 #define NUM_ATTEMPTS 3
 
-char header="";
+char header[10];
 
 //Do we want to see trace for debugging purposes
 #define TRACE 1  // 0= trace off 1 = trace on
@@ -160,11 +160,11 @@ void loop() {
         String line = client.readStringUntil('\r');
         Serial.print(line);       
         //============================================================
-        if (line.indexOf("GET /up6") >= 0) {
+        if (line.indexOf("/up6") >= 0) {
             Serial.println("/up6");
             header = "Down";
             transmit_code(up6);
-           } else if (line.indexOf("GET /do6") >= 0) {
+           } else if (line.indexOf("/do6") >= 0) {
              Serial.println("/do6");
              header = "Up";
              transmit_code(up6);
