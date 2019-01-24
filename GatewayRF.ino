@@ -21,6 +21,8 @@ int up6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
 #define pin 3  //GPIO3 = RX pin
 #define NUM_ATTEMPTS 3
 
+char header="";
+
 //Do we want to see trace for debugging purposes
 #define TRACE 1  // 0= trace off 1 = trace on
 
@@ -75,7 +77,7 @@ void setup() {
   trc("Sets the digital pin 3 as output");
 }
 
-String prepareHtmlPage()
+String prepareHtmlPage(char header)
 {
  String htmlPage =
      String("HTTP/1.1 200 OK\r\n") +
@@ -92,8 +94,8 @@ String prepareHtmlPage()
             "text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}" +
             ".button2 {background-color: #77878A;}</style></head>" +
             "<body><h1>Esp8266 Gateway RF</h1>" +
-            "<p>Command - " + "line" + "</p>" +
-            "<p><a href=\"/up6\"><button class=\"button\">MOVE</button></a></p>" +  // to adjust          
+            "<p>Command - " + "ok" + "</p>" +
+            "<p><a href=\"/up6\"><button class=\"button\">"+header+"</button></a></p>" +
             "</body></html>" +
             "\r\n";
   return htmlPage;
@@ -147,28 +149,31 @@ void loop() {
   // wait for a client (web browser) to connect
   if (client)
   {
-    Serial.println("\n[Client connected]");
+    Serial.println("\n[Client connected]");    
     // loop while the client's connected
     while (client.connected())
     {
       // read line by line what the client (web browser) is requesting
       if (client.available())
       {
+        header = "";
         String line = client.readStringUntil('\r');
         Serial.print(line);       
         //============================================================
         if (line.indexOf("GET /up6") >= 0) {
-            Serial.println("/up6");              
-            transmit_code(up6);  //transmit_code_old(up6);
+            Serial.println("/up6");
+            header = "Down";
+            transmit_code(up6);
            } else if (line.indexOf("GET /do6") >= 0) {
-             Serial.println("/up6");
-             transmit_code(up6); //transmit_code_old(up6);
+             Serial.println("/do6");
+             header = "Up";
+             transmit_code(up6);
         }
         //=============================================================              
         // wait for end of client's request, that is marked with an empty line             
         if (line.length() == 1 && line[0] == '\n')
         {                      
-          client.println(prepareHtmlPage());
+          client.println(prepareHtmlPage(header));
           break;
         }
       }
