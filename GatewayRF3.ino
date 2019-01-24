@@ -7,8 +7,8 @@
 #define SERVER_PORT 80
 const int pulse = 360; //μs
 #define UP6_SIZE 67
-char up6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
-#define pin 2  //GPIO2 = D4
+byte up6[] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
+#define pin 4  //GPIO4 = 2
 #define NUM_ATTEMPTS 3
 #define TRACE 1  // 0= trace off 1 = trace on Do we want to see trace for debugging purposes
 void trc(String msg);              // function prototypes 
@@ -23,7 +23,7 @@ void setup(void){
   delay(10);
   Serial.println('\n');
 
-  wifiMulti.addAP("MTT_2.4", "xxx");   // add Wi-Fi networks you want to connect to
+  wifiMulti.addAP("MTT_2.4", "999999999");   // add Wi-Fi networks you want to connect to
 
   Serial.println("Connecting ...");
   int i = 0;
@@ -42,10 +42,10 @@ void setup(void){
   } else {
     Serial.println("Error setting up MDNS responder!");
   }
-
-  server.on("/", HTTP_GET, []() { server.send(200, "text/html", "<h1> Gateway Rf </h1> <p>"+server.uri()+"</p> "); transmit_code(up6); });
+  server.on("/", HTTP_GET, []() { transmit_code(up6); 
+                                  server.send(200, "text/html", "<h1> Gateway Rf </h1> <p>"+server.uri()+"</p> ");  
+                                });
   server.onNotFound([]() { server.send(404, "text/plain", "404: Not Found"); });
-
   server.begin();                           // Actually start the server
   Serial.println("HTTP server started");
 }
@@ -57,27 +57,26 @@ void loop(void){
 // trace function
 void trc(String msg){if (TRACE) { Serial.println(msg); } }
 
-void transmit_code(char code[]){
-  trc(code);
+void transmit_code(byte code[]){
   for (int i = 0; i < NUM_ATTEMPTS; i++) {        
       // ----------------------- Preamble ----------------------
-      trc("transmit preamble");
       digitalWrite(pin, LOW); 
-      delay(3000);  // sleep for 0,3 seconds
-      for (int i = 0; i < 12; i++) { 
+      delay(50);  // sleep for 0,3 seconds
+      for (int i = 0; i < 12; i++) {
         digitalWrite(pin, HIGH); 
         delayMicroseconds(pulse);
         digitalWrite(pin, LOW); 
         delayMicroseconds(pulse);  
       }
-     // ---------------------- End Preamble --------------------
-     // -----------------------Segnal --------------------------
-      trc("transmit segnal");
+      // ---------------------- End Preamble --------------------
+      // -----------------------Segnal --------------------------
+      //trc("transmit segnal");
       digitalWrite(pin, LOW);
       delayMicroseconds(3500); // added 3,5 millis
       int c=0;
-      for (c=0;c<UP6_SIZE;c++) {     
-         if (code[c] == '1'){   
+      for (c=0;c<UP6_SIZE;c++) {
+         //Serial.print(code[c]);     
+         if (code[c] == '1'){
              digitalWrite(pin, HIGH); 
              delayMicroseconds(pulse);
              digitalWrite(pin, LOW); 
@@ -97,6 +96,7 @@ void transmit_code(char code[]){
     // ---------------------End Segnal --------------------------   
     }
     yield();
-    delay(2000); // added 2 millis 
+    delayMicroseconds(2000); // added 2 millis 
  }
+ trc("transmit preamble");
 }
