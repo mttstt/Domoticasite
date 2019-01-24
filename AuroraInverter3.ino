@@ -13,6 +13,8 @@
 #define RX 3  //GPIO3 (RX)
 #define TX 1  //GPIO1 (TX)
 
+//Serial.println("this implements TX0 at GPIO1 and RX0 at GPIO3"); 
+//Serial1.println("this implements TX1 at GPIO15 and RX1 at GPIO13");
 
 class clsAurora {
 private:
