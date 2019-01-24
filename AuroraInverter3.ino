@@ -10,11 +10,7 @@
 #define RS485Transmit HIGH 
 #define RS485Receive LOW 
 
-#define RX 3  //GPIO3 (RX)
-#define TX 1  //GPIO1 (TX)
-
-//Serial.println("this implements TX0 at GPIO1 and RX0 at GPIO3"); 
-//Serial1.println("this implements TX1 at GPIO15 and RX1 at GPIO13");
+// TX1 at GPIO15 and RX1 at GPIO13 => Serial1.println
 
 class clsAurora {
 private:
@@ -77,13 +73,13 @@ private:
       digitalWrite(SSerialTxControl, RS485Transmit);
       delay(50);
 
-      if (Serial.write(SendData, sizeof(SendData)) != 0) {
-        Serial.flush();
+      if (Serial1.write(SendData, sizeof(SendData)) != 0) {
+        Serial1.flush();
         SendStatus = true;
 
         digitalWrite(SSerialTxControl, RS485Receive);
 
-        if (Serial.readBytes(ReceiveData, sizeof(ReceiveData)) != 0) {
+        if (Serial1.readBytes(ReceiveData, sizeof(ReceiveData)) != 0) {
           if ((int)word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6)) {
             ReceiveStatus = true;
             break;
@@ -863,7 +859,6 @@ public:
   bool ReadDSP(byte type, byte global) {
     if ((((int)type >= 1 && (int)type <= 9) || ((int)type >= 21 && (int)type <= 63)) && ((int)global >= 0 && (int)global <= 1)) {
       DSP.ReadState = Send(Address, (byte)59, type, global, (byte)0, (byte)0, (byte)0, (byte)0);
-
       if (DSP.ReadState == false) {
         ReceiveData[0] = 255;
         ReceiveData[1] = 255;
@@ -1129,10 +1124,6 @@ volatile double Irms = 0;
 byte Menu = 0;
 
 
-Thread LeggiProduzione = Thread();
-//Thread ScriviDebug = Thread();
-
-
 String stampaDataTime(unsigned long scn)
 {
   String rtn;
@@ -1194,18 +1185,14 @@ void LeggiProduzioneCallback(Menu) {
 }
 
 
-
 void setup()
 {
-  Serial.setTimeout(500);
-  Serial.begin(19200);
-  
+  Serial1.setTimeout(500);
+  Serial.begin(9600);  
   pinMode(SSerialTxControl, OUTPUT);
-  digitalWrite(SSerialTxControl, RS485Receive);  // Init Transceiver
-  
+  digitalWrite(SSerialTxControl, RS485Receive);  // Init Transceiver  
   Serial.println(LeggiProduzioneCallback(0));
-  delay(50);
-  
+  delay(50);  
 }
 
 void loop()
