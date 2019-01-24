@@ -1118,38 +1118,12 @@ public:
 
 
 //======================================================
-clsAurora Invertermtt = clsAurora(2);  //aggiornare l'id dell'inverter
+clsAurora Inverter2 = clsAurora(2);  //aggiornare l'id dell'inverter
 
-volatile double Irms = 0;
 byte Menu = 0;
 
 
-String stampaDataTime(unsigned long scn)
-{
-  String rtn;
-  if (scn > 0) {
-    setTime(0, 0, 0, 1, 1, 2000);
-    if (timeStatus() == timeSet) {
-    adjustTime(scn);
-
-      rtn = String(day());
-      rtn += String(F("/"));
-      rtn += String(month());
-      rtn += String(F("/"));
-      rtn += String(year());
-      rtn += String(F(" "));
-      rtn += String(hour());
-      rtn += String(F(":"));
-      rtn += String(minute());
-      rtn += String(F(":"));
-      rtn += String(second());
-    }
-  }
-  return rtn;
-}
-
-
-void LeggiProduzioneCallback(Menu) {
+String LeggiProduzioneCallback(byte Menu) {
   switch (Menu)
   {
   case 0:
@@ -1191,12 +1165,26 @@ void setup()
   Serial.begin(9600);  
   pinMode(SSerialTxControl, OUTPUT);
   digitalWrite(SSerialTxControl, RS485Receive);  // Init Transceiver  
-  Serial.println(LeggiProduzioneCallback(0));
+
+  Serial.println(Inverter2.ReadCumulatedEnergy(0));
+  Serial.println(Inverter2.ReadTimeDate());
+  Serial.println(Inverter2.ReadLastFourAlarms());
+  Serial.println(Inverter2.ReadSystemPN());
+  Serial.println(Inverter2.ReadSystemSerialNumber());
+  Serial.println(Inverter2.ReadManufacturingWeekYear());
+  Serial.println(Inverter2.ReadFirmwareRelease());
+  Serial.println(Inverter2.ReadManufacturingWeekYear());
+  Serial.println(Inverter2.ReadFirmwareRelease());
+  Serial.println(Inverter2.ReadManufacturingWeekYear());
+  Serial.println(Inverter2.ReadFirmwareRelease());
+  Serial.println(Inverter2.ReadFirmwareRelease());
+  Serial.println(Inverter2.ReadVersion());
+  Serial.println(Inverter2.ReadState());    
+
   delay(50);  
 }
 
 void loop()
 {
-  LeggiProduzione.run();
   yield();
  }
