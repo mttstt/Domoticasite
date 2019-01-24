@@ -19,6 +19,7 @@ ESP8266WiFiMulti wifiMulti;     // Create an instance of the ESP8266WiFiMulti cl
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
 
 void setup(void){
+  pinMode(pin,OUTPUT);
   Serial.begin(115200);         // Start the Serial communication to send messages to the computer
   delay(10);
   Serial.println('\n');
