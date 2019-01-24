@@ -4,36 +4,26 @@
 #include <ESP8266mDNS.h>
 #include <ESP8266WebServer.h>   // Include the WebServer library
 
-
-
 #define SERVER_PORT 80
 const int pulse = 360; //μs
 #define UP6_SIZE 67
-int up6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
+char up6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
 #define pin 2  //GPIO2 = D4
 #define NUM_ATTEMPTS 3
-char header[10];
 #define TRACE 1  // 0= trace off 1 = trace on Do we want to see trace for debugging purposes
 void trc(String msg);              // function prototypes 
-void transmit_code(int code[]);
-
-
+void transmit_code(char code[]);
 
 ESP8266WiFiMulti wifiMulti;     // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
-
-void handleRoot(String uri);    // function prototypes for HTTP handlers
-void handleNotFound();
 
 void setup(void){
   Serial.begin(115200);         // Start the Serial communication to send messages to the computer
   delay(10);
   Serial.println('\n');
 
-  wifiMulti.addAP("MTT_2.4", "xxxx");   // add Wi-Fi networks you want to connect to
-  //wifiMulti.addAP("ssid_from_AP_2", "your_password_for_AP_2");
-  //wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
+  wifiMulti.addAP("MTT_2.4", "xxx");   // add Wi-Fi networks you want to connect to
 
   Serial.println("Connecting ...");
   int i = 0;
@@ -53,8 +43,8 @@ void setup(void){
     Serial.println("Error setting up MDNS responder!");
   }
 
-  server.on("/",HTTP_GET, handleRoot(server.uri());         // Call the 'handleRoot' function when a client requests URI "/"
-  server.onNotFound(handleNotFound);        // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
+  server.on("/", HTTP_GET, []() { server.send(200, "text/html", "<h1> Gateway Rf </h1> <p>"+server.uri()+"</p> "); transmit_code(up6); });
+  server.onNotFound([]() { server.send(404, "text/plain", "404: Not Found"); });
 
   server.begin();                           // Actually start the server
   Serial.println("HTTP server started");
@@ -64,12 +54,11 @@ void loop(void){
   server.handleClient();                    // Listen for HTTP requests from clients
 }
 
-
 // trace function
 void trc(String msg){if (TRACE) { Serial.println(msg); } }
 
-
-void transmit_code(int code[]){
+void transmit_code(char code[]){
+  trc(code);
   for (int i = 0; i < NUM_ATTEMPTS; i++) {        
       // ----------------------- Preamble ----------------------
       trc("transmit preamble");
@@ -110,13 +99,4 @@ void transmit_code(int code[]){
     yield();
     delay(2000); // added 2 millis 
  }
-}
-
-
-void handleRoot(String uri) {server.send(200, "text/html", "<h1> Gateway Rf </h1> <p>uri</p> ");
-                   transmit_code(up6);                   
-                   }
-
-void handleNotFound(){
-  server.send(404, "text/plain", "404: Not found"); // Send HTTP status 404 (Not Found) when there's no handler for the URI in the request
 }
