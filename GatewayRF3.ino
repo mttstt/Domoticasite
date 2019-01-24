@@ -10,7 +10,7 @@
 const int pulse = 360; //μs
 #define UP6_SIZE 67
 int up6[67] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,0,1,0,0,0,0,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0};
-#define pin 3  //GPIO3 = RX pin
+#define pin 2  //GPIO2 = D4
 #define NUM_ATTEMPTS 3
 char header[10];
 #define TRACE 1  // 0= trace off 1 = trace on Do we want to see trace for debugging purposes
