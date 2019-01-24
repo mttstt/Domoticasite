@@ -9,7 +9,10 @@
 // Note(2): digitalwrite() Esp8286 function runs to 160Khz (6,25 μs): it is enough for this program
 
 #include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WiFiMulti.h> 
 #include <ESP8266mDNS.h>
+#include <ESP8266WebServer.h>
  
 char ssid[] = "MTT_2.4";//type your ssid
 char password[] = "xxx";//type your password
@@ -26,22 +29,21 @@ char header[10];
 //Do we want to see trace for debugging purposes
 #define TRACE 1  // 0= trace off 1 = trace on
 
-//trace function
-void trc(String msg){if (TRACE) { Serial.println(msg); } }
+void trc(String msg);              // function prototypes 
+void transmit_code(int code[]);
 
-WiFiServer server(SERVER_PORT);
+
+WiFiServer server (SERVER_PORT);
  
-void setup() {
-  delay(100);
-  Serial.begin(9600);
-  delay(100);
+void setup(void) {
+  Serial.begin(115200);
+  delay(10);
   // Connect to WiFi network
   Serial.print("Attempting to connect to WPA network...");
   Serial.println(ssid);
  
   Serial.flush();
   SerialUSB.println("I'm here!")
-   
    
   WiFi.begin(ssid, password);
  
@@ -52,9 +54,7 @@ void setup() {
   Serial.println("WiFi connected");   
   // Start the server
   server.begin();
-  Serial.println("Server started"); 
-  // Print the IP address
-  Serial.print("Use this URL to connect: ");
+  Serial.print("Web Server started. Use this URL to connect: ");
   Serial.print("http://");
   Serial.print(WiFi.localIP());
   Serial.println("/"); 
@@ -64,7 +64,7 @@ void setup() {
      //   the fully-qualified domain name is "esp8266.local"
      // - second argument is the IP address to advertise
      //   we send our IP address on the WiFi network
-     if (!MDNS.begin("esp8266GatewayRF")) {
+     if (!MDNS.begin("gatewayRF")) {
        Serial.println("Error setting up MDNS responder!");
        while(1) { 
          delay(1000);
@@ -73,8 +73,11 @@ void setup() {
      Serial.println("mDNS responder started");
      MDNS.addService("http", "tcp", SERVER_PORT);
   // =======================================================
+
+ 
   pinMode(pin,OUTPUT);  // sets the digital pin 3 as output
-  trc("Sets the digital pin 3 as output");
+  trc("Sets the digital pin 3 as output"); 
+  yield();
 }
 
 String prepareHtmlPage(char header)
@@ -98,8 +101,54 @@ String prepareHtmlPage(char header)
             "<p><a href=\"/up6\"><button class=\"button\">"+header+"</button></a></p>" +
             "</body></html>" +
             "\r\n";
-  return htmlPage;
+     yield();
+     return htmlPage;
 }
+
+void loop() {
+  WiFiClient client = server.available();
+  // wait for a client (web browser) to connect
+  if (client)
+  {
+    Serial.println("\n[Client connected]");    
+    // loop while the client's connected
+    while (client.connected())
+    {
+      // read line by line what the client (web browser) is requesting
+      if (client.available())
+      {
+        header = "";
+        String line = client.readStringUntil('\r');
+        Serial.print(line);       
+        //============================================================
+        if (line.indexOf("GET /up6") >= 0) {
+            Serial.println("/up6");
+            header = "Down";
+            transmit_code(up6);
+           } else if (line.indexOf("GET /do6") >= 0) {
+             Serial.println("/do6");
+             header = "Up";
+             transmit_code(up6);
+        }
+        //=============================================================              
+        // wait for end of client's request, that is marked with an empty line             
+        if (line.length() == 1 && line[0] == '\n')
+        {                      
+          client.println(prepareHtmlPage(header));
+          break;
+        }
+      }
+    }
+    delay(1); // give the web browser time to receive the data
+    // close the connection:
+    client.stop();
+    Serial.println("[Client disonnected]");
+  }
+}
+
+
+//trace function
+void trc(String msg){if (TRACE) { Serial.println(msg); } }
 
 void transmit_code(int code[]){
   for (int i = 0; i < NUM_ATTEMPTS; i++) {        
@@ -138,49 +187,8 @@ void transmit_code(int code[]){
             delayMicroseconds(3000); // added 3 millis
          }
     // ---------------------End Segnal --------------------------   
-    } 
+    }
+    yield();
     delay(2000); // added 2 millis 
  }
-}
-
-
-void loop() {
-  WiFiClient client = server.available();
-  // wait for a client (web browser) to connect
-  if (client)
-  {
-    Serial.println("\n[Client connected]");    
-    // loop while the client's connected
-    while (client.connected())
-    {
-      // read line by line what the client (web browser) is requesting
-      if (client.available())
-      {
-        header = "";
-        String line = client.readStringUntil('\r');
-        Serial.print(line);       
-        //============================================================
-        if (line.indexOf("/up6") >= 0) {
-            Serial.println("/up6");
-            header = "Down";
-            transmit_code(up6);
-           } else if (line.indexOf("/do6") >= 0) {
-             Serial.println("/do6");
-             header = "Up";
-             transmit_code(up6);
-        }
-        //=============================================================              
-        // wait for end of client's request, that is marked with an empty line             
-        if (line.length() == 1 && line[0] == '\n')
-        {                      
-          client.println(prepareHtmlPage(header));
-          break;
-        }
-      }
-    }
-    delay(1); // give the web browser time to receive the data
-    // close the connection:
-    client.stop();
-    Serial.println("[Client disonnected]");
-  }
 }
