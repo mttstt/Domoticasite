@@ -24,7 +24,7 @@ void setup(void){
   delay(10);
   Serial.println('\n');
 
-  wifiMulti.addAP("MTT_2.4", "999999999");   // add Wi-Fi networks you want to connect to
+  wifiMulti.addAP("MTT_2.4", "xxxxx");   // add Wi-Fi networks you want to connect to
 
   Serial.println("Connecting ...");
   int i = 0;
@@ -99,5 +99,5 @@ void transmit_code(byte code[]){
     yield();
     delayMicroseconds(2000); // added 2 millis 
  }
- trc("transmit preamble");
+ trc("Segnal sended ");
 }
