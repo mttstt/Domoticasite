@@ -15,6 +15,13 @@ byte up6[] = {1,1,0,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 void trc(String msg);              // function prototypes 
 void transmit_code(char code[]);
 
+
+mySwitch.enableTransmit(pin);
+mySwitch.setPulseLength(pulse);
+mySwitch.setRepeatTransmit(3);
+
+
+
 ESP8266WiFiMulti wifiMulti;     // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
@@ -51,9 +58,7 @@ void setup(void){
   server.begin();                           // Actually start the server
   Serial.println("HTTP server started");
   
-  // Examples where Pulse Length is not used
-	static st::EX_RCSwitch executor3(F("tapparella up6"), pin, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4);
-
+ 
 
   
 }
@@ -67,6 +72,7 @@ void trc(String msg){if (TRACE) { Serial.println(msg); } }
 
 void transmit_code(byte code[]){
  // Examples where Pulse Length is not used
+ mySwitch.send("0000011010100110100101100110010110101010100110101010");	
 	
  }
  
